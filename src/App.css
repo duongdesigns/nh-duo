@@ -17,6 +17,15 @@
   }
 }
 
+.hero-slash {
+  display: inline-block;
+  font-size: 0.78em;
+  line-height: 1;
+  transform: translateY(-0.5em);
+  opacity: 0.55;
+  font-weight: 300;
+}
+
 .hero {
   position: relative;
 
