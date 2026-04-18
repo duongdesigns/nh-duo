@@ -9,7 +9,6 @@ import SectionEyebrow from "../layout/SectionEyebrow";
 
 function Hero({ lang, onExplore, onCaseStudy }) {
   const root = useRef(null);
-  const sectionRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const isGerman = lang === "de";
   const copy = {
@@ -46,8 +45,6 @@ function Hero({ lang, onExplore, onCaseStudy }) {
   };
 
   const scrollPastHero = () => {
-    const heroHeight = root.current?.offsetHeight ?? 0;
-
     window.scrollTo({
       top: window.scrollY + window.innerHeight,
       behavior: "smooth",
