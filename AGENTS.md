@@ -183,3 +183,53 @@ When reviewing or editing:
 - Work only in source files
 - Prefer minimal, safe changes
 - If unsure → explain instead of guessing
+
+---
+
+## Self-review focus for this project
+
+During self-review, prioritize:
+
+- semantic heading hierarchy (h1 → h2 → h3 consistency)
+- mobile overflow and text wrapping issues
+- proper use of landmarks (header, nav, main, section, footer)
+- visible and consistent focus-visible states
+- preserving the dark, minimal, editorial design direction
+- avoiding unnecessary wrappers or overly boxy/card-heavy layouts
+- ensuring motion remains subtle, intentional, and performance-friendly
+
+---
+
+## Motion consistency rules
+
+Motion should feel restrained, premium, and editorial.
+
+Prefer:
+- fade + slight translate
+- subtle staggered reveals
+- soft opacity transitions
+- minimal hover lift
+- smooth navbar/menu transitions
+- motion that supports hierarchy, not decoration
+
+Avoid:
+- bounce
+- springy playful motion unless explicitly requested
+- large scale changes
+- dramatic rotations
+- long looping decorative animations
+- multiple competing animations in the same viewport
+
+Timing:
+- entrance transitions: ~0.4s to 0.7s
+- hover transitions: ~0.18s to 0.3s
+- menu/overlay transitions: ~0.25s to 0.45s
+
+Easing:
+- prefer smooth, refined easing such as cubic-bezier(0.22, 1, 0.36, 1)
+
+Implementation:
+- prefer shared Motion variants over repeated inline animation objects
+- use staggered children for grouped reveals
+- preserve reduced-motion accessibility where appropriate
+- do not animate everything; leave enough static space for contrast
