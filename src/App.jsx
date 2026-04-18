@@ -34,6 +34,24 @@ function App() {
     introDelayChildren + introStagger * 5 + introLetterDuration + introOutroBuffer;
 
   useEffect(() => {
+    if (showIntro) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showIntro]);
+
+  useEffect(() => {
+    if (!showIntro) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }
+  }, [showIntro]);
+
+  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -293,52 +311,56 @@ function App() {
         )}
       </AnimatePresence>
 
-      <main className="relative z-10">
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.div
-            key={page}
-            layout
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            variants={pageVariants}
-          >
-            {/* Home page */}
-            {page === "home" && (
-              <>
-                <Hero
-                  lang={lang}
-                  onExplore={() => navigate("work")}
-                  onCaseStudy={() => navigate("case-study")}
-                />
-                <FeaturedWork
-                  lang={lang}
-                  hoveredProject={hoveredProject}
-                  setHoveredProject={setHoveredProject}
-                  onOpenCaseStudy={() => navigate("case-study")}
-                />
-                <Principles lang={lang} />
-                <ContactSection lang={lang} />
-              </>
-            )}
+      {!showIntro && (
+        <main className="relative z-10">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={page}
+              layout
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={pageVariants}
+            >
+              {/* Home page */}
+              {page === "home" && (
+                <>
+                  <Hero
+                    lang={lang}
+                    onExplore={() => navigate("work")}
+                    onCaseStudy={() => navigate("case-study")}
+                  />
+                  <FeaturedWork
+                    lang={lang}
+                    hoveredProject={hoveredProject}
+                    setHoveredProject={setHoveredProject}
+                    onOpenCaseStudy={() => navigate("case-study")}
+                  />
+                  <Principles lang={lang} />
+                  <ContactSection lang={lang} />
+                </>
+              )}
 
-            {/* Work page */}
-            {page === "work" && <WorkPage lang={lang} onOpenCaseStudy={() => navigate("case-study")} />}
-            {/* Case study page */}
-            {page === "case-study" && (
-              <CaseStudyPage
-                lang={lang}
-                activeSection={activeSection}
-                onJump={scrollToCaseStudySection}
-                caseStudyRefs={caseStudyRefs}
-              />
-            )}
-            {/* Contact page */}
-            {page === "contact" && <ContactPage lang={lang} />}
-          </motion.div>
-        </AnimatePresence>
-      </main>
-    </div>
+              {/* Work page */}
+              {page === "work" && (
+                <WorkPage lang={lang} onOpenCaseStudy={() => navigate("case-study")} />
+              )}
+              {/* Case study page */}
+              {page === "case-study" && (
+                <CaseStudyPage
+                  lang={lang}
+                  activeSection={activeSection}
+                  onJump={scrollToCaseStudySection}
+                  caseStudyRefs={caseStudyRefs}
+                />
+              )}
+              {/* Contact page */}
+              {page === "contact" && <ContactPage lang={lang} />}
+            </motion.div>
+          </AnimatePresence>
+        </main>
+      )}
+  </div>
   );
 }
 export default App;
