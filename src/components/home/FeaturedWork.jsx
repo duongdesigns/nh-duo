@@ -1,55 +1,42 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import React, { useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 
+import useEditorialReveal from "../../hooks/useEditorialReveal";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
+import AnimatedHeadline from "../layout/AnimatedHeadline";
 import SectionEyebrow from "../layout/SectionEyebrow";
+import { featuredPreviewImages, projectImages } from "../../data/imagery";
 import { featuredProjects } from "../../data/projects";
 
-function FeaturedWork(
-  {
-    lang,
-    hoveredProject,
-    setHoveredProject,
-    onOpenCaseStudy,
-  }
-) {
+function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy }) {
+  const root = useRef(null);
+  const previewImageRef = useRef(null);
+  const mobileCarouselRef = useRef(null);
+  const mobileScrollFrame = useRef(null);
+  const mobileHintRef = useRef(null);
   const isGerman = lang === "de";
+  const [mobileHintText, setMobileHintText] = useState("");
 
   const copy = {
     eyebrow: isGerman ? "Ausgewählte Arbeiten" : "Selected Work",
     heading: isGerman
-      ? "Gestaltet, um immersiv zu wirken – und dabei dennoch lesbar, reduziert und portfolio-orientiert zu bleiben."
-      : "Designed to feel immersive, but still readable, restrained, and portfolio-first.",
+      ? "Arbeiten, die Richtung, Erzählung und Ausführung in einem ruhigeren System bündeln."
+      : "Work that brings direction, narrative, and execution into one calmer system.",
     body: isGerman
-      ? "Das System balanciert dosierte Bewegung, starke Art Direction und eine hochwertige Fallstudien-Struktur. Dunkle Flächen tragen den Ton. Akzentfarbe bleibt bewusst eingesetzt."
-      : "The system balances moderate motion, strong art direction, and premium case-study structure. Dark surfaces carry the tone. Accent color is saved for intent.",
-    preview: isGerman ? "Live-Vorschau" : "Live preview",
-    open: isGerman ? "Öffnen" : "Open",
-    details: [
-      {
-        label: isGerman ? "Richtung" : "Direction",
-        text: isGerman
-          ? "Weniger gerahmt, atmosphärischer, mit Fokus auf großzügiges Tempo."
-          : "Less framed, more atmospheric, with emphasis on spacious pacing.",
-      },
-      {
-        label: isGerman ? "Akzent" : "Accent",
-        text: isGerman
-          ? "Cyan-Teal wird für geführte Aufmerksamkeit statt lauter Betonung reserviert."
-          : "Cyan-teal is reserved for guided focus instead of loud emphasis.",
-      },
-      {
-        label: isGerman ? "Lesbarkeit" : "Reading",
-        text: isGerman
-          ? "Die Komposition bleibt visuell geführt, aber die Hierarchie ruhig und klar."
-          : "The composition stays visual-first, but the hierarchy remains calm and clear.",
-      },
-    ],
+      ? "Statt Liste und Preview gegeneinander auszuspielen, führt diese Version über eine klare Hauptfläche und einen kompakten Projekt-Switcher. So bleibt der Abschnitt editoral, aber schneller lesbar."
+      : "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
+    preview: isGerman ? "Ausgewähltes Projekt" : "Selected Project",
+    open: isGerman ? "Fallstudie öffnen" : "Open case study",
+    switcher: isGerman ? "Projekte" : "Projects",
+    swipeHint: isGerman ? "Wische für mehr!" : "Swipe for more stuff!",
+    previewHint: isGerman ? "Schau dir unten die Details an!" : "Check the awesomeness below!",
   };
+
   const projectCopy = {
     "nord-form": {
-      category: isGerman ? "Brand System / Digitales Erlebnis" : "Brand System / Digital Experience",
+      category: isGerman ? "Brand Design" : "Brand Design",
       summary: isGerman
         ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit reduzierter Bewegung und starkem Narrativ."
         : "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
@@ -67,132 +54,360 @@ function FeaturedWork(
         : "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
     },
   };
-  return (
-    <section className="px-3 py-24 md:px-4 md:py-32 lg:px-5 xl:px-6 2xl:px-8">
-      <div className="mx-auto w-full max-w-none">
-        <div className="xl:pl-[2vw] 2xl:pl-[3vw]">
-          <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
-        </div>
-        <div
-          className="mt-4 grid gap-14 lg:grid-cols-[0.88fr_1.12fr] lg:gap-20 xl:grid-cols-[0.84fr_1.16fr] xl:gap-24 2xl:gap-28"
-        >
-          <div className="pt-4 max-w-[60rem] xl:pl-[2vw] 2xl:pl-[3vw]">
-            <div className="max-w-[48rem] text-3xl font-semibold leading-[1.02] tracking-[-0.04em] md:text-5xl xl:max-w-[54rem] 2xl:max-w-[58rem]">
-              {copy.heading}
-            </div>
-            <div className="mt-6 max-w-[42rem] text-base leading-[1.85] text-white/60 md:text-lg xl:max-w-[48rem] 2xl:max-w-[52rem]">
-              {copy.body}
+
+  const currentProject =
+    featuredProjects.find((project) => project.id === hoveredProject) ?? featuredProjects[0];
+  const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
+  const triggerMobileHint = (message) => {
+    const container = mobileCarouselRef.current;
+    const hint = mobileHintRef.current;
+    if (!container) return;
+
+    setMobileHintText(message);
+
+    const activeCard = container.querySelector(
+      `[data-project-id="${hoveredProject}"]`
+    );
+
+    if (activeCard) {
+      gsap.killTweensOf(activeCard);
+      const jumpTimeline = gsap.timeline({
+        defaults: { transformOrigin: "center bottom" },
+      });
+
+      jumpTimeline
+        .to(activeCard, {
+          y: -18,
+          scaleY: 1.03,
+          duration: 0.16,
+          ease: "power2.out",
+        })
+        .to(
+          activeCard,
+          {
+            y: 0,
+            scaleY: 1,
+            duration: 0.5,
+            ease: "bounce.out",
+            clearProps: "y,scaleY,transformOrigin",
+          },
+          ">"
+        );
+    }
+
+    if (hint) {
+      gsap.killTweensOf(hint);
+      gsap.fromTo(
+        hint,
+        { autoAlpha: 0, y: 8 },
+        {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.22,
+          ease: "power2.out",
+          onComplete: () => {
+            gsap.to(hint, {
+              autoAlpha: 0,
+              y: -4,
+              delay: 1.1,
+              duration: 0.28,
+              ease: "power2.in",
+            });
+          },
+        }
+      );
+    }
+  };
+
+  const syncMobileSelection = () => {
+    const container = mobileCarouselRef.current;
+    if (!container) return;
+
+    const cards = Array.from(
+      container.querySelectorAll("[data-fw-selector-mobile]")
+    );
+    if (!cards.length) return;
+
+    const nearestCard = cards.reduce((closest, card) => {
+      const closestDistance = Math.abs(closest.offsetLeft - container.scrollLeft);
+      const currentDistance = Math.abs(card.offsetLeft - container.scrollLeft);
+      return currentDistance < closestDistance ? card : closest;
+    }, cards[0]);
+
+    const nextProjectId = nearestCard.dataset.projectId;
+    if (nextProjectId && nextProjectId !== hoveredProject) {
+      setHoveredProject(nextProjectId);
+    }
+  };
+  const renderSelectorCard = (project, index, { mobile = false, keyPrefix = "default" } = {}) => {
+    const isActive = project.id === currentProject.id;
+    const info = projectCopy[project.id] ?? project;
+
+    return (
+      <button
+        key={`${keyPrefix}-${mobile ? "mobile" : "desktop"}-${project.id}-${index}`}
+        onClick={(event) => {
+          event.preventDefault();
+          if (mobile) {
+            if (project.id !== hoveredProject) {
+              triggerMobileHint(copy.swipeHint);
+              return;
+            }
+
+            if (project.id === hoveredProject) {
+              triggerMobileHint(copy.previewHint);
+              return;
+            }
+
+            return;
+          }
+
+          setHoveredProject(project.id);
+        }}
+        type="button"
+        data-fw-selector
+        data-project-id={mobile ? project.id : undefined}
+        data-fw-selector-mobile={mobile ? "true" : undefined}
+        className={`group rounded-[1.45rem] border text-left transition ${
+          mobile
+            ? `w-[calc(100vw-2.25rem)] max-w-none flex-shrink-0 snap-start px-4 py-4 ${
+                isActive
+                  ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
+                  : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
+              }`
+            : `h-full px-4 py-5 md:px-5 ${
+                isActive
+                  ? "border-[rgba(58,175,169,0.35)] bg-white/[0.028] shadow-[0_14px_30px_rgba(0,0,0,0.14)]"
+                  : "border-white/8 bg-white/[0.015] hover:border-white/14 hover:bg-white/[0.025]"
+              }`
+        }`}
+      >
+        <div className={`flex ${mobile ? "items-start gap-4" : "h-full flex-col"}`}>
+          <div className={`flex ${mobile ? "min-w-0 flex-1 flex-col" : "h-full flex-col"}`}>
+            <div className="flex items-start justify-between gap-4">
+              <div className="type-label text-white/34">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+              <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
+                {project.year}
+              </div>
             </div>
 
-            <div
-              className="mt-14 grid max-w-[50rem] gap-1 xl:mt-16 xl:max-w-[56rem] 2xl:max-w-[60rem]"
-            >
-              {featuredProjects.map((project) => {
-                const active = hoveredProject === project.id;
-                return (
-                  <motion.button
-                    key={project.id}
-                    onMouseEnter={() => setHoveredProject(project.id)}
-                    onFocus={() => setHoveredProject(project.id)}
-                    onClick={onOpenCaseStudy}
-                    whileHover={{ y: -2 }}
-                    className={`group border-b border-white/8 py-6 text-left transition ${
-                      active
-                        ? "border-[#6fd3d8]/35"
-                        : "hover:border-white/14"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between gap-6">
-                      <div>
-                        <div
-                          className={`font-mono-accent text-sm uppercase tracking-[0.2em] ${
-                            active ? "text-[#9ae6e8]/72" : "text-white/42"
-                          }`}
-                        >
-                          {projectCopy[project.id]?.category ?? project.category}
-                        </div>
-                        <div
-                          className={`mt-3 text-2xl font-medium tracking-[-0.04em] transition ${
-                            active
-                              ? "text-white"
-                              : "text-white/86 group-hover:text-white"
-                          }`}
-                        >
-                          {project.title}
-                        </div>
-                        <div className="mt-4 max-w-xl text-sm leading-7 text-white/58">
-                          {projectCopy[project.id]?.summary ?? project.summary}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          active
-                            ? "font-mono-accent text-sm text-[#9ae6e8]/72"
-                            : "font-mono-accent text-sm text-white/36"
-                        }
-                      >
-                        {project.year}
-                      </div>
-                    </div>
-                  </motion.button>
-                );
-              })}
+            <div className={`type-label ${mobile ? "mt-3 text-white/48" : "mt-5 text-white/54"}`}>
+              {info.category}
             </div>
+            <div className={`font-medium tracking-[-0.04em] text-white ${mobile ? "mt-2 text-[1.2rem] leading-[1.02]" : "mt-3 text-[1.45rem] text-white/96"}`}>
+              {project.title}
+            </div>
+            {mobile ? null : (
+              <p className="mt-4 line-clamp-3 text-sm leading-7 text-white/68">
+                {info.summary}
+              </p>
+            )}
           </div>
 
-          <motion.div layout className="relative pt-2 xl:pr-[1vw]">
-            <div className="relative min-h-[560px] xl:min-h-[680px] 2xl:min-h-[760px]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="font-mono-accent text-xs uppercase tracking-[0.22em] text-white/40">
-                    {copy.preview}
-                  </div>
-                  <div className="mt-2 text-2xl font-medium tracking-[-0.04em] text-white/88">
-                    {featuredProjects
-                      .find((project) => project.id === hoveredProject)
-                      ?.title}
-                  </div>
-                </div>
-                <button
-                  onClick={onOpenCaseStudy}
-                  className="inline-flex items-center gap-2 rounded-full bg-white/[0.05] px-4 py-2 text-sm text-white/76 hover:bg-white/[0.08]"
-                >
-                  {copy.open} <ExternalLink size={14} />
-                </button>
+          {mobile ? (
+            <div
+              aria-hidden="true"
+              className={`mt-1 h-2.5 w-2.5 flex-none rounded-full transition ${
+                isActive ? "bg-[#3AAFA9]" : "bg-white/20"
+              }`}
+            />
+          ) : null}
+        </div>
+      </button>
+    );
+  };
+
+  useEditorialReveal(root, {
+    dependencies: [lang],
+    steps: [
+      {
+        target: "[data-fw-intro]",
+        from: { y: 26, opacity: 0, duration: 0.72 },
+      },
+      {
+        target: "[data-fw-feature]",
+        from: { y: 24, opacity: 0, duration: 0.72 },
+        position: "-=0.42",
+      },
+      {
+        target: "[data-fw-selector]",
+        from: { y: 18, opacity: 0, duration: 0.58, stagger: 0.08 },
+        position: "-=0.36",
+      },
+    ],
+  });
+
+  useGSAP(
+    () => {
+      if (!previewImageRef.current) return;
+
+      gsap.fromTo(
+        previewImageRef.current,
+        {
+          scale: 1.06,
+          yPercent: 2,
+          opacity: 0.72,
+        },
+        {
+          scale: 1,
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.72,
+          ease: "power3.out",
+        }
+      );
+    },
+    { scope: root, dependencies: [hoveredProject] }
+  );
+
+  useGSAP(
+    () => {
+      const container = mobileCarouselRef.current;
+      if (!container) return undefined;
+
+      const cards = Array.from(
+        container.querySelectorAll("[data-fw-selector-mobile]")
+      );
+      if (!cards.length) return undefined;
+
+      const handleScroll = () => {
+        if (mobileScrollFrame.current) cancelAnimationFrame(mobileScrollFrame.current);
+        mobileScrollFrame.current = requestAnimationFrame(() => {
+          syncMobileSelection();
+        });
+      };
+
+      container.addEventListener("scroll", handleScroll, { passive: true });
+
+      return () => {
+        container.removeEventListener("scroll", handleScroll);
+        if (mobileScrollFrame.current) cancelAnimationFrame(mobileScrollFrame.current);
+      };
+    },
+    { scope: root, dependencies: [lang] }
+  );
+
+  return (
+    <section ref={root} className="home-shell py-24 md:py-32">
+      <div className="content-shell w-full">
+        <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
+
+        <div className="mt-4 grid gap-14 xl:gap-20">
+          <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
+            <div className="max-w-[60ch] pt-4" data-fw-intro>
+              <AnimatedHeadline as="h2" className="section-title max-w-[21ch]">
+                {copy.heading}
+              </AnimatedHeadline>
+              <p className="body-safe body-safe--wide mt-6 text-base leading-[1.85] text-white/60 md:text-lg">
+                {copy.body}
+              </p>
+
+              <div
+                ref={mobileCarouselRef}
+                className="no-scrollbar -mx-[0.75rem] mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[0.75rem] pb-2 pt-5 scroll-px-[0.75rem] md:hidden"
+              >
+                {featuredProjects.map((project, index) =>
+                  renderSelectorCard(project, index, {
+                    mobile: true,
+                    keyPrefix: "mobile",
+                  })
+                )}
               </div>
 
               <div
-                className="mt-8 grid h-[420px] gap-4 md:grid-cols-6 md:grid-rows-6 xl:mt-10 xl:h-[520px] xl:gap-5 2xl:h-[600px] 2xl:gap-6"
+                ref={mobileHintRef}
+                aria-hidden="true"
+                className="pointer-events-none mt-2 text-center text-[0.72rem] uppercase tracking-[0.18em] text-[rgba(58,175,169,0.82)] opacity-0 md:hidden"
               >
-                <div className="rounded-[2rem] bg-[linear-gradient(140deg,rgba(111,211,216,0.18),rgba(255,255,255,0.03))] shadow-[0_30px_80px_rgba(0,0,0,0.2)] md:col-span-4 md:row-span-4" />
-                <div className="rounded-[1.7rem] bg-white/[0.05] backdrop-blur-sm md:col-span-2 md:row-span-2" />
-                <div className="rounded-[1.7rem] bg-white/[0.05] backdrop-blur-sm md:col-span-2 md:row-span-2" />
-                <div className="rounded-[1.7rem] bg-white/[0.035] md:col-span-3 md:row-span-2" />
-                <div className="rounded-[1.7rem] bg-[linear-gradient(140deg,rgba(255,255,255,0.05),rgba(111,211,216,0.08))] md:col-span-3 md:row-span-2" />
-              </div>
-
-              <div className="mt-12 max-w-[52rem] pt-6 xl:mt-14 xl:max-w-[60rem] 2xl:max-w-[66rem]">
-                <HorizontalScrollRow
-                  className="md:overflow-visible"
-                  rowClassName="md:grid md:grid-cols-3 md:gap-6 xl:gap-8 2xl:gap-10"
-                  itemClassName="w-[16rem] md:w-auto md:flex-shrink"
-                >
-                  {copy.details.map((item) => (
-                    <div key={item.label}>
-                      <div
-                        className="font-mono-accent text-[10px] uppercase tracking-[0.22em] text-white/36"
-                      >
-                        {item.label}
-                      </div>
-                      <div className="mt-3 text-sm leading-7 text-white/60">
-                        {item.text}
-                      </div>
-                    </div>
-                  ))}
-                </HorizontalScrollRow>
+                {mobileHintText}
               </div>
             </div>
-          </motion.div>
+
+            <div
+              data-fw-feature
+              className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6"
+            >
+              <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-start sm:justify-between md:flex">
+                <div>
+                  <div className="type-label text-white/40">{copy.preview}</div>
+                  <div className="mt-3 flex flex-wrap items-center gap-3">
+                    <span className="type-label text-[rgba(58,175,169,0.82)]">
+                      {currentProjectCopy.category}
+                    </span>
+                    <span className="type-label text-white/36">{currentProject.year}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-stretch">
+                <div className="relative overflow-hidden rounded-[1.7rem]">
+                  <img
+                    ref={previewImageRef}
+                    src={projectImages[currentProject.id]?.src}
+                    alt={projectImages[currentProject.id]?.alt ?? ""}
+                    loading="lazy"
+                    decoding="async"
+                    style={{ objectPosition: projectImages[currentProject.id]?.position ?? "50% 50%" }}
+                    className="editorial-image h-[21rem] w-full object-cover md:h-[28rem] xl:h-full xl:min-h-[31rem]"
+                  />
+                </div>
+
+                <div className="flex flex-col justify-between p-1 md:p-2">
+                  <div>
+                    <div className="type-label text-white/38">{copy.switcher}</div>
+                    <h3 className="mt-4 max-w-[11ch] text-[clamp(2rem,3vw,3.4rem)] font-[600] leading-[0.95] tracking-[-0.045em] text-white">
+                      {currentProject.title}
+                    </h3>
+                    <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
+                      {currentProjectCopy.summary}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 grid gap-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      {featuredPreviewImages.slice(0, 2).map((image) => (
+                        <div
+                          key={image.src}
+                          className="relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-white/[0.02]"
+                        >
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            loading="lazy"
+                            decoding="async"
+                            style={{ objectPosition: image.position ?? "50% 50%" }}
+                            className="editorial-image aspect-[5/4] h-full w-full object-cover"
+                          />
+                        </div>
+                      ))}
+                    </div>
+
+                    <button
+                      onClick={onOpenCaseStudy}
+                      type="button"
+                      className="inline-flex items-center gap-3 self-start text-sm text-white/82 transition hover:text-white"
+                    >
+                      <ArrowRight size={16} className="text-[rgba(58,175,169,0.82)]" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="hidden md:block">
+            <HorizontalScrollRow
+              className="no-scrollbar overflow-x-auto md:overflow-visible"
+              rowClassName="md:grid md:grid-cols-3 md:gap-4 xl:gap-5"
+              itemClassName="w-[18.5rem] md:w-auto"
+            >
+              {featuredProjects.map((project, index) => {
+                return renderSelectorCard(project, index);
+              })}
+            </HorizontalScrollRow>
+          </div>
         </div>
       </div>
     </section>

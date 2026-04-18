@@ -7,8 +7,8 @@ export const TOKENS = {
     text: "#F0F0F0",
     textSoft: "rgba(240,240,240,0.72)",
     line: "rgba(240,240,240,0.12)",
-    accent: "#007BFF",
-    accentSoft: "rgba(0,123,255,0.18)",
+    accent: "#3AAFA9",
+    accentSoft: "rgba(58,175,169,0.18)",
   },
   spacing: {
     1: "0.5rem",

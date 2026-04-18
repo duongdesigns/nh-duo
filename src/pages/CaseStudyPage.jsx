@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import CaseStudyBlock from "../components/case-study/CaseStudyBlock";
+import CaseStudyProgress from "../components/case-study/CaseStudyProgress";
 import { caseStudySections } from "../data/caseStudySections";
 
+gsap.registerPlugin(ScrollTrigger);
+
 function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
+  const root = useRef(null);
   const sectionLabels = {
     Hero: lang === "de" ? "Hero" : "Hero",
     Overview: lang === "de" ? "Überblick" : "Overview",
@@ -13,33 +20,47 @@ function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
     Impact: lang === "de" ? "Wirkung" : "Impact",
     Learnings: lang === "de" ? "Learnings" : "Learnings",
   };
-  return (
-    <div className="px-4 pb-24 pt-32 md:px-8">
-      <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[220px_1fr]">
-        <aside className="lg:sticky lg:top-28 lg:h-fit">
-          <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-3">
-            <div className="px-3 pb-3 pt-2 text-xs uppercase tracking-[0.24em] text-white/42">{lang === "de" ? "Fortschritt" : "Progress"}</div>
-            <div className="space-y-1">
-              {caseStudySections.map((name, i) => {
-                const active = activeSection === name;
-                return (
-                  <button
-                    key={name}
-                    onClick={() => onJump(name)}
-                    className={`flex w-full items-center gap-3 rounded-2xl px-3 py-3 text-left text-sm transition ${
-                      active ? "bg-[#007BFF] text-white" : "text-white/68 hover:bg-white/6 hover:text-white"
-                    }`}
-                  >
-                    <span className={`h-2 w-2 rounded-full ${active ? "bg-white" : "bg-white/24"}`} />
-                    <span>{String(i + 1).padStart(2, "0")}. {sectionLabels[name]}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        </aside>
 
-        <div className="space-y-5">
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 1024px)", () => {
+        const progress = root.current?.querySelector("[data-case-progress]");
+        const content = root.current?.querySelector("[data-case-content]");
+        if (!progress || !content) return undefined;
+
+        return ScrollTrigger.create({
+          trigger: root.current,
+          start: "top top+=112",
+          endTrigger: content,
+          end: "bottom bottom-=48",
+          pin: progress,
+          pinSpacing: false,
+          anticipatePin: 1,
+        });
+      });
+
+      return () => mm.revert();
+    },
+    { scope: root, dependencies: [lang] }
+  );
+
+  return (
+    <div ref={root} className="page-shell page-shell--case-study">
+      <h1 className="sr-only">{lang === "de" ? "Fallstudie" : "Case Study"}</h1>
+      <div className="content-shell flex flex-col gap-6 lg:flex-row lg:items-start">
+        <div data-case-progress className="self-start lg:w-[220px] lg:flex-none">
+          <CaseStudyProgress
+            sections={caseStudySections}
+            activeSection={activeSection}
+            onJump={onJump}
+            title={lang === "de" ? "Fortschritt" : "Progress"}
+            sectionLabels={sectionLabels}
+          />
+        </div>
+
+        <div data-case-content className="min-w-0 flex-1 space-y-5">
           {caseStudySections.map((section, index) => (
             <CaseStudyBlock
               key={section}

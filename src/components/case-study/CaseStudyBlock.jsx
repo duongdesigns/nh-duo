@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useRef } from "react";
+import AnimatedHeadline from "../layout/AnimatedHeadline";
+import { caseStudyImages } from "../../data/imagery";
+import useEditorialReveal from "../../hooks/useEditorialReveal";
 
 function CaseStudyBlock({ lang, title, index, setRef }) {
+  const root = useRef(null);
+  const renderImage = (image, className) => (
+    <div key={image.src} className={`relative overflow-hidden rounded-[1.5rem] border border-white/10 ${className}`}>
+      <img
+        src={image.src}
+        alt={image.alt}
+        loading="lazy"
+        decoding="async"
+        style={{ objectPosition: image.position ?? "50% 50%" }}
+        className="editorial-image h-full w-full object-cover"
+      />
+    </div>
+  );
+
   const content = {
     Hero: {
       kicker: lang === "de" ? "Fallstudien-Hero" : "Case Study Hero",
@@ -88,29 +105,50 @@ function CaseStudyBlock({ lang, title, index, setRef }) {
     },
   }[title];
 
+  useEditorialReveal(root, {
+    dependencies: [lang, title],
+    steps: [
+      {
+        target: "[data-case-copy]",
+        from: { y: 26, opacity: 0, duration: 0.7 },
+      },
+      {
+        target: "[data-case-media]",
+        from: { y: 24, opacity: 0, duration: 0.68, stagger: 0.08 },
+        position: "-=0.36",
+      },
+    ],
+  });
+
   return (
     <section
-      ref={setRef}
+      ref={(node) => {
+        root.current = node;
+        setRef(node);
+      }}
       data-section={title}
       className="rounded-[2rem] border border-white/10 bg-white/5 p-5 md:p-8"
     >
-      <div className="mb-6 flex items-center justify-between gap-4">
+      <div className="mb-6 flex items-center justify-between gap-4" data-case-copy>
         <div>
-          <div className="text-xs uppercase tracking-[0.24em] text-white/42">{content.kicker}</div>
-          <div className="mt-3 max-w-4xl text-3xl font-semibold leading-tight tracking-[-0.04em] md:text-5xl">
+          <div className="type-label text-white/42">{content.kicker}</div>
+          <AnimatedHeadline
+            as="h2"
+            className="heading-safe mt-3 max-w-[24ch] text-[clamp(1.85rem,5vw,3rem)] font-semibold leading-tight tracking-[0.05em]"
+          >
             {content.heading}
-          </div>
+          </AnimatedHeadline>
         </div>
         <div className="hidden rounded-full border border-white/12 px-3 py-1 text-xs text-white/42 md:block">
           {String(index + 1).padStart(2, "0")}
         </div>
       </div>
 
-      <div className="max-w-3xl text-base leading-[1.85] text-white/64 md:text-lg">{content.text}</div>
+      <p className="body-safe mt-0 text-base leading-[1.85] text-white/64 md:text-lg" data-case-copy>{content.text}</p>
 
       {content.layout === "hero" && (
-        <div className="mt-8">
-          <div className="aspect-[16/10] rounded-[1.5rem] border border-white/10 bg-[#007BFF]/10" />
+        <div className="mt-8" data-case-media>
+          {renderImage(caseStudyImages.hero[0], "aspect-[16/10]")}
         </div>
       )}
 
@@ -122,8 +160,8 @@ function CaseStudyBlock({ lang, title, index, setRef }) {
             [lang === "de" ? "Umfang" : "Scope", lang === "de" ? "Identität, Website, Fallstudien-System" : "Identity, website, case-study system"],
             ["Tools", "Figma, Adobe CC, React"],
           ].map(([label, value]) => (
-            <div key={label} className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-4">
-              <div className="text-xs uppercase tracking-[0.22em] text-white/42">{label}</div>
+            <div key={label} data-case-media className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-4">
+              <div className="type-label text-white/42">{label}</div>
               <div className="mt-3 text-base text-white/84">{value}</div>
             </div>
           ))}
@@ -132,25 +170,27 @@ function CaseStudyBlock({ lang, title, index, setRef }) {
 
       {content.layout === "media" && (
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <div className="aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-white/5" />
-          <div className="aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-white/5" />
-          <div className="aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-white/5" />
+          {caseStudyImages.media.map((image) => (
+            <div key={image.src} data-case-media>
+              {renderImage(image, "aspect-[4/5]")}
+            </div>
+          ))}
         </div>
       )}
 
       {content.layout === "grid" && (
         <div className="mt-8 grid gap-4 md:grid-cols-6 md:grid-rows-2">
-          <div className="aspect-[16/10] rounded-[1.5rem] border border-white/10 bg-white/5 md:col-span-4 md:row-span-2 md:aspect-auto" />
-          <div className="aspect-[1/1] rounded-[1.5rem] border border-white/10 bg-white/5 md:col-span-2" />
-          <div className="aspect-[1/1] rounded-[1.5rem] border border-white/10 bg-[#007BFF]/10 md:col-span-2" />
+          <div data-case-media>{renderImage(caseStudyImages.grid[0], "aspect-[16/10] md:col-span-4 md:row-span-2 md:aspect-auto")}</div>
+          <div data-case-media>{renderImage(caseStudyImages.grid[1], "aspect-[1/1] md:col-span-2")}</div>
+          <div data-case-media>{renderImage(caseStudyImages.grid[2], "aspect-[1/1] md:col-span-2")}</div>
         </div>
       )}
 
       {content.layout === "gallery" && (
         <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <div className="aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-white/5" />
-          <div className="aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-white/5" />
-          <div className="aspect-[16/10] rounded-[1.5rem] border border-white/10 bg-[#007BFF]/10 md:col-span-2" />
+          <div data-case-media>{renderImage(caseStudyImages.gallery[0], "aspect-[4/5]")}</div>
+          <div data-case-media>{renderImage(caseStudyImages.gallery[1], "aspect-[4/5]")}</div>
+          <div data-case-media>{renderImage(caseStudyImages.gallery[2], "aspect-[16/10] md:col-span-2")}</div>
         </div>
       )}
 
@@ -163,7 +203,8 @@ function CaseStudyBlock({ lang, title, index, setRef }) {
           ].map((item) => (
             <div
               key={item}
-              className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-5 text-lg leading-8 text-white/84"
+              data-case-media
+              className="body-safe rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-5 text-lg leading-8 text-white/84"
             >
               {item}
             </div>

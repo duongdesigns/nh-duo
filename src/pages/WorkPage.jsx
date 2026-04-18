@@ -1,10 +1,22 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 
+import useEditorialReveal from "../hooks/useEditorialReveal";
+import AnimatedHeadline from "../components/layout/AnimatedHeadline";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
+import { projectImages } from "../data/imagery";
 import { featuredProjects } from "../data/projects";
 
 function WorkPage({ lang, onOpenCaseStudy }) {
+  const root = useRef(null);
+  const sharedWorkImage = projectImages["nord-form"];
+  const copy = {
+    intro:
+      lang === "de"
+        ? "Ausgewählte Fallstudien in einer klaren, scanbaren Übersicht. Jede Arbeit ist auf Kontext, Relevanz und einen direkten Einstieg in die Fallstudie reduziert."
+        : "Selected case studies presented as a clear, scannable index. Each project is reduced to context, relevance, and a direct path into the case study.",
+    cta: lang === "de" ? "Fallstudie ansehen" : "View case study",
+  };
   const projectCopy = {
     "nord-form": {
       category: lang === "de" ? "Brand System / Digitales Erlebnis" : "Brand System / Digital Experience",
@@ -12,6 +24,16 @@ function WorkPage({ lang, onOpenCaseStudy }) {
         lang === "de"
           ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit reduzierter Bewegung und starkem Narrativ."
           : "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
+      metrics: [
+        {
+          icon: "down",
+          label: lang === "de" ? "ZEIT FÜR ORIENTIERUNG" : "TIME TO ORIENT",
+        },
+        {
+          icon: "up",
+          label: lang === "de" ? "KLARHEIT IM SYSTEM" : "CLARITY ACROSS SYSTEMS",
+        },
+      ],
     },
     "atlas-case": {
       category: lang === "de" ? "Fallstudie / Art Direction" : "Case Study / Art Direction",
@@ -19,6 +41,16 @@ function WorkPage({ lang, onOpenCaseStudy }) {
         lang === "de"
           ? "Ein visuell geführtes Fallstudien-Template, das Prozess, Handwerk und Ergebnisse gleichwertig hochwertig wirken lässt."
           : "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+      metrics: [
+        {
+          icon: "down",
+          label: lang === "de" ? "REIBUNG IM LESEN" : "READING FRICTION",
+        },
+        {
+          icon: "up",
+          label: lang === "de" ? "SICHTBARKEIT VON PROZESS" : "PROCESS VISIBILITY",
+        },
+      ],
     },
     "signal-duo": {
       category: lang === "de" ? "Identität / Portfolio" : "Identity / Portfolio",
@@ -26,33 +58,112 @@ function WorkPage({ lang, onOpenCaseStudy }) {
         lang === "de"
           ? "Ein modulares Portfoliosystem mit dunklen Flächen, übergroßer Typografie und kontrollierten Interaktionszuständen."
           : "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+      metrics: [
+        {
+          icon: "down",
+          label: lang === "de" ? "VISUELLES RAUSCHEN" : "VISUAL NOISE",
+        },
+        {
+          icon: "up",
+          label: lang === "de" ? "MARKENPRÄSENZ" : "BRAND PRESENCE",
+        },
+      ],
     },
   };
+
+  useEditorialReveal(root, {
+    dependencies: [lang],
+    steps: [
+      {
+        target: "[data-work-intro]",
+        from: { y: 26, opacity: 0, duration: 0.76 },
+      },
+      {
+        target: "[data-work-row]",
+        from: { y: 24, opacity: 0, duration: 0.62, stagger: 0.08 },
+        position: "-=0.38",
+      },
+    ],
+  });
+
   return (
-    <section className="px-4 pb-20 pt-32 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <SectionEyebrow>{lang === "de" ? "Arbeitsindex" : "Work Index"}</SectionEyebrow>
-        <div className="mb-10 max-w-4xl text-[clamp(2.5rem,6vw,6rem)] font-semibold leading-[0.96] tracking-[-0.06em]">
-          {lang === "de"
-            ? "Ein visuelles System für ausgewählte Projekte, Erzählungen und markengeprägte digitale Momente."
-            : "A visual system for selected projects, narratives, and branded digital moments."}
+    <section ref={root} className="page-shell xl:pt-28 xl:pb-8">
+      <div className="content-shell">
+        <div data-work-intro>
+          <SectionEyebrow>{lang === "de" ? "Arbeitsindex" : "Work Index"}</SectionEyebrow>
+          <AnimatedHeadline
+            as="h1"
+            className="page-title mb-8 max-w-[22ch] xl:mb-7 xl:max-w-[20ch] xl:text-[clamp(1.9rem,3.2vw,4.25rem)]"
+          >
+            {lang === "de"
+              ? "Ein visuelles System für ausgewählte Projekte, Erzählungen und markengeprägte digitale Momente."
+              : "A visual system for selected projects, narratives, and branded digital moments."}
+          </AnimatedHeadline>
+          <p className="body-safe body-safe--wide mb-12 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-14">
+            {copy.intro}
+          </p>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="space-y-6">
           {featuredProjects.map((project, index) => (
-            <motion.button
+            <article
               key={project.id}
-              onClick={onOpenCaseStudy}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.08 }}
-              className="group rounded-[2rem] border border-white/10 bg-white/5 p-4 text-left transition hover:-translate-y-1 hover:bg-white/[0.07]"
+              data-work-row
+              className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.16)] md:px-6 md:py-6"
             >
-              <div className="mb-4 aspect-[4/5] rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-white/8 to-white/[0.03]" />
-              <div className="font-mono-accent text-xs uppercase tracking-[0.22em] text-white/42">{projectCopy[project.id]?.category ?? project.category}</div>
-              <div className="mt-2 text-2xl font-medium tracking-[-0.04em]">{project.title}</div>
-              <div className="mt-2 text-sm leading-7 text-white/62">{projectCopy[project.id]?.summary ?? project.summary}</div>
-            </motion.button>
+              <button
+                onClick={onOpenCaseStudy}
+                type="button"
+                className="group block w-full text-left"
+              >
+                <div className="grid gap-8 lg:min-h-[34rem] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:items-stretch lg:gap-8">
+                  <div className="flex min-w-0 flex-col justify-between py-2 lg:min-h-[34rem]">
+                    <div>
+                      <div className="type-label text-white/30">
+                        {projectCopy[project.id]?.category ?? project.category}
+                      </div>
+                      <h2 className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition group-hover:text-white/92">
+                        {project.title}
+                      </h2>
+                      <p className="body-safe mt-6 max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56">
+                        {projectCopy[project.id]?.summary ?? project.summary}
+                      </p>
+                    </div>
+
+                    <div className="mt-10 flex flex-wrap gap-8">
+                      {(projectCopy[project.id]?.metrics ?? []).map((metric) => {
+                        const Icon = metric.icon === "down" ? ArrowDown : ArrowUp;
+
+                        return (
+                          <div key={metric.label} className="min-w-[9rem]">
+                            <Icon size={28} strokeWidth={2.2} className="text-white" />
+                            <div className="type-label mt-4 text-white/34">
+                              {metric.label}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="mt-10 inline-flex items-center gap-4 text-sm text-white transition group-hover:text-white/88">
+                      {copy.cta}
+                      <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+                    </div>
+                  </div>
+
+                  <div className="relative h-[22rem] overflow-hidden rounded-[1.45rem] bg-[#d7d3d0] md:h-[26rem] lg:min-h-[34rem] lg:h-auto">
+                    <img
+                      src={sharedWorkImage?.src}
+                      alt={sharedWorkImage?.alt ?? ""}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: sharedWorkImage?.position ?? "50% 50%" }}
+                      className="editorial-image h-full w-full object-cover transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                    />
+                  </div>
+                </div>
+              </button>
+            </article>
           ))}
         </div>
       </div>
