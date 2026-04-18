@@ -94,9 +94,9 @@ function WorkPage({ lang, onOpenCaseStudy }) {
 
   useGSAP(() => {
     const rows = gsap.utils.toArray("[data-work-row]", root.current);
+    const cleanups = [];
 
     rows.forEach((row) => {
-      const image = row.querySelector("img");
       const metrics = row.querySelector("[data-work-metrics]");
 
       if (metrics?.children?.length) {
@@ -114,10 +114,18 @@ function WorkPage({ lang, onOpenCaseStudy }) {
         });
       }
     });
+
+    return () => {
+      cleanups.forEach((fn) => fn());
+    };
   }, { scope: root, dependencies: [lang] });
 
   return (
-    <section ref={root} className="page-shell xl:pt-28 xl:pb-8">
+    <section
+      ref={root}
+      className="page-shell xl:pt-28 xl:pb-8"
+      style={{ "--work-accent": "#3AAFA9" }}
+    >
       <div className="content-shell">
         <div data-work-intro>
           <SectionEyebrow>{lang === "de" ? "Arbeitsindex" : "Work Index"}</SectionEyebrow>
@@ -139,7 +147,7 @@ function WorkPage({ lang, onOpenCaseStudy }) {
             <article
               key={project.id}
               data-work-row
-              className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-0 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.16)]"
+              className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-0 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.16)] transition-colors duration-300 hover:border-white/14 hover:bg-white/[0.025]"
             >
               <button
                 onClick={onOpenCaseStudy}
@@ -155,7 +163,7 @@ function WorkPage({ lang, onOpenCaseStudy }) {
                         {projectCopy[project.id]?.category ?? project.category}
                       </div>
                       <h2
-                        className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition group-hover:text-white/92"
+                        className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition-colors duration-300 group-hover:text-[var(--work-accent)]"
                       >
                         {project.title}
                       </h2>
@@ -184,12 +192,13 @@ function WorkPage({ lang, onOpenCaseStudy }) {
                     <button
                       type="button"
                       onClick={onOpenCaseStudy}
-                      className="button-pill button-pill--secondary group mt-10 inline-flex items-center gap-3 transition-colors duration-300 hover:border-[rgba(58,175,169,0.68)] hover:bg-[rgba(58,175,169,0.14)] hover:text-[rgba(58,175,169,0.96)]"
+                      className="button-pill button-pill--secondary group/button mt-10 inline-flex items-center gap-3 self-start"
                     >
-                      <span className="inline-flex items-center gap-3 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">
-                        <span>{copy.cta}</span>
-                        <ArrowRight size={16} className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]" />
-                      </span>
+                      <span>{copy.cta}</span>
+                      <ArrowRight
+                        size={16}
+                        className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:translate-x-1.5"
+                      />
                     </button>
                   </div>
 
@@ -202,7 +211,7 @@ function WorkPage({ lang, onOpenCaseStudy }) {
                       loading="lazy"
                       decoding="async"
                       style={{ objectPosition: sharedWorkImage?.position ?? "50% 50%" }}
-                      className="editorial-image h-full w-full object-cover transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.015]"
+                      className="editorial-image h-full w-full object-cover"
                     />
                   </div>
                 </div>
