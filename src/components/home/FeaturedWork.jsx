@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight, ExternalLink } from "lucide-react";
@@ -15,6 +15,7 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
   const previewImageRef = useRef(null);
   const mobileCarouselRef = useRef(null);
   const mobileScrollFrame = useRef(null);
+  const mobileScrollTimeout = useRef(null);
   const mobileHintRef = useRef(null);
   const isGerman = lang === "de";
   const [mobileHintText, setMobileHintText] = useState("");
@@ -38,8 +39,8 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
     "nord-form": {
       category: isGerman ? "Brand Design" : "Brand Design",
       summary: isGerman
-        ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit reduzierter Bewegung und starkem Narrativ."
-        : "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
+        ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit starkem Narrativ."
+        : "A cinematic brand-led website for a design-led product studio with strong narrative pacing.",
     },
     "atlas-case": {
       category: isGerman ? "Fallstudie / Art Direction" : "Case Study / Art Direction",
@@ -168,56 +169,63 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
         data-fw-selector
         data-project-id={mobile ? project.id : undefined}
         data-fw-selector-mobile={mobile ? "true" : undefined}
-        className={`group rounded-[1.45rem] border text-left transition ${
-          mobile
-            ? `w-[calc(100vw-2.25rem)] max-w-none flex-shrink-0 snap-start px-4 py-4 ${
-                isActive
-                  ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
-                  : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
-              }`
-            : `h-full px-4 py-5 md:px-5 ${
-                isActive
-                  ? "border-[rgba(58,175,169,0.35)] bg-white/[0.028] shadow-[0_14px_30px_rgba(0,0,0,0.14)]"
-                  : "border-white/8 bg-white/[0.015] hover:border-white/14 hover:bg-white/[0.025]"
-              }`
-        }`}
+        className={`group rounded-[1.45rem] border text-left transition ${mobile
+          ? `w-[calc(100vw-1.5rem)] max-w-none flex-shrink-0 snap-start px-4 py-4 first:ml-[0.75rem] last:mr-[0.75rem] ${isActive
+            ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
+            : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
+          }`
+          : `h-full min-h-[220px] px-4 py-5 md:px-5 ${isActive
+            ? "border-[rgba(58,175,169,0.35)] bg-white/[0.028] shadow-[0_14px_30px_rgba(0,0,0,0.14)]"
+            : "border-white/8 bg-white/[0.015] hover:border-white/14 hover:bg-white/[0.025]"
+          }`
+          }`}
       >
         <div className={`flex ${mobile ? "items-start gap-4" : "h-full flex-col"}`}>
-          <div className={`flex ${mobile ? "min-w-0 flex-1 flex-col" : "h-full flex-col"}`}>
-            <div className="flex items-start justify-between gap-4">
-              <div className="type-label text-white/34">
-                {String(index + 1).padStart(2, "0")}
-              </div>
-              <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
-                {project.year}
-              </div>
-            </div>
+          <div className={`flex ${mobile ? "min-w-0 flex-1 flex-col" : "h-full flex-col justify-between"}`}>
+  <div>
+    <div className="flex items-start justify-end gap-4">
+      <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
+        {project.year}
+      </div>
+    </div>
 
-            <div className={`type-label ${mobile ? "mt-3 text-white/48" : "mt-5 text-white/54"}`}>
-              {info.category}
-            </div>
-            <div className={`font-medium tracking-[-0.04em] text-white ${mobile ? "mt-2 text-[1.2rem] leading-[1.02]" : "mt-3 text-[1.45rem] text-white/96"}`}>
-              {project.title}
-            </div>
-            {mobile ? null : (
-              <p className="mt-4 line-clamp-3 text-sm leading-7 text-white/68">
-                {info.summary}
-              </p>
-            )}
-          </div>
+    <div className={`type-label ${mobile ? "mt-3 text-white/48" : "mt-5 text-white/54"}`}>
+      {info.category}
+    </div>
+    <div className={`font-medium tracking-[-0.04em] text-white ${mobile ? "mt-2 text-[1.2rem] leading-[1.02]" : "mt-3 text-[1.45rem] text-white/96"}`}>
+      {project.title}
+    </div>
+  </div>
+
+  {mobile ? null : (
+    <p className="mt-6 line-clamp-3 text-sm leading-7 text-white/68">
+      {info.summary}
+    </p>
+  )}
+</div>
 
           {mobile ? (
             <div
               aria-hidden="true"
-              className={`mt-1 h-2.5 w-2.5 flex-none rounded-full transition ${
-                isActive ? "bg-[#3AAFA9]" : "bg-white/20"
-              }`}
+              className={`mt-1 h-2.5 w-2.5 flex-none rounded-full transition ${isActive ? "bg-[#3AAFA9]" : "bg-white/20"
+                }`}
             />
           ) : null}
         </div>
       </button>
     );
   };
+
+  useEffect(() => {
+    const container = mobileCarouselRef.current;
+    if (!container) return;
+
+    container.scrollLeft = 0;
+
+    if (featuredProjects[0]?.id) {
+      setHoveredProject(featuredProjects[0].id);
+    }
+  }, [lang, setHoveredProject]);
 
   useEditorialReveal(root, {
     dependencies: [lang],
@@ -243,6 +251,8 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
     () => {
       if (!previewImageRef.current) return;
 
+      gsap.killTweensOf(previewImageRef.current);
+
       gsap.fromTo(
         previewImageRef.current,
         {
@@ -256,10 +266,11 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
           opacity: 1,
           duration: 0.72,
           ease: "power3.out",
+          overwrite: "auto",
         }
       );
     },
-    { scope: root, dependencies: [hoveredProject] }
+    { scope: root, dependencies: [lang] }
   );
 
   useGSAP(
@@ -274,8 +285,12 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
 
       const handleScroll = () => {
         if (mobileScrollFrame.current) cancelAnimationFrame(mobileScrollFrame.current);
+        if (mobileScrollTimeout.current) clearTimeout(mobileScrollTimeout.current);
+
         mobileScrollFrame.current = requestAnimationFrame(() => {
-          syncMobileSelection();
+          mobileScrollTimeout.current = window.setTimeout(() => {
+            syncMobileSelection();
+          }, 120);
         });
       };
 
@@ -284,9 +299,10 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
       return () => {
         container.removeEventListener("scroll", handleScroll);
         if (mobileScrollFrame.current) cancelAnimationFrame(mobileScrollFrame.current);
+        if (mobileScrollTimeout.current) clearTimeout(mobileScrollTimeout.current);
       };
     },
-    { scope: root, dependencies: [lang] }
+    { scope: root, dependencies: [lang, hoveredProject] }
   );
 
   return (
@@ -306,7 +322,7 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
 
               <div
                 ref={mobileCarouselRef}
-                className="no-scrollbar -mx-[0.75rem] mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[0.75rem] pb-2 pt-5 scroll-px-[0.75rem] md:hidden"
+                className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2 pt-5 md:hidden"
               >
                 {featuredProjects.map((project, index) =>
                   renderSelectorCard(project, index, {
@@ -329,16 +345,24 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
               data-fw-feature
               className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6"
             >
-              <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-start sm:justify-between md:flex">
-                <div>
-                  <div className="type-label text-white/40">{copy.preview}</div>
-                  <div className="mt-3 flex flex-wrap items-center gap-3">
+              <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-3 sm:min-h-[2.75rem]">
                     <span className="type-label text-[rgba(58,175,169,0.82)]">
                       {currentProjectCopy.category}
                     </span>
                     <span className="type-label text-white/36">{currentProject.year}</span>
                   </div>
                 </div>
+
+                <button
+                  onClick={onOpenCaseStudy}
+                  type="button"
+                  className="button-pill button-pill--secondary group shrink-0 self-start sm:self-auto"
+                >
+                  {isGerman ? "Fallstudie öffnen" : "View case study"}
+                  <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+                </button>
               </div>
 
               <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-stretch">
@@ -384,13 +408,6 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
                       ))}
                     </div>
 
-                    <button
-                      onClick={onOpenCaseStudy}
-                      type="button"
-                      className="inline-flex items-center gap-3 self-start text-sm text-white/82 transition hover:text-white"
-                    >
-                      <ArrowRight size={16} className="text-[rgba(58,175,169,0.82)]" />
-                    </button>
                   </div>
                 </div>
               </div>
