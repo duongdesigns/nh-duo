@@ -46,9 +46,11 @@ function Hero({ lang, onExplore, onCaseStudy }) {
   };
 
   const scrollPastHero = () => {
-    sectionRef.current?.nextElementSibling?.scrollIntoView({
+    const heroHeight = root.current?.offsetHeight ?? 0;
+
+    window.scrollTo({
+      top: window.scrollY + window.innerHeight,
       behavior: "smooth",
-      block: "start",
     });
   };
 
