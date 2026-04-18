@@ -131,8 +131,8 @@ export default function SimpleContactForm({ lang = "en" }) {
         </label>
       </div>
 
-      <button className="button-pill button-pill--accent mt-6" type="submit">
-        {copy.cta} <ArrowRight size={18} />
+      <button className="button-pill button-pill--primary mt-6" type="submit">
+        {copy.cta} <ArrowRight size={18} className="transition group-hover:translate-x-1"/>
       </button>
     </form>
   )
