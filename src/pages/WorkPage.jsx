@@ -1,11 +1,17 @@
 import React, { useRef } from "react";
 import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import useEditorialReveal from "../hooks/useEditorialReveal";
 import AnimatedHeadline from "../components/layout/AnimatedHeadline";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
 import { projectImages } from "../data/imagery";
 import { featuredProjects } from "../data/projects";
+
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 function WorkPage({ lang, onOpenCaseStudy }) {
   const root = useRef(null);
@@ -86,6 +92,30 @@ function WorkPage({ lang, onOpenCaseStudy }) {
     ],
   });
 
+  useGSAP(() => {
+    const rows = gsap.utils.toArray("[data-work-row]", root.current);
+
+    rows.forEach((row) => {
+      const image = row.querySelector("img");
+      const metrics = row.querySelector("[data-work-metrics]");
+
+      if (metrics?.children?.length) {
+        gsap.from(metrics.children, {
+          y: 12,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.45,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: metrics,
+            start: "top 92%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      }
+    });
+  }, { scope: root, dependencies: [lang] });
+
   return (
     <section ref={root} className="page-shell xl:pt-28 xl:pb-8">
       <div className="content-shell">
@@ -109,28 +139,34 @@ function WorkPage({ lang, onOpenCaseStudy }) {
             <article
               key={project.id}
               data-work-row
-              className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] px-5 py-6 shadow-[0_20px_60px_rgba(0,0,0,0.16)] md:px-6 md:py-6"
+              className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-0 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.16)]"
             >
               <button
                 onClick={onOpenCaseStudy}
                 type="button"
                 className="group block w-full text-left"
               >
-                <div className="grid gap-8 lg:min-h-[34rem] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:items-stretch lg:gap-8">
-                  <div className="flex min-w-0 flex-col justify-between py-2 lg:min-h-[34rem]">
+                <div className="grid gap-0 lg:min-h-[34rem] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:items-stretch">
+                  <div
+                    className="flex min-w-0 flex-col justify-between px-5 py-6 md:px-6 md:py-6 lg:min-h-[34rem]"
+                  >
                     <div>
                       <div className="type-label text-white/30">
                         {projectCopy[project.id]?.category ?? project.category}
                       </div>
-                      <h2 className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition group-hover:text-white/92">
+                      <h2
+                        className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition group-hover:text-white/92"
+                      >
                         {project.title}
                       </h2>
-                      <p className="body-safe mt-6 max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56">
+                      <p
+                        className="body-safe mt-6 max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56"
+                      >
                         {projectCopy[project.id]?.summary ?? project.summary}
                       </p>
                     </div>
 
-                    <div className="mt-10 flex flex-wrap gap-8">
+                    <div data-work-metrics className="mt-10 flex flex-wrap gap-8">
                       {(projectCopy[project.id]?.metrics ?? []).map((metric) => {
                         const Icon = metric.icon === "down" ? ArrowDown : ArrowUp;
 
@@ -145,20 +181,28 @@ function WorkPage({ lang, onOpenCaseStudy }) {
                       })}
                     </div>
 
-                    <div className="mt-10 inline-flex items-center gap-4 text-sm text-white transition group-hover:text-white/88">
-                      {copy.cta}
-                      <ArrowRight size={16} className="transition group-hover:translate-x-1" />
-                    </div>
+                    <button
+                      type="button"
+                      onClick={onOpenCaseStudy}
+                      className="button-pill button-pill--secondary group mt-10 inline-flex items-center gap-3 transition-colors duration-300 hover:border-[rgba(58,175,169,0.68)] hover:bg-[rgba(58,175,169,0.14)] hover:text-[rgba(58,175,169,0.96)]"
+                    >
+                      <span className="inline-flex items-center gap-3 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-1">
+                        <span>{copy.cta}</span>
+                        <ArrowRight size={16} className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+                      </span>
+                    </button>
                   </div>
 
-                  <div className="relative h-[22rem] overflow-hidden rounded-[1.45rem] bg-[#d7d3d0] md:h-[26rem] lg:min-h-[34rem] lg:h-auto">
+                  <div
+                    className="relative h-[22rem] overflow-hidden bg-[#d7d3d0] md:h-[26rem] lg:min-h-[34rem] lg:h-auto"
+                  >
                     <img
                       src={sharedWorkImage?.src}
                       alt={sharedWorkImage?.alt ?? ""}
                       loading="lazy"
                       decoding="async"
                       style={{ objectPosition: sharedWorkImage?.position ?? "50% 50%" }}
-                      className="editorial-image h-full w-full object-cover transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.02]"
+                      className="editorial-image h-full w-full object-cover transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.015]"
                     />
                   </div>
                 </div>
