@@ -10,55 +10,65 @@ import SectionEyebrow from "../layout/SectionEyebrow";
 import { featuredPreviewImages, projectImages } from "../../data/imagery";
 import { featuredProjects } from "../../data/projects";
 
-function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy }) {
+function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const root = useRef(null);
-  const previewImageRef = useRef(null);
   const mobileCarouselRef = useRef(null);
   const mobileScrollFrame = useRef(null);
   const mobileScrollTimeout = useRef(null);
   const mobileHintRef = useRef(null);
-  const isGerman = lang === "de";
   const [mobileHintText, setMobileHintText] = useState("");
 
   const copy = {
-    eyebrow: isGerman ? "Ausgewählte Arbeiten" : "Selected Work",
-    heading: isGerman
-      ? "Arbeiten, die Richtung, Erzählung und Ausführung in einem ruhigeren System bündeln."
-      : "Work that brings direction, narrative, and execution into one calmer system.",
-    body: isGerman
-      ? "Statt Liste und Preview gegeneinander auszuspielen, führt diese Version über eine klare Hauptfläche und einen kompakten Projekt-Switcher. So bleibt der Abschnitt editoral, aber schneller lesbar."
-      : "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
-    preview: isGerman ? "Ausgewähltes Projekt" : "Selected Project",
-    open: isGerman ? "Fallstudie öffnen" : "Open case study",
-    switcher: isGerman ? "Projekte" : "Projects",
-    swipeHint: isGerman ? "Wische für mehr!" : "Swipe for more stuff!",
-    previewHint: isGerman ? "Schau dir unten die Details an!" : "Check the awesomeness below!",
+    eyebrow: "Selected Work",
+    heading: "Work that brings direction, narrative, and execution into one calmer system.",
+    body: "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
+    preview: "Selected Project",
+    open: "Open case study",
+    switcher: "Projects",
+    swipeHint: "Swipe for more stuff!",
+    previewHint: "Check the awesomeness below!",
   };
 
   const projectCopy = {
     "nord-form": {
-      category: isGerman ? "Brand Design" : "Brand Design",
-      summary: isGerman
-        ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit starkem Narrativ."
-        : "A cinematic brand-led website for a design-led product studio with strong narrative pacing.",
+      category: "Brand Design",
+      summary: "A cinematic brand-led website for a design-led product studio with strong narrative pacing.",
     },
     "atlas-case": {
-      category: isGerman ? "Fallstudie / Art Direction" : "Case Study / Art Direction",
-      summary: isGerman
-        ? "Ein visuell geführtes Fallstudien-Template, das Prozess, Handwerk und Ergebnisse gleichwertig hochwertig wirken lässt."
-        : "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+      category: "Case Study / Art Direction",
+      summary: "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
     },
     "signal-duo": {
-      category: isGerman ? "Identität / Portfolio" : "Identity / Portfolio",
-      summary: isGerman
-        ? "Ein modulares Portfoliosystem mit dunklen Flächen, übergroßer Typografie und kontrollierten Interaktionszuständen."
-        : "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+      category: "Identity / Portfolio",
+      summary: "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
     },
   };
 
   const currentProject =
     featuredProjects.find((project) => project.id === hoveredProject) ?? featuredProjects[0];
   const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
+  const currentProjectIndex = Math.max(
+    featuredProjects.findIndex((project) => project.id === currentProject.id),
+    0
+  );
+
+  const renderCarouselChevron = (direction) => (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={`h-7 w-7 ${direction === "right" ? "scale-x-[-1]" : ""}`}
+      fill="none"
+    >
+      <path
+        d="M16 3.5L7.5 12L16 20.5"
+        stroke="currentColor"
+        strokeWidth="2.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
   const triggerMobileHint = (message) => {
     const container = mobileCarouselRef.current;
     const hint = mobileHintRef.current;
@@ -170,7 +180,7 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
         data-project-id={mobile ? project.id : undefined}
         data-fw-selector-mobile={mobile ? "true" : undefined}
         className={`group rounded-[1.45rem] border text-left transition ${mobile
-          ? `w-[calc(100vw-1.5rem)] max-w-none flex-shrink-0 snap-start px-4 py-4 first:ml-[0.75rem] last:mr-[0.75rem] ${isActive
+          ? `w-[calc(100vw-4.5rem)] max-w-none flex-shrink-0 snap-center px-4 py-4 ${isActive
             ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
             : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
           }`
@@ -225,53 +235,21 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
     if (featuredProjects[0]?.id) {
       setHoveredProject(featuredProjects[0].id);
     }
-  }, [lang, setHoveredProject]);
+  }, [setHoveredProject]);
 
   useEditorialReveal(root, {
-    dependencies: [lang],
     steps: [
       {
         target: "[data-fw-intro]",
         from: { y: 26, opacity: 0, duration: 0.72 },
       },
       {
-        target: "[data-fw-feature]",
-        from: { y: 24, opacity: 0, duration: 0.72 },
-        position: "-=0.42",
-      },
-      {
         target: "[data-fw-selector]",
         from: { y: 18, opacity: 0, duration: 0.58, stagger: 0.08 },
-        position: "-=0.36",
+        position: "-=0.26",
       },
     ],
   });
-
-  useGSAP(
-    () => {
-      if (!previewImageRef.current) return;
-
-      gsap.killTweensOf(previewImageRef.current);
-
-      gsap.fromTo(
-        previewImageRef.current,
-        {
-          scale: 1.06,
-          yPercent: 2,
-          opacity: 0.72,
-        },
-        {
-          scale: 1,
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.72,
-          ease: "power3.out",
-          overwrite: "auto",
-        }
-      );
-    },
-    { scope: root, dependencies: [lang] }
-  );
 
   useGSAP(
     () => {
@@ -302,7 +280,7 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
         if (mobileScrollTimeout.current) clearTimeout(mobileScrollTimeout.current);
       };
     },
-    { scope: root, dependencies: [lang, hoveredProject] }
+    { scope: root, dependencies: [hoveredProject] }
   );
 
   return (
@@ -320,31 +298,45 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
                 {copy.body}
               </p>
 
-              <div
-                ref={mobileCarouselRef}
-                className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2 pt-5 md:hidden"
-              >
-                {featuredProjects.map((project, index) =>
-                  renderSelectorCard(project, index, {
-                    mobile: true,
-                    keyPrefix: "mobile",
-                  })
-                )}
-              </div>
-
-              <div
-                ref={mobileHintRef}
-                aria-hidden="true"
-                className="pointer-events-none mt-2 text-center text-[0.72rem] uppercase tracking-[0.18em] text-[rgba(58,175,169,0.82)] opacity-0 md:hidden"
-              >
-                {mobileHintText}
+              <div className="relative md:hidden">
+                <div
+                  ref={mobileHintRef}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-x-[2.25rem] bottom-full z-20 mb-[0.25rem] text-center text-[0.72rem] uppercase tracking-[0.18em] text-[rgba(58,175,169,0.82)] opacity-0"
+                >
+                  {mobileHintText}
+                </div>
+                {currentProjectIndex > 0 ? (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute left-0 top-1/2 z-10 -translate-y-1/2 text-white/34"
+                  >
+                    {renderCarouselChevron("left")}
+                  </div>
+                ) : null}
+                {currentProjectIndex < featuredProjects.length - 1 ? (
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute right-0 top-1/2 z-10 -translate-y-1/2 text-white/34"
+                  >
+                    {renderCarouselChevron("right")}
+                  </div>
+                ) : null}
+                <div
+                  ref={mobileCarouselRef}
+                  className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[2.25rem] pb-2 pt-5 touch-pan-x md:hidden"
+                >
+                  {featuredProjects.map((project, index) =>
+                    renderSelectorCard(project, index, {
+                      mobile: true,
+                      keyPrefix: "mobile",
+                    })
+                  )}
+                </div>
               </div>
             </div>
 
-            <div
-              data-fw-feature
-              className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6"
-            >
+            <div className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6">
               <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-3 sm:min-h-[2.75rem]">
@@ -360,7 +352,7 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
                   type="button"
                   className="button-pill button-pill--secondary group shrink-0 self-start sm:self-auto"
                 >
-                  {isGerman ? "Fallstudie öffnen" : "View case study"}
+                  View case study
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />
                 </button>
               </div>
@@ -368,7 +360,6 @@ function FeaturedWork({ lang, hoveredProject, setHoveredProject, onOpenCaseStudy
               <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-stretch">
                 <div className="relative overflow-hidden rounded-[1.7rem]">
                   <img
-                    ref={previewImageRef}
                     src={projectImages[currentProject.id]?.src}
                     alt={projectImages[currentProject.id]?.alt ?? ""}
                     loading="lazy"

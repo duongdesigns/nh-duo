@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "framer-motion";
 
 import CaseStudyBlock from "../components/case-study/CaseStudyBlock";
 import CaseStudyProgress from "../components/case-study/CaseStudyProgress";
@@ -9,20 +10,54 @@ import { caseStudySections } from "../data/caseStudySections";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
+function CaseStudyPage({ activeSection, onJump, caseStudyRefs, scrolled = false }) {
   const root = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
   const sectionLabels = {
-    Hero: lang === "de" ? "Hero" : "Hero",
-    Overview: lang === "de" ? "Überblick" : "Overview",
-    Discovery: lang === "de" ? "Recherche" : "Discovery",
-    Process: lang === "de" ? "Prozess" : "Process",
-    "Final Design": lang === "de" ? "Finales Design" : "Final Design",
-    Impact: lang === "de" ? "Wirkung" : "Impact",
-    Learnings: lang === "de" ? "Learnings" : "Learnings",
+    Hero: "Hero",
+    Overview: "Overview",
+    Discovery: "Discovery",
+    Process: "Process",
+    "Final Design": "Final Design",
+    Impact: "Impact",
+    Learnings: "Learnings",
   };
 
   useGSAP(
     () => {
+      if (prefersReducedMotion) return;
+
+      const atmosphere = root.current?.querySelector("[data-page-atmosphere]");
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      if (atmosphere) {
+        tl.from(atmosphere, {
+          scale: 1.02,
+          opacity: 0,
+          duration: 1.05,
+        });
+      }
+
+      tl.from(
+        "[data-case-progress]",
+        {
+          opacity: 0,
+          duration: 0.6,
+        },
+        "-=0.68"
+      ).from(
+        "[data-case-block]",
+        {
+          y: 24,
+          opacity: 0,
+          stagger: 0.08,
+          duration: 0.72,
+        },
+        "-=0.28"
+      );
+
       const mm = gsap.matchMedia();
 
       mm.add("(min-width: 1024px)", () => {
@@ -32,7 +67,7 @@ function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
 
         return ScrollTrigger.create({
           trigger: root.current,
-          start: "top top+=112",
+          start: "top top",
           endTrigger: content,
           end: "bottom bottom-=48",
           pin: progress,
@@ -43,20 +78,26 @@ function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
 
       return () => mm.revert();
     },
-    { scope: root, dependencies: [lang] }
+    { scope: root, dependencies: [prefersReducedMotion] }
   );
 
   return (
     <div ref={root} className="page-shell page-shell--case-study">
-      <h1 className="sr-only">{lang === "de" ? "Fallstudie" : "Case Study"}</h1>
+      <div
+        aria-hidden="true"
+        data-page-atmosphere
+        className="page-atmosphere page-atmosphere--case-study"
+      />
+      <h1 className="sr-only">Case Study</h1>
       <div className="content-shell flex flex-col gap-6 lg:flex-row lg:items-start">
-        <div data-case-progress className="self-start lg:w-[220px] lg:flex-none">
+        <div data-case-progress className="w-full self-start lg:w-[220px] lg:flex-none">
           <CaseStudyProgress
             sections={caseStudySections}
             activeSection={activeSection}
             onJump={onJump}
-            title={lang === "de" ? "Fortschritt" : "Progress"}
+            title="Progress"
             sectionLabels={sectionLabels}
+            scrolled={scrolled}
           />
         </div>
 
@@ -64,7 +105,6 @@ function CaseStudyPage({ lang, activeSection, onJump, caseStudyRefs }) {
           {caseStudySections.map((section, index) => (
             <CaseStudyBlock
               key={section}
-              lang={lang}
               title={section}
               index={index}
               setRef={(node) => (caseStudyRefs.current[section] = node)}

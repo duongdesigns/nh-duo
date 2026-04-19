@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { featuredProjects } from "./data/projects";
@@ -16,7 +16,6 @@ import WorkPage from "./pages/WorkPage";
 // App shell
 function App() {
   const [showIntro, setShowIntro] = useState(true);
-  const [lang, setLang] = useState("en");
   const [page, setPage] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -142,15 +141,12 @@ function App() {
     };
   }, [page]);
 
-  const navItems = useMemo(
-    () => [
-      { label: lang === "de" ? "Start" : "Home", value: "home" },
-      { label: lang === "de" ? "Arbeiten" : "Work", value: "work" },
-      { label: lang === "de" ? "Fallstudie" : "Case Study", value: "case-study" },
-      { label: lang === "de" ? "Kontakt" : "Contact", value: "contact" },
-    ],
-    [lang]
-  );
+  const navItems = [
+    { label: "Home", value: "home" },
+    { label: "Work", value: "work" },
+    { label: "Case Study", value: "case-study" },
+    { label: "Contact", value: "contact" },
+  ];
 
   const navigate = (value) => {
     setPage(value);
@@ -161,7 +157,14 @@ function App() {
   const scrollToCaseStudySection = (name) => {
     const node = caseStudyRefs.current[name];
     if (!node) return;
-    node.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    const yOffset = 140;
+    const targetTop = node.getBoundingClientRect().top + window.scrollY - yOffset;
+
+    window.scrollTo({
+      top: Math.max(targetTop, 0),
+      behavior: "smooth",
+    });
   };
 
   const introCharacters = [
@@ -276,8 +279,6 @@ function App() {
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
         scrolled={scrolled}
-        lang={lang}
-        setLang={setLang}
       />
 
       <AnimatePresence>
@@ -326,36 +327,34 @@ function App() {
               {page === "home" && (
                 <>
                   <Hero
-                    lang={lang}
                     onExplore={() => navigate("work")}
                     onCaseStudy={() => navigate("case-study")}
                   />
                   <FeaturedWork
-                    lang={lang}
                     hoveredProject={hoveredProject}
                     setHoveredProject={setHoveredProject}
                     onOpenCaseStudy={() => navigate("case-study")}
                   />
-                  <Principles lang={lang} />
-                  <ContactSection lang={lang} />
+                  <Principles />
+                  <ContactSection />
                 </>
               )}
 
               {/* Work page */}
               {page === "work" && (
-                <WorkPage lang={lang} onOpenCaseStudy={() => navigate("case-study")} />
+                <WorkPage onOpenCaseStudy={() => navigate("case-study")} />
               )}
               {/* Case study page */}
               {page === "case-study" && (
                 <CaseStudyPage
-                  lang={lang}
                   activeSection={activeSection}
                   onJump={scrollToCaseStudySection}
                   caseStudyRefs={caseStudyRefs}
+                  scrolled={scrolled}
                 />
               )}
               {/* Contact page */}
-              {page === "contact" && <ContactPage lang={lang} />}
+              {page === "contact" && <ContactPage />}
             </motion.div>
           </AnimatePresence>
         </main>

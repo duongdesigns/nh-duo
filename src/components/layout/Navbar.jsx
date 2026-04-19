@@ -1,44 +1,8 @@
-import React, { startTransition } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { TOKENS } from "../../styles/tokens";
 
-export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen, scrolled, lang, setLang }) {
-  const toggleLanguage = () => {
-    startTransition(() => {
-      setLang((value) => (value === "de" ? "en" : "de"));
-    });
-  };
-
-  const languageToggleLabel = lang === "de" ? "Zu Englisch wechseln" : "Switch to German";
-  const languageToggleClasses = scrolled ? "language-toggle cursor-contrast-dark" : "language-toggle";
-
-  const renderLanguageToggle = (mode) => {
-    const isMobile = mode === "mobile";
-
-    return (
-      <button
-        onClick={toggleLanguage}
-        aria-label={languageToggleLabel}
-        aria-pressed={lang === "de"}
-        title={languageToggleLabel}
-        data-scrolled={scrolled ? "true" : "false"}
-        className={`${languageToggleClasses} ${isMobile ? "language-toggle--mobile" : "language-toggle--desktop"} ${isMobile ? "" : "ml-1"}`}
-        style={{ "--language-toggle-accent": TOKENS.colors.accent }}
-        type="button"
-      >
-        <span className={`language-toggle__track ${lang === "de" ? "is-right" : "is-left"}`}>
-          <motion.span
-            aria-hidden="true"
-            layout
-            className="language-toggle__thumb"
-            transition={{ type: "spring", stiffness: 520, damping: 34, mass: 0.7 }}
-          />
-        </span>
-      </button>
-    );
-  };
-
+export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen, scrolled }) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 md:px-8">
       <motion.div
@@ -54,9 +18,7 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
         <button onClick={() => navigate("home")} className="group flex items-center text-left" type="button">
           <div className="hidden sm:block">
             <div className={`type-eyebrow ${scrolled ? "text-black/55" : "text-white/55"}`}>NH / DUO</div>
-            <div className={`text-sm ${scrolled ? "text-black/82" : "text-white/88"}`}>
-              {lang === "de" ? "Portfolio für Brand Design" : "Brand designer portfolio"}
-            </div>
+            <div className={`text-sm ${scrolled ? "text-black/82" : "text-white/88"}`}>Brand designer portfolio</div>
           </div>
         </button>
 
@@ -79,8 +41,6 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
               {item.label}
             </button>
           ))}
-
-          {renderLanguageToggle("desktop")}
         </nav>
 
         <button
@@ -125,9 +85,6 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
               : "border-white/10 bg-[#3B3B3B]/95"
           }`}
         >
-          <div className="mb-2 flex">
-            {renderLanguageToggle("mobile")}
-          </div>
           {navItems.map((item) => (
             <button
               key={item.value}

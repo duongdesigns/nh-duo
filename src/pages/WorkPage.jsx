@@ -4,8 +4,8 @@ import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useReducedMotion } from "framer-motion";
 
-import useEditorialReveal from "../hooks/useEditorialReveal";
 import AnimatedHeadline from "../components/layout/AnimatedHeadline";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
 import { projectImages } from "../data/imagery";
@@ -13,131 +13,147 @@ import { featuredProjects } from "../data/projects";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-function WorkPage({ lang, onOpenCaseStudy }) {
+function WorkPage({ onOpenCaseStudy }) {
   const root = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
   const sharedWorkImage = projectImages["nord-form"];
   const copy = {
     intro:
-      lang === "de"
-        ? "Ausgewählte Fallstudien in einer klaren, scanbaren Übersicht. Jede Arbeit ist auf Kontext, Relevanz und einen direkten Einstieg in die Fallstudie reduziert."
-        : "Selected case studies presented as a clear, scannable index. Each project is reduced to context, relevance, and a direct path into the case study.",
-    cta: lang === "de" ? "Fallstudie ansehen" : "View case study",
+      "Selected case studies presented as a clear, scannable index. Each project is reduced to context, relevance, and a direct path into the case study.",
+    cta: "View case study",
   };
   const projectCopy = {
     "nord-form": {
-      category: lang === "de" ? "Brand System / Digitales Erlebnis" : "Brand System / Digital Experience",
+      category: "Brand System / Digital Experience",
       summary:
-        lang === "de"
-          ? "Eine cineastische, markengeführte Website für ein designorientiertes Produktstudio mit reduzierter Bewegung und starkem Narrativ."
-          : "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
+        "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
       metrics: [
         {
           icon: "down",
-          label: lang === "de" ? "ZEIT FÜR ORIENTIERUNG" : "TIME TO ORIENT",
+          label: "TIME TO ORIENT",
         },
         {
           icon: "up",
-          label: lang === "de" ? "KLARHEIT IM SYSTEM" : "CLARITY ACROSS SYSTEMS",
+          label: "CLARITY ACROSS SYSTEMS",
         },
       ],
     },
     "atlas-case": {
-      category: lang === "de" ? "Fallstudie / Art Direction" : "Case Study / Art Direction",
+      category: "Case Study / Art Direction",
       summary:
-        lang === "de"
-          ? "Ein visuell geführtes Fallstudien-Template, das Prozess, Handwerk und Ergebnisse gleichwertig hochwertig wirken lässt."
-          : "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+        "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
       metrics: [
         {
           icon: "down",
-          label: lang === "de" ? "REIBUNG IM LESEN" : "READING FRICTION",
+          label: "READING FRICTION",
         },
         {
           icon: "up",
-          label: lang === "de" ? "SICHTBARKEIT VON PROZESS" : "PROCESS VISIBILITY",
+          label: "PROCESS VISIBILITY",
         },
       ],
     },
     "signal-duo": {
-      category: lang === "de" ? "Identität / Portfolio" : "Identity / Portfolio",
+      category: "Identity / Portfolio",
       summary:
-        lang === "de"
-          ? "Ein modulares Portfoliosystem mit dunklen Flächen, übergroßer Typografie und kontrollierten Interaktionszuständen."
-          : "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+        "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
       metrics: [
         {
           icon: "down",
-          label: lang === "de" ? "VISUELLES RAUSCHEN" : "VISUAL NOISE",
+          label: "VISUAL NOISE",
         },
         {
           icon: "up",
-          label: lang === "de" ? "MARKENPRÄSENZ" : "BRAND PRESENCE",
+          label: "BRAND PRESENCE",
         },
       ],
     },
   };
 
-  useEditorialReveal(root, {
-    dependencies: [lang],
-    steps: [
-      {
-        target: "[data-work-intro]",
-        from: { y: 26, opacity: 0, duration: 0.76 },
-      },
-      {
-        target: "[data-work-row]",
-        from: { y: 24, opacity: 0, duration: 0.62, stagger: 0.08 },
-        position: "-=0.38",
-      },
-    ],
-  });
+  useGSAP(
+    () => {
+      if (prefersReducedMotion) return;
 
-  useGSAP(() => {
-    const rows = gsap.utils.toArray("[data-work-row]", root.current);
-    const cleanups = [];
+      const atmosphere = root.current?.querySelector("[data-page-atmosphere]");
+      const tl = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
 
-    rows.forEach((row) => {
-      const metrics = row.querySelector("[data-work-metrics]");
-
-      if (metrics?.children?.length) {
-        gsap.from(metrics.children, {
-          y: 12,
-          opacity: 0,
-          stagger: 0.08,
-          duration: 0.45,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: metrics,
-            start: "top 92%",
-            toggleActions: "play none none reverse",
-          },
-        });
+      if (atmosphere) {
+        tl.from(
+          atmosphere,
+          {
+            scale: 1.03,
+            opacity: 0,
+            duration: 1.05,
+          }
+        );
       }
-    });
 
-    return () => {
-      cleanups.forEach((fn) => fn());
-    };
-  }, { scope: root, dependencies: [lang] });
+      tl.from(
+        "[data-work-eyebrow]",
+        {
+          y: 18,
+          opacity: 0,
+          duration: 0.55,
+        },
+        "-=0.72"
+      )
+        .from(
+          "[data-work-title]",
+          {
+            y: 34,
+            opacity: 0,
+            duration: 0.72,
+          },
+          "-=0.42"
+        )
+        .from(
+          "[data-work-copy]",
+          {
+            y: 22,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.42"
+        )
+        .from(
+          "[data-work-row]",
+          {
+            y: 24,
+            opacity: 0,
+            stagger: 0.08,
+            duration: 0.72,
+          },
+          "-=0.28"
+        );
+    },
+    { scope: root, dependencies: [prefersReducedMotion] }
+  );
 
   return (
     <section
       ref={root}
       className="page-shell xl:pt-28 xl:pb-8"
       style={{ "--work-accent": "#3AAFA9" }}
-    >
+      >
+      <div
+        aria-hidden="true"
+        data-page-atmosphere
+        className="page-atmosphere page-atmosphere--work"
+      />
       <div className="content-shell">
-        <div data-work-intro>
-          <SectionEyebrow>{lang === "de" ? "Arbeitsindex" : "Work Index"}</SectionEyebrow>
+        <div>
+          <div data-work-eyebrow>
+            <SectionEyebrow>Work Index</SectionEyebrow>
+          </div>
           <AnimatedHeadline
             as="h1"
-            className="page-title mb-8 max-w-[22ch] xl:mb-7 xl:max-w-[20ch] xl:text-[clamp(1.9rem,3.2vw,4.25rem)]"
+            className="page-title mb-8 max-w-[24ch] text-[clamp(1.6rem,2.8vw,3.15rem)] xl:mb-7 xl:max-w-[22ch]"
           >
-            {lang === "de"
-              ? "Ein visuelles System für ausgewählte Projekte, Erzählungen und markengeprägte digitale Momente."
-              : "A visual system for selected projects, narratives, and branded digital moments."}
+            <span data-work-title>Projects Built with System and Story</span>
           </AnimatedHeadline>
-          <p className="body-safe body-safe--wide mb-12 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-14">
+          <p data-work-copy className="body-safe body-safe--wide mb-12 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-14">
             {copy.intro}
           </p>
         </div>

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { ArrowRight } from "lucide-react"
 
-export default function SimpleContactForm({ lang = "en" }) {
+export default function SimpleContactForm() {
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -10,20 +10,17 @@ export default function SimpleContactForm({ lang = "en" }) {
   const [errors, setErrors] = useState({})
 
   const copy = {
-    name: lang === "de" ? "Name" : "Name",
-    email: lang === "de" ? "E-Mail" : "Email",
-    brief: lang === "de" ? "Projektbriefing" : "Project brief",
-    namePlaceholder: lang === "de" ? "Dein Name" : "Your name",
-    briefPlaceholder:
-      lang === "de"
-        ? "Eine kurze Notiz zu Umfang, Zeitplan oder dem, was du bauen möchtest."
-        : "A short note about scope, timeline, or what you want to build.",
-    cta: lang === "de" ? "Projekt starten" : "Start the project",
+    name: "Name",
+    email: "Email",
+    brief: "Project brief",
+    namePlaceholder: "Your name",
+    briefPlaceholder: "A short note about scope, timeline, or what you want to build.",
+    cta: "Start the project",
     errors: {
-      name: lang === "de" ? "Bitte gib deinen Namen ein." : "Please enter your name.",
-      emailRequired: lang === "de" ? "Bitte gib deine E-Mail ein." : "Please enter your email.",
-      emailInvalid: lang === "de" ? "Bitte gib eine gueltige E-Mail ein." : "Please enter a valid email address.",
-      brief: lang === "de" ? "Bitte teile kurz dein Vorhaben mit." : "Please share a short project brief.",
+      name: "Please enter your name.",
+      emailRequired: "Please enter your email.",
+      emailInvalid: "Please enter a valid email address.",
+      brief: "Please share a short project brief.",
     },
   }
 

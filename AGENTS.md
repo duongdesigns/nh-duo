@@ -1,235 +1,435 @@
 # AGENTS.md
 
-This is a React + Vite portfolio website for NH / DUO.
+React + Vite portfolio for NH / DUO.
 
 ---
 
-## Project Goal
-Build a multi-page portfolio combining:
+## Goal
+Build a multi-page portfolio with:
 - creative developer aesthetic
-- high-end cinematic interaction
-- editorial layout composition
+- cinematic but restrained motion
+- editorial layout
 
 Navigation:
-- top navigation bar
-- transforms into compact strip after hero scroll
+- top nav → compact on scroll
 
 ---
 
 ## Design System
 
-### Color Palette (60-30-10)
-- Base: Charcoal (#333333)
-- Secondary: Light Gray / White (#F0F0F0)
-- Accent: Electric Blue (#007BFF) or Neon Orange
+Colors (60-30-10):
+- base: #333333
+- secondary: #F0F0F0
+- accent: blue (#007BFF) or neon orange
 
-Guidelines:
-- Avoid harsh black/white contrast
-- Keep tones refined and slightly muted
-- Use accent color sparingly for focus
+Rules:
+- avoid harsh contrast
+- keep tones slightly muted
+- use accent sparingly
 
----
+Typography:
+- sans-serif
+- line-height ~1.5
+- line length: 60–80ch
 
-### Typography & Grid
-- Sans-serif for all text
-- Line height ~1.5
-- Line length: 60–80 characters
+Layout:
 - 8px spacing system
-- Use clamp() and container queries for fluid scaling
+- fluid sizing (clamp + container queries)
 
 ---
 
-## Layout & Composition
+## Layout
 
-- Prefer editorial, open layouts over boxed UI
-- Avoid dashboard/card-heavy design
-- Use F-pattern and Z-pattern composition
-- Allow asymmetry where beneficial
-
-### Navigation
-- Top bar
-- Transforms on scroll (size, opacity, background)
+- prefer editorial, open layouts
+- avoid card-heavy UI
+- use F/Z pattern
+- allow asymmetry when useful
 
 ---
 
 ## Case Study Structure
 
-Each case study should follow:
-
-1. Hero (title + cover)
-2. Project Overview (role, tools, timeline)
-3. Exploration / Discovery
-4. Design Process
-5. Final Design
+1. Hero
+2. Overview (role, tools, timeline)
+3. Exploration
+4. Process
+5. Final
 6. Impact
 7. Learnings
 
 Include:
-- section progress navigation
-- scroll-based transitions
-- gallery views (no auto carousels)
+- section progress nav
+- scroll transitions
+- manual galleries (no auto-carousel)
 
 ---
 
-## Interaction & Motion
+## Motion
 
-- Moderate motion by default
-- Occasional high-impact cinematic sequences
+Default:
+- Motion → UI transitions
+- GSAP → scroll + timelines only
 
-Use:
-- GSAP → complex timelines
-- Motion → component transitions
+Rules:
+- start with Motion
+- add GSAP only when needed
+- do not overlap responsibilities
 
 Patterns:
-- fade-ins
+- fade + slight translate
 - parallax
-- scroll-triggered transitions
-- hover states for all interactive elements
+- scroll-triggered reveals
+- staggered groups
+- hover states
 
 Avoid:
-- excessive or distracting animation
+- excessive animation
 - autoplay-heavy UI
 
 ---
 
-## Forms & CTA
+## Forms
 
-- Minimal form (name, email, message)
-- Inline validation
-- Clear error states
+- fields: name, email, message
+- inline validation
+- clear errors
 
 CTA:
 - large
-- accent-colored
-- action-driven ("Let's talk", "Start project")
+- accent color
+- action-driven text
 
 ---
 
-## Design Tokens
+## Tokens
 
-- Use tokens for:
-  - colors
-  - spacing
-  - typography
+Use tokens for:
+- color
+- spacing
+- typography
 
-- Keep system scalable and consistent
+Keep consistent and scalable.
 
 ---
 
 ## Branding
 
-- Monogram: NH / DUO
-- Slash visually fuses H and D
-- Accent color may be used for slash
+- monogram: NH / DUO
+- stylized slash between letters
+- accent may highlight slash
 
 ---
 
 ## Accessibility
 
-- Aim for WCAG AA
-- Maintain:
-  - semantic HTML
-  - keyboard navigation
-  - visible focus states
-  - proper alt text
+Target WCAG AA:
+- semantic HTML
+- keyboard navigation
+- visible focus
+- alt text
 
 Avoid:
 - unnecessary ARIA
-- inaccessible motion
+- unsafe motion
 
 ---
 
 ## Performance
 
-- Target Lighthouse 90+
-- Optimize:
-  - images (WebP)
-  - lazy loading
-  - code splitting
-- Avoid unnecessary re-renders
-- Keep DOM clean
+Target Lighthouse 90+:
+- optimize images (WebP)
+- lazy load
+- code split
+- avoid re-renders
+- keep DOM minimal
 
 ---
 
-## Code Guidelines
+## Code Rules
 
-- Prefer semantic HTML:
-  header, nav, main, section, article, footer
+Prefer:
+- semantic tags (header, nav, main, section, article, footer)
 
-- Avoid:
-  - div-heavy structures
-  - redundant wrappers
+Avoid:
+- div-heavy structure
+- unnecessary wrappers
 
-- Extract reusable components when needed
-- Keep components readable and focused
+- extract reusable components
+- keep components small and readable
 
 ---
 
-## Review Behavior
+## Review
 
-When reviewing or editing:
+Check:
+- semantics
+- accessibility
+- responsiveness
+- complexity
 
-- prioritize semantics
-- check accessibility
-- check responsiveness (mobile + widescreen)
-- reduce complexity
-- preserve visual design unless necessary
+Do not change design unless required.
 
 ---
 
 ## Constraints
 
-- Do not edit deployment output (gh-pages)
-- Work only in source files
-- Prefer minimal, safe changes
-- If unsure → explain instead of guessing
+- do not edit build output
+- edit source only
+- keep changes minimal
+- if unsure → explain
 
 ---
 
-## Self-review focus for this project
+## Self-Review
 
-During self-review, prioritize:
-
-- semantic heading hierarchy (h1 → h2 → h3 consistency)
-- mobile overflow and text wrapping issues
-- proper use of landmarks (header, nav, main, section, footer)
-- visible and consistent focus-visible states
-- preserving the dark, minimal, editorial design direction
-- avoiding unnecessary wrappers or overly boxy/card-heavy layouts
-- ensuring motion remains subtle, intentional, and performance-friendly
+- heading hierarchy (h1→h3)
+- mobile overflow
+- proper landmarks
+- consistent focus states
+- maintain editorial style
+- avoid boxy layouts
+- motion remains subtle
 
 ---
 
-## Motion consistency rules
+## Motion Rules
 
-Motion should feel restrained, premium, and editorial.
-
-Prefer:
-- fade + slight translate
-- subtle staggered reveals
-- soft opacity transitions
-- minimal hover lift
-- smooth navbar/menu transitions
-- motion that supports hierarchy, not decoration
+Style:
+- restrained, premium
 
 Avoid:
 - bounce
-- springy playful motion unless explicitly requested
+- playful springs (unless requested)
 - large scale changes
-- dramatic rotations
-- long looping decorative animations
-- multiple competing animations in the same viewport
+- rotations
+- looping decoration
+- competing animations
 
 Timing:
-- entrance transitions: ~0.4s to 0.7s
-- hover transitions: ~0.18s to 0.3s
-- menu/overlay transitions: ~0.25s to 0.45s
+- enter: 0.4–0.7s
+- hover: 0.18–0.3s
+- overlays: 0.25–0.45s
 
 Easing:
-- prefer smooth, refined easing such as cubic-bezier(0.22, 1, 0.36, 1)
+- cubic-bezier(0.22, 1, 0.36, 1)
 
 Implementation:
-- prefer shared Motion variants over repeated inline animation objects
-- use staggered children for grouped reveals
-- preserve reduced-motion accessibility where appropriate
-- do not animate everything; leave enough static space for contrast
+- Motion → components
+- GSAP → scroll/timelines
+- never animate same property with both
+- keep easing + duration consistent
+- use shared Motion variants
+- use stagger for groups
+- respect reduced motion
+- keep static contrast
+# AGENTS.md
+
+React + Vite portfolio (NH / DUO).
+
+---
+
+## GOAL
+- multi-page portfolio
+- editorial layout
+- restrained cinematic motion
+
+Nav:
+- top → compact on scroll
+
+---
+
+## DESIGN
+
+Colors:
+- base #333333
+- secondary #F0F0F0
+- accent #007BFF or neon orange
+
+Rules:
+- low contrast extremes
+- muted tones
+- minimal accent use
+
+Type:
+- sans-serif
+- lh ~1.5
+- 60–80ch
+
+Layout:
+- 8px grid
+- fluid (clamp, container)
+
+---
+
+## LAYOUT
+- editorial > boxed
+- no card-heavy UI
+- F/Z flow
+- allow asymmetry
+
+---
+
+## CASE STUDY
+1. Hero
+2. Overview
+3. Exploration
+4. Process
+5. Final
+6. Impact
+7. Learnings
+
+Include:
+- progress nav
+- scroll transitions
+- manual gallery
+
+---
+
+## MOTION
+
+Use:
+- Motion = default (UI)
+- GSAP = scroll/timeline only
+
+Rules:
+- start Motion
+- add GSAP if required
+- no overlap
+
+Patterns:
+- fade + translate
+- parallax
+- scroll reveal
+- stagger
+- hover
+
+Avoid:
+- excess animation
+- autoplay
+
+---
+
+## FORMS
+- name, email, message
+- inline validation
+- clear errors
+
+CTA:
+- large
+- accent
+- action text
+
+---
+
+## TOKENS
+- color
+- spacing
+- type
+
+Consistent + scalable.
+
+---
+
+## BRAND
+- NH / DUO
+- stylized slash
+- accent on slash optional
+
+---
+
+## A11Y
+Target AA:
+- semantic HTML
+- keyboard nav
+- focus visible
+- alt text
+
+Avoid:
+- extra ARIA
+- unsafe motion
+
+---
+
+## PERFORMANCE
+Target 90+:
+- WebP
+- lazy load
+- code split
+- avoid re-renders
+- minimal DOM
+
+---
+
+## CODE
+Prefer:
+- semantic tags
+
+Avoid:
+- div-heavy
+- wrappers
+
+- reusable components
+- small components
+
+---
+
+## REVIEW
+Check:
+- semantics
+- a11y
+- responsive
+- complexity
+
+No design changes unless required.
+
+---
+
+## CONSTRAINTS
+- no build edits
+- source only
+- minimal changes
+- unsure → explain
+
+---
+
+## SELF-REVIEW
+- heading order
+- mobile overflow
+- landmarks
+- focus states
+- editorial feel
+- no boxy UI
+- subtle motion
+
+---
+
+## MOTION RULES
+
+Style:
+- restrained
+
+Avoid:
+- bounce
+- springs (unless asked)
+- scale jumps
+- rotation
+- loops
+- competing motion
+
+Timing:
+- enter 0.4–0.7s
+- hover 0.18–0.3s
+- overlay 0.25–0.45s
+
+Easing:
+- cubic-bezier(0.22,1,0.36,1)
+
+Implementation:
+- Motion = components
+- GSAP = scroll/timeline
+- never share property
+- unify easing/duration
+- shared variants
+- stagger groups
+- respect reduced motion
+- keep static contrast

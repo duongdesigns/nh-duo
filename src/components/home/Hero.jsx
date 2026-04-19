@@ -7,39 +7,28 @@ import { ArrowRight, Mouse } from "lucide-react";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
 import SectionEyebrow from "../layout/SectionEyebrow";
 
-function Hero({ lang, onExplore, onCaseStudy }) {
+function Hero({ onExplore, onCaseStudy }) {
   const root = useRef(null);
+  const mobileStatsTrackRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
-  const isGerman = lang === "de";
   const copy = {
-    eyebrow: isGerman ? "Branding / Digital / Fallstudien" : "Branding / Digital / Case Studies",
+    eyebrow: "Branding / Digital / Case Studies",
     body:
-      isGerman
-        ? "Ein dunkles, cineastisches Portfolio für eine auf Branding fokussierte Designerin – aufgebaut auf klarer visueller Rhythmik, flüssigen Übergängen und Fallstudien, die sich ebenso durchdacht anfühlen wie die Arbeit selbst."
-        : "A dark, cinematic portfolio for a branding-focused designer — built around sharp visual rhythm, fluid transitions, and case studies that feel as considered as the work itself.",
-    caseStudy: isGerman ? "Fallstudie ansehen" : "Explore case study",
-    selectedWork: isGerman ? "Arbeiten ansehen" : "View selected work",
+      "A dark, cinematic portfolio for a branding-focused designer — built around sharp visual rhythm, fluid transitions, and case studies that feel as considered as the work itself.",
+    caseStudy: "Explore case study",
+    selectedWork: "View selected work",
     stats: [
       {
-        label: isGerman ? "Ansatz" : "Approach",
-        text:
-          isGerman
-            ? "Markenorientierte digitale Erzählungen mit dosierter Bewegung und klarerem Tempo."
-            : "Brand-first digital narratives with measured motion and cleaner pacing.",
+        label: "Approach",
+        text: "Brand-first digital narratives with measured motion and cleaner pacing.",
       },
       {
-        label: isGerman ? "Fokus" : "Focus",
-        text:
-          isGerman
-            ? "Fallstudien, die editorial, großzügig und bewusst art-directed wirken."
-            : "Case studies that feel editorial, spacious, and intentionally art-directed.",
+        label: "Focus",
+        text: "Case studies that feel editorial, spacious, and intentionally art-directed.",
       },
       {
-        label: isGerman ? "Ton" : "Tone",
-        text:
-          isGerman
-            ? "Dunkle, hochwertige Flächen mit sanften Cyan-Akzenten statt harten Farbreizen."
-            : "Dark, premium surfaces softened by misted cyan highlights instead of sharp color hits.",
+        label: "Tone",
+        text: "Dark, premium surfaces softened by misted cyan highlights instead of sharp color hits.",
       },
     ],
   };
@@ -112,7 +101,39 @@ function Hero({ lang, onExplore, onCaseStudy }) {
           "-=0.28"
         );
     },
-    { scope: root, dependencies: [prefersReducedMotion, lang] }
+    { scope: root, dependencies: [prefersReducedMotion] }
+  );
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion) return;
+
+      const track = mobileStatsTrackRef.current;
+      if (!track) return;
+
+      const mm = gsap.matchMedia();
+
+      mm.add("(max-width: 767px)", () => {
+        const loop = gsap.fromTo(
+          track,
+          { x: 0 },
+          {
+            x: () => -(track.scrollWidth / 2),
+            duration: 24,
+            ease: "none",
+            repeat: -1,
+          }
+        );
+
+        return () => {
+          loop.kill();
+          gsap.set(track, { clearProps: "transform" });
+        };
+      });
+
+      return () => mm.revert();
+    },
+    { scope: root, dependencies: [prefersReducedMotion] }
   );
 
   return (
@@ -182,18 +203,42 @@ function Hero({ lang, onExplore, onCaseStudy }) {
             data-hero-meta
             className="mt-16 max-w-[68ch] border-t border-white/8 pt-8 text-center xl:mt-20"
           >
-            <HorizontalScrollRow
-              className="sm:overflow-visible"
-              rowClassName="sm:grid sm:grid-cols-3 sm:gap-8 xl:gap-10 2xl:gap-12"
-              itemClassName="w-[17rem] sm:w-auto sm:flex-shrink text-center"
-            >
-              {copy.stats.map((item) => (
-                <div key={item.label}>
-                  <div className="font-mono-accent text-[10px] uppercase tracking-[0.24em] text-white/38">{item.label}</div>
-                  <div className="mt-3 text-sm leading-7 text-white/66">{item.text}</div>
-                </div>
-              ))}
-            </HorizontalScrollRow>
+            <div className="overflow-hidden md:hidden">
+              <div
+                ref={mobileStatsTrackRef}
+                className="flex w-max gap-4"
+              >
+                {[...copy.stats, ...copy.stats].map((item, index) => (
+                  <div
+                    key={`${item.label}-${index}`}
+                    aria-hidden={index >= copy.stats.length ? "true" : undefined}
+                    className="w-[16rem] flex-shrink-0 text-center"
+                  >
+                    <div className="font-mono-accent text-[10px] uppercase tracking-[0.24em] text-white/38">
+                      {item.label}
+                    </div>
+                    <div className="mt-3 text-sm leading-7 text-white/66">
+                      {item.text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <HorizontalScrollRow
+                className="sm:overflow-visible"
+                rowClassName="sm:grid sm:grid-cols-3 sm:gap-8 xl:gap-10 2xl:gap-12"
+                itemClassName="w-[17rem] sm:w-auto sm:flex-shrink text-center"
+              >
+                {copy.stats.map((item) => (
+                  <div key={item.label}>
+                    <div className="font-mono-accent text-[10px] uppercase tracking-[0.24em] text-white/38">{item.label}</div>
+                    <div className="mt-3 text-sm leading-7 text-white/66">{item.text}</div>
+                  </div>
+                ))}
+              </HorizontalScrollRow>
+            </div>
           </div>
         </div>
 
@@ -201,7 +246,7 @@ function Hero({ lang, onExplore, onCaseStudy }) {
 
       <motion.button
         onClick={scrollPastHero}
-        aria-label={isGerman ? "Zum nächsten Abschnitt scrollen" : "Scroll to the next section"}
+        aria-label="Scroll to the next section"
         animate={{ y: [0, 6, 0] }}
         transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center justify-center text-white/56 md:inline-flex"

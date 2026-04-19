@@ -21,7 +21,16 @@ export default function useEditorialReveal(
 
   useGSAP(
     () => {
-      if (prefersReducedMotion || !steps.length) return;
+      if (!steps.length) return;
+
+      const targets = steps.flatMap(({ target }) => gsap.utils.toArray(target, root.current));
+
+      if (prefersReducedMotion) {
+        gsap.set(targets, {
+          clearProps: "opacity,transform,filter,clipPath,willChange",
+        });
+        return;
+      }
 
       const timeline = gsap.timeline({
         defaults,
@@ -36,7 +45,14 @@ export default function useEditorialReveal(
       });
 
       steps.forEach(({ target, from, position }) => {
-        timeline.from(target, from, position);
+        timeline.from(
+          target,
+          {
+            immediateRender: false,
+            ...from,
+          },
+          position
+        );
       });
 
       // Page content is mounted inside React/Framer transitions, so let layout settle
@@ -49,6 +65,11 @@ export default function useEditorialReveal(
 
       return () => {
         cancelAnimationFrame(refreshId);
+        timeline.scrollTrigger?.kill();
+        timeline.kill();
+        gsap.set(targets, {
+          clearProps: "opacity,transform,filter,clipPath,willChange",
+        });
       };
     },
     { scope: root, dependencies: [prefersReducedMotion, ...dependencies] }
