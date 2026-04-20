@@ -77,7 +77,7 @@ function CaseStudyBlock({ title, index, setRef }) {
           <div className="type-label text-white/42">{content.kicker}</div>
           <AnimatedHeadline
             as="h2"
-            className="heading-safe mt-3 max-w-[24ch] text-[clamp(1.85rem,5vw,3rem)] font-semibold leading-tight tracking-[0.05em]"
+            className="section-title heading-safe mt-3 max-w-[24ch] leading-tight"
           >
             {content.heading}
           </AnimatedHeadline>
