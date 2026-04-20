@@ -12,11 +12,15 @@ import { featuredProjects } from "../../data/projects";
 
 function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const root = useRef(null);
+  const previewRef = useRef(null);
   const mobileCarouselRef = useRef(null);
   const mobileScrollFrame = useRef(null);
   const mobileScrollTimeout = useRef(null);
   const mobileHintRef = useRef(null);
   const [mobileHintText, setMobileHintText] = useState("");
+  const [displayedProjectId, setDisplayedProjectId] = useState(
+    hoveredProject ?? featuredProjects[0]?.id
+  );
 
   const copy = {
     eyebrow: "Selected Work",
@@ -45,7 +49,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   };
 
   const currentProject =
-    featuredProjects.find((project) => project.id === hoveredProject) ?? featuredProjects[0];
+    featuredProjects.find((project) => project.id === displayedProjectId) ?? featuredProjects[0];
   const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
   const currentProjectIndex = Math.max(
     featuredProjects.findIndex((project) => project.id === currentProject.id),
@@ -180,7 +184,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
         data-project-id={mobile ? project.id : undefined}
         data-fw-selector-mobile={mobile ? "true" : undefined}
         className={`group rounded-[1.45rem] border text-left transition ${mobile
-          ? `w-[calc(100vw-4.5rem)] max-w-none flex-shrink-0 snap-center px-4 py-4 ${isActive
+          ? `w-[calc(100vw-8.5rem)] min-[520px]:w-[calc(100vw-9.5rem)] min-[680px]:w-full max-w-none flex-shrink-0 snap-center px-4 py-4 ${isActive
             ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
             : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
           }`
@@ -237,6 +241,58 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     }
   }, [setHoveredProject]);
 
+  useEffect(() => {
+    if (!hoveredProject || hoveredProject === displayedProjectId) return;
+
+    const preview = previewRef.current;
+    if (!preview) {
+      setDisplayedProjectId(hoveredProject);
+      return;
+    }
+
+    const media = preview.querySelector("[data-fw-preview-media]");
+    const details = preview.querySelector("[data-fw-preview-details]");
+    const thumbs = preview.querySelectorAll("[data-fw-preview-thumb]");
+    const targets = [media, details, ...thumbs].filter(Boolean);
+
+    if (!targets.length) {
+      setDisplayedProjectId(hoveredProject);
+      return;
+    }
+
+    gsap.killTweensOf(targets);
+
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power2.out",
+        overwrite: "auto",
+      },
+      onComplete: () => {
+        setDisplayedProjectId(hoveredProject);
+      },
+    });
+
+    tl.to(media, {
+      opacity: 0,
+      y: 10,
+      scale: 0.992,
+      duration: 0.22,
+    }).to(
+      [details, ...thumbs],
+      {
+        opacity: 0,
+        y: 12,
+        duration: 0.18,
+        stagger: 0.03,
+      },
+      0
+    );
+
+    return () => {
+      tl.kill();
+    };
+  }, [displayedProjectId, hoveredProject]);
+
   useEditorialReveal(root, {
     steps: [
       {
@@ -280,7 +336,52 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
         if (mobileScrollTimeout.current) clearTimeout(mobileScrollTimeout.current);
       };
     },
-    { scope: root, dependencies: [hoveredProject] }
+    { scope: root, dependencies: [displayedProjectId] }
+  );
+
+  useGSAP(
+    () => {
+      const preview = previewRef.current;
+      if (!preview) return undefined;
+
+      const media = preview.querySelector("[data-fw-preview-media]");
+      const details = preview.querySelector("[data-fw-preview-details]");
+      const thumbs = preview.querySelectorAll("[data-fw-preview-thumb]");
+
+      const tl = gsap.timeline({
+        defaults: {
+          ease: "power3.out",
+          overwrite: "auto",
+        },
+      });
+
+      if (media) {
+        tl.fromTo(
+          media,
+          { opacity: 0.3, y: 18, scale: 0.985 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.65 }
+        );
+      }
+
+      if (details) {
+        tl.fromTo(
+          details,
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.58 },
+          media ? "-=0.44" : 0
+        );
+      }
+
+      if (thumbs.length) {
+        tl.fromTo(
+          thumbs,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.42, stagger: 0.06 },
+          "-=0.34"
+        );
+      }
+    },
+    { scope: root, dependencies: [displayedProjectId] }
   );
 
   return (
@@ -290,7 +391,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
         <div className="mt-4 grid gap-14 xl:gap-20">
           <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
-            <div className="max-w-[60ch] pt-4" data-fw-intro>
+            <div className="max-w-none pt-4 xl:max-w-[60ch]" data-fw-intro>
               <AnimatedHeadline as="h2" className="section-title max-w-[21ch]">
                 {copy.heading}
               </AnimatedHeadline>
@@ -306,37 +407,44 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                 >
                   {mobileHintText}
                 </div>
-                {currentProjectIndex > 0 ? (
+                <div className="mt-14 grid grid-cols-[1.75rem_minmax(0,1fr)_1.75rem] items-center gap-2">
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute left-0 top-1/2 z-10 -translate-y-1/2 text-white/34"
+                    className={`pointer-events-none flex justify-center transition-opacity ${
+                      currentProjectIndex > 0 ? "text-white/34 opacity-100" : "text-white/18 opacity-55"
+                    }`}
                   >
                     {renderCarouselChevron("left")}
                   </div>
-                ) : null}
-                {currentProjectIndex < featuredProjects.length - 1 ? (
+                  <div
+                    ref={mobileCarouselRef}
+                    className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain pb-2 pt-5 touch-pan-x md:hidden"
+                  >
+                    {featuredProjects.map((project, index) =>
+                      renderSelectorCard(project, index, {
+                        mobile: true,
+                        keyPrefix: "mobile",
+                      })
+                    )}
+                  </div>
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute right-0 top-1/2 z-10 -translate-y-1/2 text-white/34"
+                    className={`pointer-events-none flex justify-center transition-opacity ${
+                      currentProjectIndex < featuredProjects.length - 1
+                        ? "text-white/34 opacity-100"
+                        : "text-white/18 opacity-55"
+                    }`}
                   >
                     {renderCarouselChevron("right")}
                   </div>
-                ) : null}
-                <div
-                  ref={mobileCarouselRef}
-                  className="no-scrollbar mt-14 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[2.25rem] pb-2 pt-5 touch-pan-x md:hidden"
-                >
-                  {featuredProjects.map((project, index) =>
-                    renderSelectorCard(project, index, {
-                      mobile: true,
-                      keyPrefix: "mobile",
-                    })
-                  )}
                 </div>
               </div>
             </div>
 
-            <div className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6">
+            <div
+              ref={previewRef}
+              className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6"
+            >
               <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-3 sm:min-h-[2.75rem]">
@@ -358,7 +466,10 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
               </div>
 
               <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-stretch">
-                <div className="relative overflow-hidden rounded-[1.7rem]">
+                <div
+                  data-fw-preview-media
+                  className="relative overflow-hidden rounded-[1.7rem]"
+                >
                   <img
                     src={projectImages[currentProject.id]?.src}
                     alt={projectImages[currentProject.id]?.alt ?? ""}
@@ -369,10 +480,13 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                   />
                 </div>
 
-                <div className="flex flex-col justify-between p-1 md:p-2">
+                <div
+                  data-fw-preview-details
+                  className="flex flex-col justify-between p-1 md:p-2"
+                >
                   <div>
                     <div className="type-label text-white/38">{copy.switcher}</div>
-                    <h3 className="mt-4 max-w-[11ch] text-[clamp(2rem,3vw,3.4rem)] font-[600] leading-[0.95] tracking-[-0.045em] text-white">
+                    <h3 className="subsection-title mt-4 max-w-[11ch] font-[600] leading-[0.95] text-white">
                       {currentProject.title}
                     </h3>
                     <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
@@ -385,6 +499,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                       {featuredPreviewImages.slice(0, 2).map((image) => (
                         <div
                           key={image.src}
+                          data-fw-preview-thumb
                           className="relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-white/[0.02]"
                         >
                           <img
