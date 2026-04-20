@@ -33,7 +33,7 @@ function WorkPage({ onOpenCaseStudy }) {
           label: "TIME TO ORIENT",
         },
         {
-          icon: "up",
+          value: 82,
           label: "CLARITY ACROSS SYSTEMS",
         },
       ],
@@ -44,11 +44,11 @@ function WorkPage({ onOpenCaseStudy }) {
         "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
       metrics: [
         {
-          icon: "down",
+          value: 64,
           label: "READING FRICTION",
         },
         {
-          icon: "up",
+          value: 88,
           label: "PROCESS VISIBILITY",
         },
       ],
@@ -59,11 +59,11 @@ function WorkPage({ onOpenCaseStudy }) {
         "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
       metrics: [
         {
-          icon: "down",
+          value: 71,
           label: "VISUAL NOISE",
         },
         {
-          icon: "up",
+          value: 93,
           label: "BRAND PRESENCE",
         },
       ],
@@ -117,16 +117,79 @@ function WorkPage({ onOpenCaseStudy }) {
           },
           "-=0.42"
         )
-        .from(
-          "[data-work-row]",
-          {
-            y: 24,
-            opacity: 0,
-            stagger: 0.08,
-            duration: 0.72,
+        ;
+
+      const metricValues = gsap.utils.toArray("[data-work-metric-value]");
+      const workRows = gsap.utils.toArray("[data-work-row]");
+
+      workRows.forEach((row) => {
+        const media = row.querySelector("[data-work-row-media]");
+        const copy = row.querySelectorAll("[data-work-row-copy]");
+
+        const rowTimeline = gsap.timeline({
+          defaults: { ease: "power3.out" },
+          scrollTrigger: {
+            trigger: row,
+            start: "top 74%",
+            once: true,
           },
-          "-=0.28"
+        });
+
+        if (media) {
+          rowTimeline.from(media, {
+            opacity: 0,
+            scale: 1.03,
+            duration: 0.84,
+          });
+        }
+
+        if (copy.length) {
+          rowTimeline.from(
+            copy,
+            {
+              opacity: 0,
+              y: 34,
+              duration: 0.7,
+              stagger: 0.09,
+            },
+            media ? "-=0.54" : 0
+          );
+        }
+      });
+
+      metricValues.forEach((node) => {
+        const target = Number(node.getAttribute("data-target-value") || 0);
+        const state = { value: 0 };
+
+        node.textContent = "0%";
+        gsap.set(node, { color: "#F0F0F0" });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: node,
+            start: "top 82%",
+            once: true,
+          },
+        });
+
+        tl.to(state, {
+          value: target,
+          duration: 1.1,
+          ease: "power2.out",
+          snap: { value: 1 },
+          onUpdate: () => {
+            node.textContent = `${Math.round(state.value)}%`;
+          },
+        }).to(
+          node,
+          {
+            color: "#3AAFA9",
+            duration: 0.26,
+            ease: "power2.out",
+          },
+          0.84
         );
+      });
     },
     { scope: root, dependencies: [prefersReducedMotion] }
   );
@@ -144,16 +207,16 @@ function WorkPage({ onOpenCaseStudy }) {
       />
       <div className="content-shell">
         <div>
-          <div data-work-eyebrow>
+          <div data-work-eyebrow data-reveal-group>
             <SectionEyebrow>Work Index</SectionEyebrow>
           </div>
           <AnimatedHeadline
             as="h1"
-            className="page-title mb-8 max-w-[24ch] text-[clamp(1.6rem,2.8vw,3.15rem)] xl:mb-7 xl:max-w-[22ch]"
+            className="page-title mb-8 max-w-[24ch] xl:mb-7 xl:max-w-[22ch]"
           >
             <span data-work-title>Projects Built with System and Story</span>
           </AnimatedHeadline>
-          <p data-work-copy className="body-safe body-safe--wide mb-12 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-14">
+          <p data-work-copy data-reveal-group className="body-safe body-safe--wide mb-12 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-14">
             {copy.intro}
           </p>
         </div>
@@ -169,58 +232,81 @@ function WorkPage({ onOpenCaseStudy }) {
                 onClick={onOpenCaseStudy}
                 type="button"
                 className="group block w-full text-left"
-              >
-                <div className="grid gap-0 lg:min-h-[34rem] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:items-stretch">
-                  <div
-                    className="flex min-w-0 flex-col justify-between px-5 py-6 md:px-6 md:py-6 lg:min-h-[34rem]"
-                  >
-                    <div>
-                      <div className="type-label text-white/30">
+	              >
+		                <div className="grid gap-0 lg:min-h-[35rem] lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)] lg:items-stretch">
+		                  <div
+		                    className="flex min-w-0 flex-col justify-between px-5 py-6 md:px-6 md:py-6 lg:min-h-[35rem]"
+		                  >
+	                    <div>
+                      <div className="type-label text-white/30" data-work-row-copy>
                         {projectCopy[project.id]?.category ?? project.category}
                       </div>
                       <h2
-                        className="mt-5 max-w-[11ch] text-[clamp(2rem,3.35vw,3.5rem)] font-[600] leading-[0.96] tracking-[-0.045em] text-white transition-colors duration-300 group-hover:text-[var(--work-accent)]"
+                        data-work-row-copy
+                        className="subsection-title mt-5 max-w-[11ch] font-[600] leading-[0.96] text-white transition-colors duration-300 group-hover:text-[var(--work-accent)]"
                       >
                         {project.title}
                       </h2>
                       <p
+                        data-work-row-copy
                         className="body-safe mt-6 max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56"
                       >
-                        {projectCopy[project.id]?.summary ?? project.summary}
-                      </p>
-                    </div>
+	                        {projectCopy[project.id]?.summary ?? project.summary}
+	                      </p>
+	                    </div>
+	
+		                    <div className="mt-7 flex flex-col gap-6 pb-3 pt-1">
+		                      <div data-work-metrics data-work-row-copy className="grid grid-cols-2 gap-5 sm:gap-8">
+	                        {(projectCopy[project.id]?.metrics ?? []).map((metric) => {
+	                          const Icon =
+	                            metric.icon === "down"
+	                              ? ArrowDown
+	                              : metric.icon === "up"
+	                                ? ArrowUp
+	                                : null;
+	
+	                          return (
+	                            <div key={metric.label} className="min-w-0">
+	                              {Icon ? (
+	                                <Icon size={28} strokeWidth={2.2} className="text-white" />
+	                              ) : (
+	                                <div
+	                                  data-work-metric-value
+	                                  data-target-value={metric.value}
+	                                  className="font-mono-accent text-[1.5rem] font-medium leading-none text-white"
+	                                >
+	                                  0%
+	                                </div>
+	                              )}
+	                              <div className="type-label mt-4 text-white/34">
+	                                {metric.label}
+	                              </div>
+	                            </div>
+	                          );
+	                        })}
+	                      </div>
+	
+		                      <div className="pb-3 pt-1">
+		                        <button
+		                          data-work-row-copy
+		                          type="button"
+		                          onClick={onOpenCaseStudy}
+		                          className="button-pill button-pill--secondary group/button inline-flex items-center gap-3 self-start"
+		                        >
+		                          <span>{copy.cta}</span>
+		                          <ArrowRight
+		                            size={16}
+		                            className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:translate-x-1.5"
+		                          />
+		                        </button>
+		                      </div>
+		                    </div>
+	                  </div>
 
-                    <div data-work-metrics className="mt-10 flex flex-wrap gap-8">
-                      {(projectCopy[project.id]?.metrics ?? []).map((metric) => {
-                        const Icon = metric.icon === "down" ? ArrowDown : ArrowUp;
-
-                        return (
-                          <div key={metric.label} className="min-w-[9rem]">
-                            <Icon size={28} strokeWidth={2.2} className="text-white" />
-                            <div className="type-label mt-4 text-white/34">
-                              {metric.label}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={onOpenCaseStudy}
-                      className="button-pill button-pill--secondary group/button mt-10 inline-flex items-center gap-3 self-start"
-                    >
-                      <span>{copy.cta}</span>
-                      <ArrowRight
-                        size={16}
-                        className="transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/button:translate-x-1.5"
-                      />
-                    </button>
-                  </div>
-
-                  <div
-                    className="relative h-[22rem] overflow-hidden bg-[#d7d3d0] md:h-[26rem] lg:min-h-[34rem] lg:h-auto"
-                  >
+	                  <div
+	                    data-work-row-media
+	                    className="relative h-[22rem] overflow-hidden bg-[#d7d3d0] md:h-[26rem] lg:min-h-[35rem] lg:h-auto"
+	                  >
                     <img
                       src={sharedWorkImage?.src}
                       alt={sharedWorkImage?.alt ?? ""}
