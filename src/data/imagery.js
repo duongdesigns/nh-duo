@@ -1,19 +1,50 @@
-import homannWebsite from "../assets/project-images/homann-website.webp";
-import bookMockup from "../assets/project-images/book-mockup.webp";
-import busStopCitilight from "../assets/project-images/bus-stop-citilight.webp";
-import designmagazinCover from "../assets/project-images/designmagazin-cover.webp";
-import drinksBig from "../assets/project-images/drinks-big.webp";
-import faltblattflyer from "../assets/project-images/faltblattflyer.webp";
-import flyer3Mockup from "../assets/project-images/flyer3-mockup.webp";
-import macbookMockup from "../assets/project-images/macbook-mockup.webp";
-import menuBig from "../assets/project-images/menu-big.webp";
-import menuKleinOffenMockup from "../assets/project-images/menu-klein-offen-mockup.webp";
-import menuMockup2 from "../assets/project-images/menu-mockup2.webp";
-import menuSmall from "../assets/project-images/menu-small.webp";
-import shoppingbag from "../assets/project-images/shoppingbag.webp";
-import zpFlyer from "../assets/project-images/zp-flyer.webp";
+import homannWebsite from "../assets/project-images/medium/homann-website-medium.webp";
+import bookMockup from "../assets/project-images/medium/book-mockup-medium.webp";
+import busStopCitilight from "../assets/project-images/medium/bus-stop-citilight-medium.webp";
+import designmagazinCover from "../assets/project-images/medium/designmagazin-cover-medium.webp";
+import drinksBig from "../assets/project-images/medium/drinks-big-medium.webp";
+import faltblattflyer from "../assets/project-images/medium/faltblattflyer-medium.webp";
+import flyer3Mockup from "../assets/project-images/medium/flyer3-mockup-medium.webp";
+import macbookMockup from "../assets/project-images/medium/macbook-mockup-medium.webp";
+import menuBig from "../assets/project-images/medium/menu-big-medium.webp";
+import menuKleinOffenMockup from "../assets/project-images/medium/menu-klein-offen-mockup-medium.webp";
+import menuMockup2 from "../assets/project-images/medium/menu-mockup2-medium.webp";
+import menuSmall from "../assets/project-images/medium/menu-small-medium.webp";
+import shoppingbag from "../assets/project-images/medium/shoppingbag-medium.webp";
+import zpFlyer from "../assets/project-images/medium/zp-flyer-medium.webp";
+import homannWebsiteThumb from "../assets/project-images/thumbs/homann-website-thumb.webp";
+import bookMockupThumb from "../assets/project-images/thumbs/book-mockup-thumb.webp";
+import busStopCitilightThumb from "../assets/project-images/thumbs/bus-stop-citilight-thumb.webp";
+import designmagazinCoverThumb from "../assets/project-images/thumbs/designmagazin-cover-thumb.webp";
+import drinksBigThumb from "../assets/project-images/thumbs/drinks-big-thumb.webp";
+import faltblattflyerThumb from "../assets/project-images/thumbs/faltblattflyer-thumb.webp";
+import flyer3MockupThumb from "../assets/project-images/thumbs/flyer3-mockup-thumb.webp";
+import macbookMockupThumb from "../assets/project-images/thumbs/macbook-mockup-thumb.webp";
+import menuBigThumb from "../assets/project-images/thumbs/menu-big-thumb.webp";
+import menuKleinOffenMockupThumb from "../assets/project-images/thumbs/menu-klein-offen-mockup-thumb.webp";
+import menuMockup2Thumb from "../assets/project-images/thumbs/menu-mockup2-thumb.webp";
+import menuSmallThumb from "../assets/project-images/thumbs/menu-small-thumb.webp";
+import shoppingbagThumb from "../assets/project-images/thumbs/shoppingbag-thumb.webp";
+import zpFlyerThumb from "../assets/project-images/thumbs/zp-flyer-thumb.webp";
 
 const localSource = 'Local portfolio asset provided by the project owner.';
+
+const sliderThumbBySrc = {
+  [homannWebsite]: homannWebsiteThumb,
+  [bookMockup]: bookMockupThumb,
+  [busStopCitilight]: busStopCitilightThumb,
+  [designmagazinCover]: designmagazinCoverThumb,
+  [drinksBig]: drinksBigThumb,
+  [faltblattflyer]: faltblattflyerThumb,
+  [flyer3Mockup]: flyer3MockupThumb,
+  [macbookMockup]: macbookMockupThumb,
+  [menuBig]: menuBigThumb,
+  [menuKleinOffenMockup]: menuKleinOffenMockupThumb,
+  [menuMockup2]: menuMockup2Thumb,
+  [menuSmall]: menuSmallThumb,
+  [shoppingbag]: shoppingbagThumb,
+  [zpFlyer]: zpFlyerThumb,
+};
 
 export const projectImages = {
   "nord-form": {
@@ -139,3 +170,14 @@ export const caseStudyImages = {
     },
   ],
 };
+
+export const allPortfolioMedia = [
+  ...Object.values(projectImages),
+  ...featuredPreviewImages,
+  ...Object.values(caseStudyImages).flat(),
+].filter((image, index, collection) => (
+  collection.findIndex((entry) => entry.src === image.src) === index
+)).map((image) => ({
+  ...image,
+  src: sliderThumbBySrc[image.src] ?? image.src,
+}));

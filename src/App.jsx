@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { featuredProjects } from "./data/projects";
@@ -9,10 +9,12 @@ import FeaturedWork from "./components/home/FeaturedWork";
 import Hero from "./components/home/Hero";
 import Principles from "./components/home/Principles";
 import Navbar from "./components/layout/Navbar";
-import CaseStudyPage from "./pages/CaseStudyPage";
-import ContactPage from "./pages/ContactPage";
-import WorkPage from "./pages/WorkPage";
 
+const routeLoaders = {
+  work: () => import("./pages/WorkPage"),
+  "case-study": () => import("./pages/CaseStudyPage"),
+  contact: () => import("./pages/ContactPage"),
+};
 
 // App shell
 function App() {
@@ -21,19 +23,51 @@ function App() {
   const [page, setPage] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [introPortraitSplit, setIntroPortraitSplit] = useState(false);
   const [activeSection, setActiveSection] = useState(caseStudySections[0]);
   const [hoveredProject, setHoveredProject] = useState(featuredProjects[0].id);
   const caseStudyRefs = useRef({});
+  const loadedRouteComponentsRef = useRef({});
+  const routePromisesRef = useRef({});
+  const [routeComponents, setRouteComponents] = useState({
+    work: null,
+    "case-study": null,
+    contact: null,
+  });
 
   const introDelayChildren = 0.18;
   const introStagger = 0.1;
-  const introMaskDelay = 0.66;
-  const introMaskDuration = 1.18;
+  const introFadeDelay = 0.9;
+  const introFadeDuration = 0.72;
   const introOutroBuffer = 0.18;
   const introDurationSeconds =
-    introMaskDelay + introMaskDuration + introOutroBuffer;
+    introFadeDelay + introFadeDuration + introOutroBuffer;
   const introEase = [0.77, 0, 0.175, 1];
+
+  const preloadPage = useCallback((value) => {
+    const loader = routeLoaders[value];
+
+    if (!loader) {
+      return Promise.resolve(null);
+    }
+
+    if (loadedRouteComponentsRef.current[value]) {
+      return Promise.resolve(loadedRouteComponentsRef.current[value]);
+    }
+
+    if (!routePromisesRef.current[value]) {
+      routePromisesRef.current[value] = loader().then((module) => {
+        loadedRouteComponentsRef.current[value] = module.default;
+        setRouteComponents((current) => (
+          current[value]
+            ? current
+            : { ...current, [value]: module.default }
+        ));
+        return module.default;
+      });
+    }
+
+    return routePromisesRef.current[value];
+  }, []);
 
   useEffect(() => {
     if (showIntro) {
@@ -54,12 +88,6 @@ function App() {
   }, [showIntro]);
 
   useEffect(() => {
-    if (showIntro) {
-      setIntroExitComplete(false);
-    }
-  }, [showIntro]);
-
-  useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -67,23 +95,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const updateIntroSplit = () => {
-      setIntroPortraitSplit(window.innerHeight > window.innerWidth);
-    };
-
-    updateIntroSplit();
-    window.addEventListener("resize", updateIntroSplit);
-
-    return () => {
-      window.removeEventListener("resize", updateIntroSplit);
-    };
-  }, []);
-
-  useEffect(() => {
     let cancelled = false;
 
     const minIntroTime = new Promise((resolve) => {
-      window.setTimeout(resolve, introDurationSeconds * 800);
+      window.setTimeout(resolve, introDurationSeconds * 1000);
     });
 
     const pageLoaded = new Promise((resolve) => {
@@ -163,6 +178,30 @@ function App() {
     };
   }, [page]);
 
+  useEffect(() => {
+    if (showIntro || !introExitComplete) return undefined;
+
+    const preloadRoutes = () => {
+      preloadPage("work");
+      preloadPage("case-study");
+      preloadPage("contact");
+    };
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(preloadRoutes, { timeout: 1400 });
+
+      return () => {
+        window.cancelIdleCallback(idleId);
+      };
+    }
+
+    const timeoutId = window.setTimeout(preloadRoutes, 900);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [introExitComplete, preloadPage, showIntro]);
+
   const navItems = [
     { label: "Home", value: "home" },
     { label: "Work", value: "work" },
@@ -170,10 +209,18 @@ function App() {
     { label: "Contact", value: "contact" },
   ];
 
-  const navigate = (value) => {
-    setPage(value);
+  const openPage = (value) => {
     setMenuOpen(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (value === "home") {
+      setPage(value);
+      return;
+    }
+
+    preloadPage(value).then(() => {
+      setPage(value);
+    });
   };
 
   const scrollToCaseStudySection = (name) => {
@@ -247,62 +294,31 @@ function App() {
       opacity: 1,
     },
     exit: {
-      opacity: 1,
+      opacity: 0,
       transition: {
-        duration: introMaskDelay + introMaskDuration,
-        ease: "linear",
+        delay: introFadeDelay,
+        duration: introFadeDuration,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
-
-  const introPanelTransition = {
-    duration: introMaskDuration,
-    delay: introMaskDelay,
-    ease: introEase,
-  };
-
-  const introTopOrLeftPanelExit = introPortraitSplit
-    ? { y: "-100%" }
-    : { x: "-100%" };
-  const introBottomOrRightPanelExit = introPortraitSplit
-    ? { y: "100%" }
-    : { x: "100%" };
 
   const pageVariants = {
     initial: {
       opacity: 0,
-      y: 20,
     },
     animate: {
       opacity: 1,
-      y: 0,
       transition: {
-        opacity: {
-          duration: 0.52,
-          ease: [0.22, 1, 0.36, 1],
-        },
-        y: {
-          type: "spring",
-          stiffness: 240,
-          damping: 28,
-          mass: 0.95,
-        },
+        duration: 0.42,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
     exit: {
       opacity: 0,
-      y: -10,
       transition: {
-        opacity: {
-          duration: 0.42,
-          ease: [0.22, 1, 0.36, 1],
-        },
-        y: {
-          type: "spring",
-          stiffness: 280,
-          damping: 32,
-          mass: 0.85,
-        },
+        duration: 0.28,
+        ease: [0.22, 1, 0.36, 1],
       },
     },
   };
@@ -322,17 +338,23 @@ function App() {
       ))}
     </span>
   );
+  const WorkPage = routeComponents.work;
+  const CaseStudyPage = routeComponents["case-study"];
+  const ContactPage = routeComponents.contact;
 
   return (
     <div className="min-h-screen bg-[#0E141B] text-[#F0F0F0] selection:bg-white/20">
-      <Navbar
-        page={page}
-        navigate={navigate}
-        navItems={navItems}
-        menuOpen={menuOpen}
-        setMenuOpen={setMenuOpen}
-        scrolled={scrolled}
-      />
+      {!showIntro && (
+        <Navbar
+          page={page}
+          navigate={openPage}
+          navItems={navItems}
+          menuOpen={menuOpen}
+          setMenuOpen={setMenuOpen}
+          scrolled={scrolled}
+          preloadPage={preloadPage}
+        />
+      )}
 
       <AnimatePresence
         mode="wait"
@@ -346,30 +368,8 @@ function App() {
             animate="initial"
             exit="exit"
             variants={introOverlayVariants}
-            className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden"
+            className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden bg-black"
           >
-            <motion.div
-              aria-hidden="true"
-              initial={{ x: 0, y: 0 }}
-              exit={introTopOrLeftPanelExit}
-              transition={introPanelTransition}
-              className={
-                introPortraitSplit
-                  ? "absolute inset-x-0 top-0 h-1/2 bg-black"
-                  : "absolute inset-y-0 left-0 w-1/2 bg-black"
-              }
-            />
-            <motion.div
-              aria-hidden="true"
-              initial={{ x: 0, y: 0 }}
-              exit={introBottomOrRightPanelExit}
-              transition={introPanelTransition}
-              className={
-                introPortraitSplit
-                  ? "absolute inset-x-0 bottom-0 h-1/2 bg-black"
-                  : "absolute inset-y-0 right-0 w-1/2 bg-black"
-              }
-            />
             <motion.div
               variants={introWordmarkVariants}
               initial="initial"
@@ -392,7 +392,6 @@ function App() {
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={page}
-              layout
               initial="initial"
               animate="animate"
               exit="exit"
@@ -402,13 +401,13 @@ function App() {
               {page === "home" && (
                 <>
                 <Hero
-                  onExplore={() => navigate("work")}
-                  onCaseStudy={() => navigate("case-study")}
+                  onExplore={() => openPage("work")}
+                  onCaseStudy={() => openPage("case-study")}
                 />
                 <FeaturedWork
                   hoveredProject={hoveredProject}
                   setHoveredProject={setHoveredProject}
-                  onOpenCaseStudy={() => navigate("case-study")}
+                  onOpenCaseStudy={() => openPage("case-study")}
                 />
                 <CredibilityStrip />
                 <Principles />
@@ -418,19 +417,20 @@ function App() {
 
               {/* Work page */}
               {page === "work" && (
-                <WorkPage onOpenCaseStudy={() => navigate("case-study")} />
+                WorkPage ? <WorkPage onOpenCaseStudy={() => openPage("case-study")} /> : null
               )}
               {/* Case study page */}
               {page === "case-study" && (
-                <CaseStudyPage
-                  activeSection={activeSection}
-                  onJump={scrollToCaseStudySection}
-                  caseStudyRefs={caseStudyRefs}
-                  scrolled={scrolled}
-                />
+                CaseStudyPage ? (
+                  <CaseStudyPage
+                    activeSection={activeSection}
+                    onJump={scrollToCaseStudySection}
+                    caseStudyRefs={caseStudyRefs}
+                  />
+                ) : null
               )}
               {/* Contact page */}
-              {page === "contact" && <ContactPage />}
+              {page === "contact" && (ContactPage ? <ContactPage /> : null)}
             </motion.div>
           </AnimatePresence>
         </main>

@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import useEditorialReveal from "../../hooks/useEditorialReveal";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
@@ -26,8 +26,6 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     eyebrow: "Selected Work",
     heading: "Work that brings direction, narrative, and execution into one calmer system.",
     body: "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
-    preview: "Selected Project",
-    open: "Open case study",
     switcher: "Projects",
     swipeHint: "Swipe for more stuff!",
     previewHint: "Check the awesomeness below!",
@@ -244,10 +242,19 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   useEffect(() => {
     if (!hoveredProject || hoveredProject === displayedProjectId) return;
 
+    let syncFrameId = 0;
+    const syncDisplayedProject = () => {
+      syncFrameId = window.requestAnimationFrame(() => {
+        setDisplayedProjectId(hoveredProject);
+      });
+    };
+
     const preview = previewRef.current;
     if (!preview) {
-      setDisplayedProjectId(hoveredProject);
-      return;
+      syncDisplayedProject();
+      return () => {
+        if (syncFrameId) cancelAnimationFrame(syncFrameId);
+      };
     }
 
     const media = preview.querySelector("[data-fw-preview-media]");
@@ -256,8 +263,10 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     const targets = [media, details, ...thumbs].filter(Boolean);
 
     if (!targets.length) {
-      setDisplayedProjectId(hoveredProject);
-      return;
+      syncDisplayedProject();
+      return () => {
+        if (syncFrameId) cancelAnimationFrame(syncFrameId);
+      };
     }
 
     gsap.killTweensOf(targets);
@@ -289,6 +298,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     );
 
     return () => {
+      if (syncFrameId) cancelAnimationFrame(syncFrameId);
       tl.kill();
     };
   }, [displayedProjectId, hoveredProject]);
@@ -387,12 +397,11 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   return (
     <section ref={root} className="home-shell py-24 md:py-32">
       <div className="content-shell w-full">
-        <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
-
-        <div className="mt-4 grid gap-14 xl:gap-20">
+        <div className="grid gap-14 xl:gap-20">
           <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
-            <div className="max-w-none pt-4 xl:max-w-[60ch]" data-fw-intro>
-              <AnimatedHeadline as="h2" className="section-title max-w-[21ch]">
+            <div className="max-w-none xl:max-w-[60ch]" data-fw-intro>
+              <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
+              <AnimatedHeadline as="h2" className="section-title max-w-[34ch] xl:max-w-[30ch]">
                 {copy.heading}
               </AnimatedHeadline>
               <p className="body-safe body-safe--wide mt-6 text-base leading-[1.85] text-white/60 md:text-lg">

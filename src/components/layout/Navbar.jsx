@@ -1,19 +1,30 @@
-import React from "react";
-import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 
-export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen, scrolled }) {
+export default function Navbar({
+  page,
+  navigate,
+  navItems,
+  menuOpen,
+  setMenuOpen,
+  scrolled,
+  preloadPage,
+}) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 md:px-8">
-      <motion.div
-        animate={{
-          maxWidth: scrolled ? 980 : 1280,
-          backgroundColor: scrolled ? "rgba(240, 240, 240, 0.96)" : "rgba(59, 61, 63, 0.18)",
-          borderColor: scrolled ? "rgba(14, 20, 27, 0.08)" : "rgba(240,240,240,0.08)",
-          y: scrolled ? 0 : 6,
+      <div
+        style={{
+          maxWidth: scrolled ? "980px" : "1280px",
+          transform: scrolled ? "translateY(0)" : "translateY(6px)",
         }}
-        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="mx-auto hidden items-center justify-between rounded-[2rem] border px-4 py-3 backdrop-blur-xl md:flex md:px-6"
+        className={`mx-auto hidden items-center justify-between rounded-[2rem] border px-4 py-3 md:flex md:px-6 ${
+          "transition-[max-width,transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+        } ${
+          scrolled
+            ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
+            : "border-[rgba(240,240,240,0.08)] bg-[rgba(59,61,63,0.18)]"
+        } ${
+          scrolled ? "backdrop-blur-xl" : ""
+        }`}
       >
         <button onClick={() => navigate("home")} className="group flex items-center text-left" type="button">
           <div className="hidden sm:block">
@@ -27,6 +38,8 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
             <button
               key={item.value}
               onClick={() => navigate(item.value)}
+              onMouseEnter={() => preloadPage?.(item.value)}
+              onFocus={() => preloadPage?.(item.value)}
               type="button"
               className={`rounded-2xl px-5 py-2 text-sm transition ${
                 page === item.value
@@ -54,32 +67,37 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
         >
           {menuOpen ? <X size={18} /> : <Menu size={18} />}
         </button>
-      </motion.div>
+      </div>
 
       <div className="flex justify-end md:hidden">
         <div className="flex items-center gap-3">
-          <motion.button
+          <button
             onClick={() => setMenuOpen((value) => !value)}
             type="button"
-            animate={{
-              backgroundColor: scrolled ? "rgba(240, 240, 240, 0.96)" : "rgba(59, 61, 63, 0.18)",
-              borderColor: scrolled ? "rgba(14, 20, 27, 0.08)" : "rgba(240,240,240,0.08)",
-              y: scrolled ? 0 : 6,
+            style={{
+              transform: scrolled ? "translateY(0)" : "translateY(6px)",
             }}
-            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-            className={`flex h-[52px] w-[52px] items-center justify-center rounded-[1.4rem] border backdrop-blur-xl ${
+            className={`flex h-[52px] w-[52px] items-center justify-center rounded-[1.4rem] border transition-[transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
+              scrolled
+                ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
+                : "border-[rgba(240,240,240,0.08)] bg-[rgba(59,61,63,0.18)]"
+            } ${
+              scrolled ? "backdrop-blur-xl" : ""
+            } ${
               scrolled ? "cursor-contrast-dark text-black" : "text-white"
             }`}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </motion.button>
+          </button>
         </div>
       </div>
 
       {menuOpen && (
         <nav
           aria-label="Mobile"
-          className={`mx-auto mt-3 max-w-5xl rounded-3xl border p-3 backdrop-blur-xl md:hidden ${
+          className={`mx-auto mt-3 max-w-5xl rounded-3xl border p-3 md:hidden ${
+            scrolled ? "backdrop-blur-xl" : ""
+          } ${
             scrolled
               ? "border-black/10 bg-[#F0F0F0]/95"
               : "border-white/10 bg-[#3B3B3B]/95"
@@ -89,6 +107,8 @@ export default function Navbar({ page, navigate, navItems, menuOpen, setMenuOpen
             <button
               key={item.value}
               onClick={() => navigate(item.value)}
+              onMouseEnter={() => preloadPage?.(item.value)}
+              onFocus={() => preloadPage?.(item.value)}
               type="button"
               className={`block w-full rounded-2xl px-4 py-3 text-left ${
                 scrolled

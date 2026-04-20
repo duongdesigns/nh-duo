@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion, useInView } from "framer-motion";
 
 function AnimatedHeadline({
@@ -11,7 +11,6 @@ function AnimatedHeadline({
   const measureRef = useRef(null);
   const [isInitiallyVisible, setIsInitiallyVisible] = useState(false);
   const [hasCheckedInitialVisibility, setHasCheckedInitialVisibility] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
   const [measuredLines, setMeasuredLines] = useState([]);
 
   const isInView = useInView(containerRef, {
@@ -22,6 +21,7 @@ function AnimatedHeadline({
 
   const shouldRenderStatic = typeof children !== "string" || prefersReducedMotion;
   const textContent = typeof children === "string" ? children : "";
+  const hasStarted = hasCheckedInitialVisibility && !isInitiallyVisible && isInView;
   const parts = useMemo(() => textContent.split(/(\s+)/), [textContent]);
   const chunkedLines = useMemo(() => {
     const sourceLines = measuredLines.length ? measuredLines : (textContent ? [textContent] : []);
@@ -43,20 +43,18 @@ function AnimatedHeadline({
 
     if (!node || typeof window === "undefined") return;
 
-    const rect = node.getBoundingClientRect();
-    const isVisibleOnLoad = rect.top < window.innerHeight && rect.bottom > 0;
+    const frameId = window.requestAnimationFrame(() => {
+      const rect = node.getBoundingClientRect();
+      const nextIsVisible = rect.top < window.innerHeight && rect.bottom > 0;
 
-    setIsInitiallyVisible(isVisibleOnLoad);
-    setHasCheckedInitialVisibility(true);
+      setIsInitiallyVisible(nextIsVisible);
+      setHasCheckedInitialVisibility(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+    };
   }, []);
-
-  useEffect(() => {
-    if (shouldRenderStatic) return;
-    if (!hasCheckedInitialVisibility || isInitiallyVisible) return;
-    if (!isInView || hasStarted) return;
-
-    setHasStarted(true);
-  }, [hasCheckedInitialVisibility, hasStarted, isInView, isInitiallyVisible, shouldRenderStatic]);
 
   useLayoutEffect(() => {
     if (shouldRenderStatic) return;

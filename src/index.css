@@ -278,8 +278,19 @@ textarea:focus-visible {
 .credibility-strip-track {
   will-change: transform;
   transform: translate3d(0, 0, 0);
-  animation: credibility-strip-marquee 32s linear infinite;
+  --credibility-marquee-distance: 0px;
+  animation: credibility-strip-marquee 48s linear infinite;
 }
+
+.credibility-strip-track--reverse {
+  animation-name: credibility-strip-marquee-reverse;
+}
+
+.credibility-strip-stack:hover .credibility-strip-track,
+.credibility-strip-stack:focus-within .credibility-strip-track {
+  animation-play-state: paused;
+}
+
 
 .credibility-strip-card {
   contain: paint;
@@ -298,7 +309,17 @@ textarea:focus-visible {
   }
 
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translate3d(calc(var(--credibility-marquee-distance) * -1), 0, 0);
+  }
+}
+
+@keyframes credibility-strip-marquee-reverse {
+  from {
+    transform: translate3d(calc(var(--credibility-marquee-distance) * -1), 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
   }
 }
 

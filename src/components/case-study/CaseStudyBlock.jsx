@@ -1,11 +1,14 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import AnimatedHeadline from "../layout/AnimatedHeadline";
 import { caseStudyImages } from "../../data/imagery";
 
 function CaseStudyBlock({ title, index, setRef }) {
   const root = useRef(null);
   const renderImage = (image, className) => (
-    <div key={image.src} className={`relative overflow-hidden rounded-[1.5rem] border border-white/10 ${className}`}>
+    <div
+      key={image.src}
+      className={`relative overflow-hidden rounded-[1.5rem] border border-white/10 ${className}`}
+    >
       <img
         src={image.src}
         alt={image.alt}

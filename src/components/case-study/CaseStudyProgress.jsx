@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 
@@ -8,7 +8,6 @@ function CaseStudyProgress({
   onJump,
   title = "Progress",
   sectionLabels = {},
-  scrolled = false,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showCollapsed, setShowCollapsed] = useState(false);
@@ -25,15 +24,10 @@ function CaseStudyProgress({
   const activeNumber = String(activeIndex + 1).padStart(2, "0");
 
   useEffect(() => {
-    if (!showCollapsed) {
-      setMobileOpen(false);
-    }
-  }, [showCollapsed]);
-
-  useEffect(() => {
     const updateCollapsedState = () => {
       if (window.innerWidth >= 1024) {
         setShowCollapsed(false);
+        setMobileOpen(false);
         return;
       }
 
@@ -41,7 +35,12 @@ function CaseStudyProgress({
       if (!rect) return;
 
       const collapsedTop = 88;
-      setShowCollapsed(rect.bottom <= collapsedTop);
+      const nextShowCollapsed = rect.bottom <= collapsedTop;
+      setShowCollapsed(nextShowCollapsed);
+
+      if (!nextShowCollapsed) {
+        setMobileOpen(false);
+      }
     };
 
     updateCollapsedState();

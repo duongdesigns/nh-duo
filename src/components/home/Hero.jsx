@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -71,7 +71,7 @@ function Hero({ onExplore, onCaseStudy }) {
             stagger: 0.08,
             duration: 0.78,
           },
-          "-=0.48"
+          "<"
         )
         .from(
           "[data-hero-copy]",
@@ -220,7 +220,7 @@ function Hero({ onExplore, onCaseStudy }) {
               <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
             </div>
             <h1
-              className="page-title heading-safe mt-6 max-w-[12ch] break-words font-[600] leading-[0.94] tracking-[0.03em] text-white"
+              className="page-title heading-safe max-w-[12ch] break-words font-[600] leading-[0.94] tracking-[0.03em] text-white"
             >
               <span data-hero-title-line className="inline-block">
                 NH

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { Mail } from "lucide-react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";

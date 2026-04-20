@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,7 +10,7 @@ import { caseStudySections } from "../data/caseStudySections";
 
 gsap.registerPlugin(ScrollTrigger);
 
-function CaseStudyPage({ activeSection, onJump, caseStudyRefs, scrolled = false }) {
+function CaseStudyPage({ activeSection, onJump, caseStudyRefs }) {
   const root = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const sectionLabels = {
@@ -97,7 +97,6 @@ function CaseStudyPage({ activeSection, onJump, caseStudyRefs, scrolled = false 
             onJump={onJump}
             title="Progress"
             sectionLabels={sectionLabels}
-            scrolled={scrolled}
           />
         </div>
 

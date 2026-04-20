@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { ArrowDown, ArrowRight, ArrowUp } from "lucide-react";
 
 import gsap from "gsap";
@@ -222,7 +222,7 @@ function WorkPage({ onOpenCaseStudy }) {
         </div>
 
         <div className="space-y-6">
-          {featuredProjects.map((project, index) => (
+          {featuredProjects.map((project) => (
             <article
               key={project.id}
               data-work-row
