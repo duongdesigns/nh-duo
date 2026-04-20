@@ -1,0 +1,1 @@
+import{h as e,r as t}from"./src-Dr5PiAUw.js";var n=e();function r({children:e}){return(0,n.jsx)(`div`,{className:`type-eyebrow mb-6 text-white/48 md:mb-7`,children:e})}var i=t(`arrow-right`,[[`path`,{d:`M5 12h14`,key:`1ays0h`}],[`path`,{d:`m12 5 7 7-7 7`,key:`xquz4c`}]]);export{r as n,i as t};
