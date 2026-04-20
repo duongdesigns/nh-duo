@@ -6,7 +6,6 @@ import SimpleContactForm from "./SimpleContactForm";
 
 function ContactSection() {
   const root = useRef(null);
-
   return (
     <section ref={root} className="home-shell pb-20 pt-4 md:pb-28">
       <div className="content-shell grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
@@ -14,7 +13,7 @@ function ContactSection() {
           <SectionEyebrow>Contact</SectionEyebrow>
           <AnimatedHeadline
             as="h2"
-            className="section-title"
+            className="section-title heading-safe max-w-[18ch]"
           >
             Shape a portfolio, identity, or layout that feels built — not templated.
           </AnimatedHeadline>
