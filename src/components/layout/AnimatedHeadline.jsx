@@ -143,9 +143,9 @@ function AnimatedHeadline({
           </span>
         ))}
       </span>
-      <span className="relative inline-block whitespace-pre-wrap">
+      <span className="relative block whitespace-pre-wrap pb-[0.08em] overflow-visible">
         {chunkedLines.map((lineGroups, lineIndex) => (
-          <span key={lineIndex} className="block relative">
+          <span key={lineIndex} className="block relative overflow-visible">
             {lineIndex > 0 && <span className="block h-[0.04em]" aria-hidden="true" />}
             {lineGroups.map((group, groupIndex) => {
               const sequenceIndex = chunkedLines
@@ -155,8 +155,8 @@ function AnimatedHeadline({
               const groupText = groupIndex < lineGroups.length - 1 ? `${group} ` : group;
 
               return (
-                <span key={`${group}-${groupIndex}`} className="relative inline-block whitespace-pre">
-                  <span className="inline-block whitespace-pre opacity-[0.14] blur-[1.5px]">
+                <span key={`${group}-${groupIndex}`} className="relative inline-block whitespace-pre overflow-visible pb-[0.06em]">
+                  <span className="inline-block whitespace-pre opacity-[0.09] blur-[0.75px] overflow-visible">
                     {groupText}
                   </span>
 
@@ -165,7 +165,7 @@ function AnimatedHeadline({
                     className="pointer-events-none absolute inset-0 text-current"
                     initial={{
                       opacity: 0,
-                      filter: "blur(1.5px)",
+                      filter: "blur(0.75px)",
                       WebkitMaskSize: "0% 100%",
                       maskSize: "0% 100%",
                     }}
@@ -176,7 +176,7 @@ function AnimatedHeadline({
                       maskSize: "200% 100%",
                     } : {
                       opacity: 0,
-                      filter: "blur(1.5px)",
+                      filter: "blur(0.75px)",
                       WebkitMaskSize: "0% 100%",
                       maskSize: "0% 100%",
                     }}
