@@ -9,6 +9,7 @@ import SectionEyebrow from "../layout/SectionEyebrow";
 
 function Hero({ onExplore, onCaseStudy }) {
   const root = useRef(null);
+  const mobileStatsViewportRef = useRef(null);
   const mobileStatsTrackRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const copy = {
@@ -108,26 +109,89 @@ function Hero({ onExplore, onCaseStudy }) {
     () => {
       if (prefersReducedMotion) return;
 
+      const viewport = mobileStatsViewportRef.current;
       const track = mobileStatsTrackRef.current;
-      if (!track) return;
+      if (!viewport || !track) return;
 
       const mm = gsap.matchMedia();
 
       mm.add("(max-width: 767px)", () => {
-        const loop = gsap.fromTo(
-          track,
-          { x: 0 },
-          {
-            x: () => -(track.scrollWidth / 2),
-            duration: 24,
-            ease: "none",
-            repeat: -1,
+        let frameId = 0;
+        let resumeTimeout = 0;
+        let lastTime = 0;
+        let autoScrollEnabled = true;
+        let isAutoTicking = false;
+        let currentX = viewport.scrollLeft;
+        const speed = 24;
+
+        const getLoopWidth = () => track.scrollWidth / 2;
+
+        const normalizeScroll = () => {
+          const loopWidth = getLoopWidth();
+          if (!loopWidth) return;
+
+          if (currentX >= loopWidth) {
+            currentX -= loopWidth;
+          } else if (currentX < 0) {
+            currentX += loopWidth;
           }
-        );
+
+          viewport.scrollLeft = currentX;
+        };
+
+        const tick = (time) => {
+          if (!lastTime) lastTime = time;
+          const delta = time - lastTime;
+          lastTime = time;
+
+          if (autoScrollEnabled) {
+            isAutoTicking = true;
+            currentX += (speed * delta) / 1000;
+            normalizeScroll();
+            requestAnimationFrame(() => {
+              isAutoTicking = false;
+            });
+          }
+
+          frameId = window.requestAnimationFrame(tick);
+        };
+
+        const pauseAutoScroll = () => {
+          autoScrollEnabled = false;
+          if (resumeTimeout) window.clearTimeout(resumeTimeout);
+        };
+
+        const resumeAutoScroll = () => {
+          if (resumeTimeout) window.clearTimeout(resumeTimeout);
+          resumeTimeout = window.setTimeout(() => {
+            autoScrollEnabled = true;
+          }, 700);
+        };
+
+        const handlePointerDown = () => pauseAutoScroll();
+        const handlePointerUp = () => resumeAutoScroll();
+        const handleScroll = () => {
+          if (isAutoTicking) return;
+          currentX = viewport.scrollLeft;
+          normalizeScroll();
+          pauseAutoScroll();
+          resumeAutoScroll();
+        };
+
+        frameId = window.requestAnimationFrame(tick);
+
+        viewport.addEventListener("pointerdown", handlePointerDown, { passive: true });
+        viewport.addEventListener("pointerup", handlePointerUp, { passive: true });
+        viewport.addEventListener("pointercancel", handlePointerUp, { passive: true });
+        viewport.addEventListener("scroll", handleScroll, { passive: true });
 
         return () => {
-          loop.kill();
-          gsap.set(track, { clearProps: "transform" });
+          if (frameId) window.cancelAnimationFrame(frameId);
+          if (resumeTimeout) window.clearTimeout(resumeTimeout);
+          viewport.removeEventListener("pointerdown", handlePointerDown);
+          viewport.removeEventListener("pointerup", handlePointerUp);
+          viewport.removeEventListener("pointercancel", handlePointerUp);
+          viewport.removeEventListener("scroll", handleScroll);
         };
       });
 
@@ -156,7 +220,7 @@ function Hero({ onExplore, onCaseStudy }) {
               <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
             </div>
             <h1
-              className="page-title heading-safe mt-6 max-w-[12ch] break-words text-[clamp(2rem,5.6vw,5.4rem)] font-[600] leading-[0.88] tracking-[0.05em] text-white"
+              className="page-title heading-safe mt-6 max-w-[12ch] break-words font-[600] leading-[0.94] tracking-[0.03em] text-white"
             >
               <span data-hero-title-line className="inline-block">
                 NH
@@ -203,10 +267,13 @@ function Hero({ onExplore, onCaseStudy }) {
             data-hero-meta
             className="mt-16 max-w-[68ch] border-t border-white/8 pt-8 text-center xl:mt-20"
           >
-            <div className="overflow-hidden md:hidden">
+            <div
+              ref={mobileStatsViewportRef}
+              className="no-scrollbar overflow-x-auto overflow-y-hidden touch-pan-x md:hidden"
+            >
               <div
                 ref={mobileStatsTrackRef}
-                className="flex w-max gap-4"
+                className="flex w-max gap-6 pb-1"
               >
                 {[...copy.stats, ...copy.stats].map((item, index) => (
                   <div
