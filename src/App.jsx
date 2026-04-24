@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { featuredProjects } from "./data/projects";
+import { caseStudyProjects } from "./data/caseStudies";
 import { caseStudySections } from "./data/caseStudySections";
 import ContactSection from "./components/home/ContactSection";
 import CredibilityStrip from "./components/home/CredibilityStrip";
@@ -9,26 +9,112 @@ import FeaturedWork from "./components/home/FeaturedWork";
 import Hero from "./components/home/Hero";
 import Principles from "./components/home/Principles";
 import Navbar from "./components/layout/Navbar";
+import SiteFooter from "./components/layout/SiteFooter";
 
 const routeLoaders = {
+  about: () => import("./pages/AboutPage"),
   work: () => import("./pages/WorkPage"),
   "case-study": () => import("./pages/CaseStudyPage"),
   contact: () => import("./pages/ContactPage"),
 };
 
-// App shell
+const defaultCaseStudyId = caseStudyProjects[0]?.id ?? "";
+
+const getScrollBehavior = () => (
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ? "auto"
+    : "smooth"
+);
+
+const isValidCaseStudyId = (projectId) => (
+  caseStudyProjects.some((project) => project.id === projectId)
+);
+
+const getRouteStateFromHash = (hash) => {
+  const cleanedHash = hash.replace(/^#/, "");
+
+  if (!cleanedHash) {
+    return {
+      page: "home",
+      caseStudyId: defaultCaseStudyId,
+    };
+  }
+
+  const [pageSegment, subSegment] = cleanedHash.split("/");
+
+  if (pageSegment === "case-study") {
+    return {
+      page: "case-study",
+      caseStudyId: isValidCaseStudyId(subSegment)
+        ? subSegment
+        : defaultCaseStudyId,
+    };
+  }
+
+  if (pageSegment === "home" || pageSegment in routeLoaders) {
+    return {
+      page: pageSegment,
+      caseStudyId: defaultCaseStudyId,
+    };
+  }
+
+  return {
+    page: "home",
+    caseStudyId: defaultCaseStudyId,
+  };
+};
+
+const getRouteUrl = (page, caseStudyId) => {
+  const baseUrl = `${window.location.pathname}${window.location.search}`;
+
+  if (page === "home") {
+    return baseUrl;
+  }
+
+  if (page === "case-study") {
+    return `${baseUrl}#case-study/${caseStudyId || defaultCaseStudyId}`;
+  }
+
+  return `${baseUrl}#${page}`;
+};
+
+const getPageTitle = (page, caseStudyId) => {
+  if (page === "case-study") {
+    const activeProject = caseStudyProjects.find((project) => project.id === caseStudyId);
+    return activeProject
+      ? `NH / DUO - ${activeProject.title}`
+      : "NH / DUO - Case Study";
+  }
+
+  const titles = {
+    home: "NH / DUO",
+    work: "NH / DUO - Work",
+    about: "NH / DUO - About",
+    contact: "NH / DUO - Contact",
+  };
+
+  return titles[page] ?? titles.home;
+};
+
 function App() {
+  const initialRoute = typeof window === "undefined"
+    ? { page: "home", caseStudyId: defaultCaseStudyId }
+    : getRouteStateFromHash(window.location.hash);
+
   const [showIntro, setShowIntro] = useState(true);
   const [introExitComplete, setIntroExitComplete] = useState(false);
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(initialRoute.page);
+  const [activeCaseStudyId, setActiveCaseStudyId] = useState(initialRoute.caseStudyId);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState(caseStudySections[0]);
-  const [hoveredProject, setHoveredProject] = useState(featuredProjects[0].id);
+  const [hoveredProject, setHoveredProject] = useState(caseStudyProjects[0]?.id ?? "");
   const caseStudyRefs = useRef({});
   const loadedRouteComponentsRef = useRef({});
   const routePromisesRef = useRef({});
   const [routeComponents, setRouteComponents] = useState({
+    about: null,
     work: null,
     "case-study": null,
     contact: null,
@@ -69,6 +155,41 @@ function App() {
     return routePromisesRef.current[value];
   }, []);
 
+  const openPage = useCallback((value, { caseStudyId } = {}) => {
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: getScrollBehavior() });
+
+    const nextCaseStudyId = value === "case-study"
+      ? (isValidCaseStudyId(caseStudyId) ? caseStudyId : activeCaseStudyId || defaultCaseStudyId)
+      : activeCaseStudyId;
+    const nextUrl = getRouteUrl(value, nextCaseStudyId);
+    const currentUrl = `${window.location.pathname}${window.location.search}${window.location.hash}`;
+    const navigateToPage = value === "home"
+      ? Promise.resolve()
+      : preloadPage(value);
+
+    navigateToPage.then(() => {
+      if (value === "case-study") {
+        setActiveCaseStudyId(nextCaseStudyId);
+        setActiveSection(caseStudySections[0]);
+      }
+
+      setPage(value);
+
+      if (currentUrl !== nextUrl) {
+        window.history.pushState(
+          { page: value, caseStudyId: nextCaseStudyId },
+          "",
+          nextUrl
+        );
+      }
+    });
+  }, [activeCaseStudyId, preloadPage]);
+
+  const openCaseStudy = useCallback((projectId) => {
+    openPage("case-study", { caseStudyId: projectId });
+  }, [openPage]);
+
   useEffect(() => {
     if (showIntro) {
       document.body.style.overflow = "hidden";
@@ -91,11 +212,13 @@ function App() {
     const onScroll = () => setScrolled(window.scrollY > 48);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
     let cancelled = false;
+    let handleLoad;
 
     const minIntroTime = new Promise((resolve) => {
       window.setTimeout(resolve, introDurationSeconds * 1000);
@@ -107,7 +230,7 @@ function App() {
         return;
       }
 
-      const handleLoad = () => {
+      handleLoad = () => {
         window.removeEventListener("load", handleLoad);
         resolve();
       };
@@ -115,9 +238,16 @@ function App() {
       window.addEventListener("load", handleLoad);
     });
 
+    const assetsReadyFallback = new Promise((resolve) => {
+      window.setTimeout(resolve, 4200);
+    });
     const fontsReady = document.fonts?.ready ?? Promise.resolve();
 
-    Promise.all([minIntroTime, pageLoaded, fontsReady]).then(() => {
+    Promise.all([
+      minIntroTime,
+      Promise.race([pageLoaded, assetsReadyFallback]),
+      Promise.race([fontsReady, assetsReadyFallback]),
+    ]).then(() => {
       if (!cancelled) {
         requestAnimationFrame(() => {
           setShowIntro(false);
@@ -127,8 +257,48 @@ function App() {
 
     return () => {
       cancelled = true;
+      if (handleLoad) {
+        window.removeEventListener("load", handleLoad);
+      }
     };
   }, [introDurationSeconds]);
+
+  useEffect(() => {
+    if (page === "home") {
+      return;
+    }
+
+    preloadPage(page);
+  }, [page, preloadPage]);
+
+  useEffect(() => {
+    document.title = getPageTitle(page, activeCaseStudyId);
+  }, [activeCaseStudyId, page]);
+
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const nextRoute = getRouteStateFromHash(window.location.hash);
+      const navigateToPage = nextRoute.page === "home"
+        ? Promise.resolve()
+        : preloadPage(nextRoute.page);
+
+      navigateToPage.then(() => {
+        setMenuOpen(false);
+        setPage(nextRoute.page);
+        setActiveCaseStudyId(nextRoute.caseStudyId);
+        setActiveSection(caseStudySections[0]);
+        window.scrollTo({ top: 0, behavior: "auto" });
+      });
+    };
+
+    window.addEventListener("popstate", handleLocationChange);
+    window.addEventListener("hashchange", handleLocationChange);
+
+    return () => {
+      window.removeEventListener("popstate", handleLocationChange);
+      window.removeEventListener("hashchange", handleLocationChange);
+    };
+  }, [preloadPage]);
 
   useEffect(() => {
     if (page !== "case-study") return;
@@ -176,12 +346,13 @@ function App() {
       window.removeEventListener("scroll", requestActiveSectionUpdate);
       window.removeEventListener("resize", requestActiveSectionUpdate);
     };
-  }, [page]);
+  }, [activeCaseStudyId, page]);
 
   useEffect(() => {
     if (showIntro || !introExitComplete) return undefined;
 
     const preloadRoutes = () => {
+      preloadPage("about");
       preloadPage("work");
       preloadPage("case-study");
       preloadPage("contact");
@@ -205,23 +376,10 @@ function App() {
   const navItems = [
     { label: "Home", value: "home" },
     { label: "Work", value: "work" },
+    { label: "About", value: "about" },
     { label: "Case Study", value: "case-study" },
     { label: "Contact", value: "contact" },
   ];
-
-  const openPage = (value) => {
-    setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    if (value === "home") {
-      setPage(value);
-      return;
-    }
-
-    preloadPage(value).then(() => {
-      setPage(value);
-    });
-  };
 
   const scrollToCaseStudySection = (name) => {
     const node = caseStudyRefs.current[name];
@@ -232,7 +390,7 @@ function App() {
 
     window.scrollTo({
       top: Math.max(targetTop, 0),
-      behavior: "smooth",
+      behavior: getScrollBehavior(),
     });
   };
 
@@ -338,6 +496,8 @@ function App() {
       ))}
     </span>
   );
+
+  const AboutPage = routeComponents.about;
   const WorkPage = routeComponents.work;
   const CaseStudyPage = routeComponents["case-study"];
   const ContactPage = routeComponents.contact;
@@ -346,13 +506,16 @@ function App() {
     <div className="min-h-screen bg-[#0E141B] text-[#F0F0F0] selection:bg-white/20">
       {!showIntro && (
         <Navbar
+          activeCaseStudyId={activeCaseStudyId}
+          caseStudyProjects={caseStudyProjects}
+          onOpenCaseStudy={openCaseStudy}
           page={page}
           navigate={openPage}
           navItems={navItems}
           menuOpen={menuOpen}
-          setMenuOpen={setMenuOpen}
-          scrolled={scrolled}
           preloadPage={preloadPage}
+          scrolled={scrolled}
+          setMenuOpen={setMenuOpen}
         />
       )}
 
@@ -388,54 +551,74 @@ function App() {
       </AnimatePresence>
 
       {!showIntro && introExitComplete && (
-        <main className="relative z-10">
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.div
-              key={page}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              variants={pageVariants}
-            >
-              {/* Home page */}
-              {page === "home" && (
-                <>
-                <Hero
-                  onExplore={() => openPage("work")}
-                  onCaseStudy={() => openPage("case-study")}
-                />
-                <FeaturedWork
-                  hoveredProject={hoveredProject}
-                  setHoveredProject={setHoveredProject}
-                  onOpenCaseStudy={() => openPage("case-study")}
-                />
-                <CredibilityStrip />
-                <Principles />
-                <ContactSection />
-              </>
-              )}
+        <>
+          <main className="relative z-10">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={page === "case-study" ? `${page}-${activeCaseStudyId}` : page}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={pageVariants}
+              >
+                {page === "home" && (
+                  <>
+                    <Hero
+                      onExplore={() => openPage("work")}
+                      onCaseStudy={() => openCaseStudy(defaultCaseStudyId)}
+                    />
+                    <FeaturedWork
+                      hoveredProject={hoveredProject}
+                      onOpenCaseStudy={openCaseStudy}
+                      setHoveredProject={setHoveredProject}
+                    />
+                    <CredibilityStrip />
+                    <Principles />
+                    <ContactSection />
+                  </>
+                )}
 
-              {/* Work page */}
-              {page === "work" && (
-                WorkPage ? <WorkPage onOpenCaseStudy={() => openPage("case-study")} /> : null
-              )}
-              {/* Case study page */}
-              {page === "case-study" && (
-                CaseStudyPage ? (
-                  <CaseStudyPage
-                    activeSection={activeSection}
-                    onJump={scrollToCaseStudySection}
-                    caseStudyRefs={caseStudyRefs}
-                  />
-                ) : null
-              )}
-              {/* Contact page */}
-              {page === "contact" && (ContactPage ? <ContactPage /> : null)}
-            </motion.div>
-          </AnimatePresence>
-        </main>
+                {page === "work" && (
+                  WorkPage ? <WorkPage onOpenCaseStudy={openCaseStudy} /> : null
+                )}
+
+                {page === "about" && (
+                  AboutPage ? (
+                    <AboutPage
+                      navigate={openPage}
+                      onOpenCaseStudy={openCaseStudy}
+                    />
+                  ) : null
+                )}
+
+                {page === "case-study" && (
+                  CaseStudyPage ? (
+                    <CaseStudyPage
+                      activeSection={activeSection}
+                      caseStudyId={activeCaseStudyId}
+                      caseStudyRefs={caseStudyRefs}
+                      onJump={scrollToCaseStudySection}
+                      onSelectProject={openCaseStudy}
+                      projects={caseStudyProjects}
+                    />
+                  ) : null
+                )}
+
+                {page === "contact" && (ContactPage ? <ContactPage /> : null)}
+              </motion.div>
+            </AnimatePresence>
+          </main>
+
+          <SiteFooter
+            caseStudyProjects={caseStudyProjects}
+            navigate={openPage}
+            onOpenCaseStudy={openCaseStudy}
+            page={page}
+          />
+        </>
       )}
     </div>
   );
 }
+
 export default App;

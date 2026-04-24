@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowRight } from "lucide-react";
+import { useReducedMotion } from "framer-motion";
 
 import useEditorialReveal from "../../hooks/useEditorialReveal";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
@@ -18,6 +19,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const mobileScrollTimeout = useRef(null);
   const mobileHintRef = useRef(null);
   const [mobileHintText, setMobileHintText] = useState("");
+  const prefersReducedMotion = useReducedMotion();
   const [displayedProjectId, setDisplayedProjectId] = useState(
     hoveredProject ?? featuredProjects[0]?.id
   );
@@ -90,19 +92,17 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
       jumpTimeline
         .to(activeCard, {
-          y: -18,
-          scaleY: 1.03,
-          duration: 0.16,
-          ease: "power2.out",
+          y: -10,
+          duration: 0.18,
+          ease: "power3.out",
         })
         .to(
           activeCard,
           {
             y: 0,
-            scaleY: 1,
-            duration: 0.5,
-            ease: "bounce.out",
-            clearProps: "y,scaleY,transformOrigin",
+            duration: 0.28,
+            ease: "power2.out",
+            clearProps: "y,transformOrigin",
           },
           ">"
         );
@@ -163,7 +163,12 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
           event.preventDefault();
           if (mobile) {
             if (project.id !== hoveredProject) {
-              triggerMobileHint(copy.swipeHint);
+              event.currentTarget.scrollIntoView({
+                behavior: prefersReducedMotion ? "auto" : "smooth",
+                block: "nearest",
+                inline: "center",
+              });
+              setHoveredProject(project.id);
               return;
             }
 
@@ -178,6 +183,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
           setHoveredProject(project.id);
         }}
         type="button"
+        aria-pressed={isActive}
         data-fw-selector
         data-project-id={mobile ? project.id : undefined}
         data-fw-selector-mobile={mobile ? "true" : undefined}
@@ -395,7 +401,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   );
 
   return (
-    <section ref={root} className="home-shell py-24 md:py-32">
+    <section ref={root} className="home-shell py-28 md:py-36">
       <div className="content-shell w-full">
         <div className="grid gap-14 xl:gap-20">
           <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
@@ -465,7 +471,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                 </div>
 
                 <button
-                  onClick={onOpenCaseStudy}
+                  onClick={() => onOpenCaseStudy(currentProject.id)}
                   type="button"
                   className="button-pill button-pill--secondary group shrink-0 self-start sm:self-auto"
                 >
@@ -501,6 +507,14 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                     <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
                       {currentProjectCopy.summary}
                     </p>
+                    <button
+                      onClick={() => onOpenCaseStudy(currentProject.id)}
+                      type="button"
+                      className="button-pill button-pill--secondary group mt-6 self-start md:hidden"
+                    >
+                      View case study
+                      <ArrowRight size={16} className="transition group-hover:translate-x-1" />
+                    </button>
                   </div>
 
                   <div className="mt-8 grid gap-3">

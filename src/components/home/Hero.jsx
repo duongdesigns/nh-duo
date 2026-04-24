@@ -37,7 +37,7 @@ function Hero({ onExplore, onCaseStudy }) {
   const scrollPastHero = () => {
     window.scrollTo({
       top: window.scrollY + window.innerHeight,
-      behavior: "smooth",
+      behavior: prefersReducedMotion ? "auto" : "smooth",
     });
   };
 
@@ -314,8 +314,12 @@ function Hero({ onExplore, onCaseStudy }) {
       <motion.button
         onClick={scrollPastHero}
         aria-label="Scroll to the next section"
-        animate={{ y: [0, 6, 0] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+        animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
+        transition={
+          prefersReducedMotion
+            ? undefined
+            : { duration: 1.6, repeat: Infinity, ease: "easeInOut" }
+        }
         className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 items-center justify-center text-white/56 md:inline-flex"
         type="button"
       >

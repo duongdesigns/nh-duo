@@ -15,8 +15,8 @@ function Principles() {
   ];
 
   return (
-    <section ref={root} className="home-shell py-16 md:py-24">
-      <div className="content-shell rounded-[2rem] border border-white/10 bg-white/5 p-6 md:p-8">
+    <section ref={root} className="home-shell py-20 md:py-28">
+      <div className="content-shell rounded-[2rem] border border-white/10 bg-white/5 p-6 md:p-9">
         <SectionEyebrow>System Principles</SectionEyebrow>
         <h2 className="sr-only">System Principles</h2>
         <HorizontalScrollRow

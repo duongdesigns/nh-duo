@@ -1,9 +1,14 @@
 import { useRef } from "react";
-import AnimatedHeadline from "../layout/AnimatedHeadline";
-import { caseStudyImages } from "../../data/imagery";
 
-function CaseStudyBlock({ title, index, setRef }) {
+import AnimatedHeadline from "../layout/AnimatedHeadline";
+
+function CaseStudyBlock({ content, index, setRef, title }) {
   const root = useRef(null);
+
+  if (!content) {
+    return null;
+  }
+
   const renderImage = (image, className) => (
     <div
       key={image.src}
@@ -19,51 +24,6 @@ function CaseStudyBlock({ title, index, setRef }) {
       />
     </div>
   );
-
-  const content = {
-    Hero: {
-      kicker: "Case Study Hero",
-      heading: "Atlas Case — a visual-first portfolio narrative for branding and digital work.",
-      text: "Lead with the strongest final frames. Keep the introduction concise. Let the page immediately communicate tone, polish, and relevance.",
-      layout: "hero",
-    },
-    Overview: {
-      kicker: "Project Overview",
-      heading: "Define the product, your role, timeline, tools, and the exact challenge being solved.",
-      text: "This section should stay scannable: role, collaborators, deliverables, timeline, and one focused problem statement.",
-      layout: "overview",
-    },
-    Discovery: {
-      kicker: "Exploration / Discovery",
-      heading: "Show research, references, sketches, mood, and what shaped the visual direction.",
-      text: "Answer three questions: why did you do it, what did you learn, and how did that shape the next design move.",
-      layout: "media",
-    },
-    Process: {
-      kicker: "Design Process",
-      heading: "Move from rough thinking into flows, structure, interface decisions, and iteration.",
-      text: "Use animated GIFs or stills to show progression. Emphasize decisions rather than just artifacts.",
-      layout: "media",
-    },
-    "Final Design": {
-      kicker: "Final Design",
-      heading: "Reveal the polished result with controlled galleries, strong crops, and sharp captions.",
-      text: "Use gallery layouts instead of carousels. Let the work breathe. Reserve motion for transitions and detail reveal.",
-      layout: "gallery",
-    },
-    Impact: {
-      kicker: "Impact",
-      heading: "Summarize outcomes, reaction, and what changed because of the work.",
-      text: "Metrics can be added later. For now, structure the section for key outcomes, takeaways, and client or stakeholder feedback.",
-      layout: "impact",
-    },
-    Learnings: {
-      kicker: "Learnings",
-      heading: "Close with what sharpened your thinking, craft, or process.",
-      text: "This should feel reflective and specific. It turns the case study into a design narrative rather than a static archive.",
-      layout: "text",
-    },
-  }[title];
 
   return (
     <section
@@ -90,63 +50,76 @@ function CaseStudyBlock({ title, index, setRef }) {
         </div>
       </div>
 
-      <p className="body-safe mt-0 text-base leading-[1.85] text-white/64 md:text-lg">{content.text}</p>
+      <p className="body-safe mt-0 text-base leading-[1.85] text-white/64 md:text-lg">
+        {content.text}
+      </p>
 
-      {content.layout === "hero" && (
-        <div className="mt-8">
-          {renderImage(caseStudyImages.hero[0], "aspect-[16/10]")}
-        </div>
+      {content.layout === "hero" && content.image && (
+        <div className="mt-8">{renderImage(content.image, "aspect-[16/10]")}</div>
       )}
 
-      {content.layout === "overview" && (
-        <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            ["Role", "Brand Designer / Digital Designer"],
-            ["Timeline", "8 weeks"],
-            ["Scope", "Identity, website, case-study system"],
-            ["Tools", "Figma, Adobe CC, React"],
-          ].map(([label, value]) => (
-            <div key={label} className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-4">
-              <div className="type-label text-white/42">{label}</div>
-              <div className="mt-3 text-base text-white/84">{value}</div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {content.layout === "media" && (
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {caseStudyImages.media.map((image) => (
-            <div key={image.src}>
-              {renderImage(image, "aspect-[4/5]")}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {content.layout === "gallery" && (
-        <div className="mt-8 grid gap-4 md:grid-cols-2">
-          <div>{renderImage(caseStudyImages.gallery[0], "aspect-[4/5]")}</div>
-          <div>{renderImage(caseStudyImages.gallery[1], "aspect-[4/5]")}</div>
-          <div>{renderImage(caseStudyImages.gallery[2], "aspect-[16/10] md:col-span-2")}</div>
-        </div>
-      )}
-
-      {content.layout === "impact" && (
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {[
-            "Clearer project storytelling",
-            "More premium content pacing",
-            "Reusable template for future case studies",
-          ].map((item) => (
+      {content.layout === "overview" && Array.isArray(content.details) && (
+        <dl className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {content.details.map(([label, value]) => (
             <div
+              key={label}
+              className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-4"
+            >
+              <dt className="type-label text-white/42">{label}</dt>
+              <dd className="mt-3 text-base text-white/84">{value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      {content.layout === "media" && Array.isArray(content.media) && (
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          {content.media.map((image) => (
+            <div key={image.src}>{renderImage(image, "aspect-[4/5]")}</div>
+          ))}
+        </div>
+      )}
+
+      {content.layout === "gallery" && Array.isArray(content.gallery) && (
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {content.gallery.map((image, imageIndex) => (
+            <div
+              key={image.src}
+              className={imageIndex === 2 ? "md:col-span-2" : ""}
+            >
+              {renderImage(
+                image,
+                imageIndex === 2 ? "aspect-[16/10]" : "aspect-[4/5]"
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {content.layout === "impact" && Array.isArray(content.items) && (
+        <ul className="mt-8 grid gap-4 md:grid-cols-3">
+          {content.items.map((item) => (
+            <li
               key={item}
               className="body-safe rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-5 text-lg leading-8 text-white/84"
             >
               {item}
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
+      )}
+
+      {content.layout === "text" && Array.isArray(content.notes) && (
+        <ul className="mt-8 grid gap-4 md:grid-cols-2">
+          {content.notes.map((item) => (
+            <li
+              key={item}
+              className="rounded-[1.25rem] border border-white/10 bg-[#3B3B3B] p-5 text-base leading-8 text-white/76"
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
       )}
     </section>
   );

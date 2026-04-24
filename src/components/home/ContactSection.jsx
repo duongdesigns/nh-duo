@@ -7,10 +7,10 @@ import SimpleContactForm from "./SimpleContactForm";
 function ContactSection() {
   const root = useRef(null);
   return (
-    <section ref={root} className="home-shell pb-20 pt-8 md:pb-28 md:pt-12">
+    <section ref={root} className="home-shell pb-24 pt-12 md:pb-32 md:pt-16">
       <div className="content-shell w-full">
-        <div className="grid gap-14 xl:gap-20">
-          <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
+        <div className="grid gap-16 xl:gap-24">
+          <div className="grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-16">
             <div className="max-w-none xl:max-w-[60ch]">
               <SectionEyebrow>Contact</SectionEyebrow>
               <AnimatedHeadline

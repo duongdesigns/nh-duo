@@ -152,13 +152,13 @@ export default function CredibilityStrip() {
   );
 
   return (
-    <section ref={root} className="home-shell pb-8 pt-6 md:pb-12 md:pt-8">
+    <section ref={root} className="home-shell pb-14 pt-10 md:pb-18 md:pt-14">
       <div className="content-shell px-1">
         <p className="subsection-title text-white/88">
           More work across identity, print, and digital systems.
         </p>
       </div>
-      <div className="relative left-1/2 w-screen max-w-none -translate-x-1/2 px-3 pt-8 md:px-4 md:pt-10">
+      <div className="relative left-1/2 w-screen max-w-none -translate-x-1/2 px-3 pt-10 md:px-4 md:pt-12">
         <div className="credibility-strip-stack flex flex-col gap-4 md:gap-6">
           {renderTrack({
             items: topTrackItems,
