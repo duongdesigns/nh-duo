@@ -479,7 +479,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                 <button
                   onClick={() => onOpenCaseStudy(currentProject.id)}
                   type="button"
-                  className="button-pill button-pill--primary cursor-contrast-dark group shrink-0 self-start font-medium sm:self-auto"
+                  className="button-pill button-pill--primary cursor-contrast-cta group shrink-0 self-start font-medium sm:self-auto"
                 >
                   View case study
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />

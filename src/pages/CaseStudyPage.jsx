@@ -137,7 +137,7 @@ function CaseStudyPage({
           </p>
           <button
             data-case-copy
-            className="button-pill button-pill--primary cursor-contrast-dark group mt-8 font-medium"
+            className="button-pill button-pill--primary cursor-contrast-cta group mt-8 font-medium"
             onClick={() => navigate?.("contact")}
             type="button"
           >

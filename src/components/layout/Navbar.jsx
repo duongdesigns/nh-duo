@@ -33,10 +33,10 @@ export default function Navbar({
           className={`rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "cursor-contrast-dark bg-[#0E141B] text-white"
-                : "cursor-contrast-dark bg-white text-[#333333]"
+                ? "cursor-contrast-navbar bg-[#0E141B] text-white"
+                : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-dark text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate(item.value)}
@@ -72,10 +72,10 @@ export default function Navbar({
           className={`inline-flex items-center gap-2 rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "cursor-contrast-dark bg-[#0E141B] text-white"
-                : "cursor-contrast-dark bg-white text-[#333333]"
+                ? "cursor-contrast-navbar bg-[#0E141B] text-white"
+                : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-dark text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate("case-study")}
@@ -196,7 +196,7 @@ export default function Navbar({
           aria-current={page === item.value ? "page" : undefined}
           className={`block w-full rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-dark text-black/82 hover:bg-[#0E141B]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-[#0E141B]/8"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -218,7 +218,7 @@ export default function Navbar({
           aria-expanded={mobileCaseStudyMenuOpen}
           className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-dark text-black/82 hover:bg-[#0E141B]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-[#0E141B]/8"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -288,7 +288,7 @@ export default function Navbar({
       >
         <button
           aria-label="Go to the home page"
-          className={`group flex items-center text-left ${scrolled ? "cursor-contrast-dark" : ""}`}
+          className={`group flex items-center text-left ${scrolled ? "cursor-contrast-navbar" : ""}`}
           onClick={() => navigate("home")}
           type="button"
         >
@@ -328,7 +328,7 @@ export default function Navbar({
             } ${
               "backdrop-blur-xl"
             } ${
-              scrolled ? "cursor-contrast-dark text-black" : "text-white"
+              scrolled ? "cursor-contrast-navbar text-black" : "text-white"
             }`}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}

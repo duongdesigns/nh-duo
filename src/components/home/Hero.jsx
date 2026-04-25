@@ -247,7 +247,7 @@ function Hero({ onExplore, onCaseStudy }) {
             <button
               onClick={onCaseStudy}
               type="button"
-              className="button-pill button-pill--primary cursor-contrast-dark group font-medium"
+              className="button-pill button-pill--primary cursor-contrast-cta group font-medium"
               data-hero-cta
             >
               {copy.caseStudy}

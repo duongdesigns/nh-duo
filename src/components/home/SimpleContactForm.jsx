@@ -182,7 +182,7 @@ export default function SimpleContactForm() {
         </label>
       </div>
 
-      <button className="button-pill button-pill--primary group mt-6" type="submit">
+      <button className="button-pill button-pill--primary cursor-contrast-cta group mt-6" type="submit">
         {copy.cta}
         <ArrowRight size={18} className="transition group-hover:translate-x-1" />
       </button>
