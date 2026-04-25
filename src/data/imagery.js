@@ -12,6 +12,9 @@ import menuMockup2 from "../assets/project-images/medium/menu-mockup2-medium.web
 import menuSmall from "../assets/project-images/medium/menu-small-medium.webp";
 import shoppingbag from "../assets/project-images/medium/shoppingbag-medium.webp";
 import zpFlyer from "../assets/project-images/medium/zp-flyer-medium.webp";
+import tsukiScribbleBoard from "../assets/project-images/tsuki-scribble-board.svg";
+import tsukiSignageMockup from "../assets/project-images/tsuki-signage-editorial.webp";
+import tsukiWireframes from "../assets/project-images/tsuki-wireframes.webp";
 import homannWebsiteThumb from "../assets/project-images/thumbs/homann-website-thumb.webp";
 import bookMockupThumb from "../assets/project-images/thumbs/book-mockup-thumb.webp";
 import busStopCitilightThumb from "../assets/project-images/thumbs/bus-stop-citilight-thumb.webp";
@@ -47,9 +50,9 @@ const sliderThumbBySrc = {
 };
 
 export const projectImages = {
-  "nord-form": {
+  tsuki: {
     src: macbookMockup,
-    alt: "MacBook mockup showing a dark restaurant website interface with warm gold typography.",
+    alt: "MacBook mockup showing the TSUKI sushi restaurant website with dark ambience and warm gold typography.",
     source: localSource,
     position: "50% 58%",
   },
@@ -167,6 +170,28 @@ export const caseStudyImages = {
       alt: "Merchandise mockup with a minimal logo applied to a fabric tote bag.",
       source: localSource,
       position: "50% 34%",
+    },
+  ],
+  process: [
+    {
+      src: tsukiScribbleBoard,
+      alt: "TSUKI hand-drawn exploration board with moon mark sketches, wordmark spacing tests, and menu layout thumbnails.",
+      source: localSource,
+      position: "50% 50%",
+    },
+    {
+      src: tsukiWireframes,
+      alt: "TSUKI layout prototype board with website wireframes, booking flow sketches, and grid annotations.",
+      source: "Generated process visual based on the TSUKI styleguide and project assets.",
+      position: "50% 50%",
+    },
+  ],
+  mockups: [
+    {
+      src: tsukiSignageMockup,
+      alt: "TSUKI restaurant signage mockup with a dark plaque, gold moon mark, and warm interior ambience.",
+      source: "Generated TSUKI signage mockup based on the styleguide and project assets.",
+      position: "42% 50%",
     },
   ],
 };

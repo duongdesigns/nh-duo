@@ -57,14 +57,18 @@ export default function useEditorialReveal(
 
       // Page content is mounted inside React/Framer transitions, so let layout settle
       // before forcing ScrollTrigger to measure and activate any above-the-fold reveals.
+      let nestedRefreshId = 0;
       const refreshId = requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
+        nestedRefreshId = requestAnimationFrame(() => {
           ScrollTrigger.refresh();
         });
       });
 
       return () => {
         cancelAnimationFrame(refreshId);
+        if (nestedRefreshId) {
+          cancelAnimationFrame(nestedRefreshId);
+        }
         timeline.scrollTrigger?.kill();
         timeline.kill();
         gsap.set(targets, {

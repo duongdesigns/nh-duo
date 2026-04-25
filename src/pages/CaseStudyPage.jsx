@@ -1,24 +1,22 @@
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 import CaseStudyBlock from "../components/case-study/CaseStudyBlock";
 import CaseStudyProgress from "../components/case-study/CaseStudyProgress";
-import CaseStudyProjectMenu from "../components/case-study/CaseStudyProjectMenu";
+import AnimatedHeadline from "../components/layout/AnimatedHeadline";
+import SectionEyebrow from "../components/layout/SectionEyebrow";
 import { getCaseStudyById, getCaseStudyProjectById } from "../data/caseStudies";
 import { caseStudySections } from "../data/caseStudySections";
-
-gsap.registerPlugin(ScrollTrigger);
 
 function CaseStudyPage({
   activeSection,
   caseStudyId,
   caseStudyRefs,
+  navigate,
   onJump,
-  onSelectProject,
-  projects,
 }) {
   const root = useRef(null);
   const prefersReducedMotion = useReducedMotion();
@@ -52,14 +50,32 @@ function CaseStudyPage({
       }
 
       tl.from(
-        "[data-case-menu]",
+        "[data-case-eyebrow]",
         {
-          y: 24,
+          y: 18,
           opacity: 0,
-          duration: 0.72,
+          duration: 0.55,
         },
         "-=0.68"
       )
+        .from(
+          "[data-case-title]",
+          {
+            y: 34,
+            opacity: 0,
+            duration: 0.72,
+          },
+          "-=0.42"
+        )
+        .from(
+          "[data-case-copy]",
+          {
+            y: 22,
+            opacity: 0,
+            duration: 0.6,
+          },
+          "-=0.42"
+        )
         .from(
           "[data-case-progress]",
           {
@@ -69,37 +85,27 @@ function CaseStudyPage({
           "-=0.38"
         )
         .from(
-          "[data-case-block]",
+          "[data-case-content]",
           {
             y: 24,
+            opacity: 0,
+            duration: 0.72,
+          },
+          "-=0.38"
+        )
+        .from(
+          "[data-case-block]",
+          {
             opacity: 0,
             stagger: 0.08,
             duration: 0.72,
           },
-          "-=0.18"
+          "-=0.58"
         );
 
-      const mm = gsap.matchMedia();
-
-      mm.add("(min-width: 1024px)", () => {
-        const progress = root.current?.querySelector("[data-case-progress]");
-        const content = root.current?.querySelector("[data-case-content]");
-        const caseBlocks = content?.querySelectorAll("[data-case-block]");
-        const lastCaseBlock = caseBlocks?.[caseBlocks.length - 1];
-        if (!progress || !content) return undefined;
-
-        return ScrollTrigger.create({
-          trigger: root.current,
-          start: "top top",
-          endTrigger: lastCaseBlock ?? content,
-          end: "bottom bottom-=40",
-          pin: progress,
-          pinSpacing: false,
-          anticipatePin: 1,
-        });
-      });
-
-      return () => mm.revert();
+      return () => {
+        tl.kill();
+      };
     },
     { scope: root, dependencies: [caseStudyId, prefersReducedMotion] }
   );
@@ -113,11 +119,32 @@ function CaseStudyPage({
       />
 
       <div className="content-shell grid gap-8">
-        <CaseStudyProjectMenu
-          activeProject={currentProject}
-          onSelectProject={onSelectProject}
-          projects={projects}
-        />
+        <header className="mb-10 md:mb-14">
+          <div data-case-eyebrow>
+            <SectionEyebrow>Case Study</SectionEyebrow>
+          </div>
+          <AnimatedHeadline
+            as="h1"
+            className="page-title mb-8 max-w-[24ch] xl:mb-7 xl:max-w-[22ch]"
+          >
+            <span data-case-title>{currentProject.title} in Context and Detail</span>
+          </AnimatedHeadline>
+          <p
+            data-case-copy
+            className="body-safe body-safe--wide text-base leading-[1.8] text-white/60 md:text-lg"
+          >
+            {currentProject.menuSummary}
+          </p>
+          <button
+            data-case-copy
+            className="button-pill button-pill--primary cursor-contrast-dark group mt-8 font-medium"
+            onClick={() => navigate?.("contact")}
+            type="button"
+          >
+            Start a Conversation
+            <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
+          </button>
+        </header>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
           <div data-case-progress className="w-full self-start lg:w-[220px] lg:flex-none">

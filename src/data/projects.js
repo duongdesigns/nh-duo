@@ -1,11 +1,11 @@
 export const featuredProjects = [
   {
-    id: "nord-form",
-    title: "Nord Form",
-    category: "Brand System / Digital Experience",
+    id: "tsuki",
+    title: "TSUKI",
+    category: "Brand Identity / Restaurant System",
     year: "2026",
     summary:
-      "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
+      "A premium sushi restaurant identity built around moon symbolism, warm gold, and restrained digital presentation.",
   },
   {
     id: "atlas-case",

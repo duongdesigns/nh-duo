@@ -33,7 +33,7 @@ export default function Navbar({
           className={`rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "bg-[#0E141B] text-white"
+                ? "cursor-contrast-dark bg-[#0E141B] text-white"
                 : "cursor-contrast-dark bg-white text-[#333333]"
               : scrolled
                 ? "cursor-contrast-dark text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
@@ -72,7 +72,7 @@ export default function Navbar({
           className={`inline-flex items-center gap-2 rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "bg-[#0E141B] text-white"
+                ? "cursor-contrast-dark bg-[#0E141B] text-white"
                 : "cursor-contrast-dark bg-white text-[#333333]"
               : scrolled
                 ? "cursor-contrast-dark text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
@@ -96,20 +96,21 @@ export default function Navbar({
         <AnimatePresence>
           {caseStudyMenuOpen && (
             <motion.div
+              role="menu"
               initial={{ opacity: 0, y: 10, scale: 0.985 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.985 }}
               transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute -right-3 top-full z-20 w-[calc(22rem+1.5rem)] px-3 pb-3 pt-3"
+              className="absolute -right-3 top-full z-20 w-[calc(23rem+1.5rem)] px-3 pb-3 pt-8"
             >
               <div
-                className={`w-[22rem] overflow-hidden rounded-[1.65rem] border p-2 shadow-[0_22px_56px_rgba(0,0,0,0.2)] ${
+                className={`w-[23rem] overflow-hidden rounded-[1.65rem] border p-3 shadow-[0_22px_56px_rgba(0,0,0,0.2)] ${
                   scrolled
                     ? "border-black/10 bg-[#F0F0F0]/96 text-[#0E141B] backdrop-blur-xl"
                     : "border-white/10 bg-[#20262D]/96 text-white backdrop-blur-xl"
                 }`}
               >
-                <div className="grid gap-1">
+                <div className="grid gap-2">
                   {caseStudyProjects.map((project) => {
                     const active = activeCaseStudyId === project.id && page === "case-study";
                     const hovered = hoveredCaseStudyId === project.id;
@@ -117,8 +118,9 @@ export default function Navbar({
                     return (
                       <button
                         key={project.id}
+                        role="menuitem"
                         aria-current={active ? "page" : undefined}
-                        className={`group block w-full rounded-[1.2rem] px-3 py-3 text-left transition-[background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+                        className={`group block w-full rounded-[1.25rem] px-4 py-4 text-left transition-[background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           active
                             ? scrolled
                               ? "bg-[#0E141B] text-white shadow-[0_12px_24px_rgba(14,20,27,0.16)]"
@@ -159,7 +161,7 @@ export default function Navbar({
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-                    className={`mt-2 rounded-[1.25rem] border px-4 py-4 ${
+                    className={`mt-3 rounded-[1.25rem] border px-5 py-5 ${
                       scrolled
                         ? "border-black/10 bg-black/[0.03]"
                         : "border-white/10 bg-white/[0.03]"
@@ -279,14 +281,14 @@ export default function Navbar({
         } ${
           scrolled
             ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
-            : "border-[rgba(240,240,240,0.08)] bg-[rgba(59,61,63,0.18)]"
+            : "border-white/10 bg-[#20262D]/96"
         } ${
-          scrolled ? "backdrop-blur-xl" : ""
+          "backdrop-blur-xl"
         }`}
       >
         <button
           aria-label="Go to the home page"
-          className="group flex items-center text-left"
+          className={`group flex items-center text-left ${scrolled ? "cursor-contrast-dark" : ""}`}
           onClick={() => navigate("home")}
           type="button"
         >
@@ -300,26 +302,6 @@ export default function Navbar({
           {navItems.map(renderDesktopNavItem)}
         </nav>
 
-        <button
-          aria-controls={mobileMenuId}
-          aria-expanded={menuOpen}
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          onClick={() => setMenuOpen((value) => {
-            const nextValue = !value;
-            if (!nextValue) {
-              setMobileCaseStudyMenuOpen(false);
-            }
-            return nextValue;
-          })}
-          type="button"
-          className={`flex h-10 w-10 items-center justify-center rounded-2xl border md:hidden ${
-            scrolled
-              ? "border-black/10 bg-black/5 text-black"
-              : "border-white/12 bg-white/5 text-white"
-          }`}
-        >
-          {menuOpen ? <X size={18} /> : <Menu size={18} />}
-        </button>
       </div>
 
       <div className="flex justify-end md:hidden">
@@ -342,9 +324,9 @@ export default function Navbar({
             className={`flex h-[52px] w-[52px] items-center justify-center rounded-[1.4rem] border transition-[transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
               scrolled
                 ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
-                : "border-[rgba(240,240,240,0.08)] bg-[rgba(59,61,63,0.18)]"
+                : "border-white/10 bg-[#20262D]/96"
             } ${
-              scrolled ? "backdrop-blur-xl" : ""
+              "backdrop-blur-xl"
             } ${
               scrolled ? "cursor-contrast-dark text-black" : "text-white"
             }`}

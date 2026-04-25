@@ -43,7 +43,7 @@ function ContactPage() {
         className="page-atmosphere page-atmosphere--contact"
       />
       <div className="content-shell grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
-        <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 md:p-8">
+        <div className="rounded-[2rem] border border-white/10 bg-[#121A22]/95 p-6 md:p-8">
           <SectionEyebrow>Direct Contact</SectionEyebrow>
           <AnimatedHeadline as="h1" className="page-title max-w-[18ch]">
             Start with the essentials.

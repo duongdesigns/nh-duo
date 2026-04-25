@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-labelledby="title desc">
+  <title id="title">TSUKI scribble board</title>
+  <desc id="desc">Loose brand exploration scribbles for TSUKI with moon marks, menu thumbnails, and layout notes.</desc>
+  <defs>
+    <filter id="paperNoise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.05"/>
+      </feComponentTransfer>
+    </filter>
+    <style>
+      .paper { fill: #f2eadc; }
+      .ink { fill: none; stroke: #20231f; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; opacity: .78; }
+      .light { fill: none; stroke: #20231f; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .34; }
+      .note { fill: #287f82; font: 24px "Marker Felt", "Comic Sans MS", cursive; opacity: .85; }
+      .label { fill: #20231f; font: 30px "JetBrains Mono", monospace; letter-spacing: 9px; opacity: .82; }
+      .small { fill: #20231f; font: 18px "JetBrains Mono", monospace; letter-spacing: 4px; opacity: .54; }
+    </style>
+  </defs>
+  <rect class="paper" width="1600" height="1000"/>
+  <rect width="1600" height="1000" filter="url(#paperNoise)" opacity=".7"/>
+
+  <g transform="translate(92 70)">
+    <text class="label" x="0" y="32">TSUKI</text>
+    <line class="ink" x1="0" y1="54" x2="170" y2="54"/>
+    <text class="note" x="220" y="26">moon / time / quiet dining</text>
+  </g>
+
+  <g transform="translate(95 160)">
+    <text class="note" x="0" y="-24">mark studies</text>
+    <circle class="ink" cx="70" cy="70" r="52"/>
+    <path class="ink" d="M22 72h96M65 73v49"/>
+    <circle class="light" cx="230" cy="70" r="52"/>
+    <path class="ink" d="M184 72h92M238 72v50"/>
+    <path class="light" d="M340 122a55 55 0 1 1 82 0"/>
+    <path class="ink" d="M333 73h98M375 72v50"/>
+    <circle class="ink" cx="70" cy="230" r="52"/>
+    <path class="ink" d="M18 230h104M58 231v50"/>
+    <path class="light" d="M178 225h110M178 245h110M178 265h110"/>
+    <circle class="light" cx="382" cy="230" r="52"/>
+    <path class="ink" d="M332 228h100M373 229v52"/>
+    <text class="note" x="0" y="350">offset split, not centered</text>
+  </g>
+
+  <g transform="translate(600 155)">
+    <text class="note" x="0" y="-22">wordmark spacing</text>
+    <line class="light" x1="0" y1="52" x2="420" y2="52"/>
+    <line class="light" x1="0" y1="112" x2="420" y2="112"/>
+    <text class="label" x="22" y="96">T S U K I</text>
+    <text class="small" x="116" y="142">S U S H I</text>
+    <path class="ink" d="M92 154h90M244 154h90"/>
+    <text class="note" x="0" y="238">wide / calm / readable</text>
+    <text class="label" x="0" y="315">TSUKI</text>
+    <text class="label" x="210" y="315">T S U K I</text>
+  </g>
+
+  <g transform="translate(1050 120)">
+    <text class="note" x="0" y="-18">menu layout ideas</text>
+    <g class="ink">
+      <rect x="0" y="0" width="190" height="250"/>
+      <rect x="230" y="0" width="190" height="250"/>
+      <rect x="460" y="0" width="190" height="250"/>
+    </g>
+    <g class="light">
+      <line x1="28" y1="62" x2="162" y2="62"/><line x1="28" y1="96" x2="148" y2="96"/><line x1="28" y1="130" x2="170" y2="130"/><line x1="28" y1="164" x2="124" y2="164"/>
+      <circle cx="325" cy="100" r="58"/><line x1="260" y1="180" x2="390" y2="180"/>
+      <line x1="492" y1="62" x2="624" y2="62"/><line x1="492" y1="98" x2="604" y2="98"/><line x1="492" y1="134" x2="638" y2="134"/><line x1="492" y1="170" x2="590" y2="170"/>
+    </g>
+    <text class="note" x="36" y="310">food as hero, list stays quiet</text>
+  </g>
+
+  <g transform="translate(135 605)">
+    <text class="note" x="0" y="-18">symbol / signage</text>
+    <rect class="light" x="0" y="0" width="250" height="160"/>
+    <circle class="ink" cx="124" cy="58" r="38"/>
+    <path class="ink" d="M88 59h73M119 60v35"/>
+    <text class="label" x="47" y="130">TSUKI</text>
+    <rect class="light" x="330" y="0" width="140" height="240"/>
+    <circle class="ink" cx="400" cy="72" r="32"/>
+    <path class="ink" d="M370 72h60M396 73v29"/>
+    <text class="small" x="363" y="138">MENU</text>
+  </g>
+
+  <g transform="translate(650 610)">
+    <text class="note" x="0" y="-18">website wireframe</text>
+    <rect class="ink" x="0" y="0" width="260" height="330"/>
+    <rect class="light" x="28" y="54" width="205" height="128"/>
+    <line class="light" x1="28" y1="220" x2="202" y2="220"/>
+    <line class="light" x1="28" y1="250" x2="158" y2="250"/>
+    <rect class="ink" x="330" y="0" width="260" height="330"/>
+    <rect class="light" x="360" y="54" width="85" height="85"/>
+    <rect class="light" x="474" y="54" width="85" height="85"/>
+    <rect class="light" x="360" y="168" width="85" height="85"/>
+    <rect class="light" x="474" y="168" width="85" height="85"/>
+    <text class="note" x="0" y="390">large image, short path to booking</text>
+  </g>
+</svg>

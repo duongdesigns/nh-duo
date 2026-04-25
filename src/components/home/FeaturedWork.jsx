@@ -8,7 +8,7 @@ import useEditorialReveal from "../../hooks/useEditorialReveal";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
 import AnimatedHeadline from "../layout/AnimatedHeadline";
 import SectionEyebrow from "../layout/SectionEyebrow";
-import { featuredPreviewImages, projectImages } from "../../data/imagery";
+import { caseStudyImages, featuredPreviewImages, projectImages } from "../../data/imagery";
 import { featuredProjects } from "../../data/projects";
 
 function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
@@ -29,14 +29,14 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     heading: "Work that brings direction, narrative, and execution into one calmer system.",
     body: "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
     switcher: "Projects",
-    swipeHint: "Swipe for more stuff!",
-    previewHint: "Check the awesomeness below!",
+    swipeHint: "Swipe to browse",
+    previewHint: "Preview selected",
   };
 
   const projectCopy = {
-    "nord-form": {
-      category: "Brand Design",
-      summary: "A cinematic brand-led website for a design-led product studio with strong narrative pacing.",
+    tsuki: {
+      category: "Brand Identity",
+      summary: "A premium sushi restaurant identity shaped through moon symbolism, warm gold, and calm digital pacing.",
     },
     "atlas-case": {
       category: "Case Study / Art Direction",
@@ -51,6 +51,9 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const currentProject =
     featuredProjects.find((project) => project.id === displayedProjectId) ?? featuredProjects[0];
   const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
+  const currentPreviewImages = currentProject.id === "tsuki"
+    ? [caseStudyImages.grid[1], caseStudyImages.gallery[2]]
+    : featuredPreviewImages.slice(0, 2);
   const currentProjectIndex = Math.max(
     featuredProjects.findIndex((project) => project.id === currentProject.id),
     0
@@ -189,38 +192,38 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
         data-fw-selector-mobile={mobile ? "true" : undefined}
         className={`group rounded-[1.45rem] border text-left transition ${mobile
           ? `w-[calc(100vw-8.5rem)] min-[520px]:w-[calc(100vw-9.5rem)] min-[680px]:w-full max-w-none flex-shrink-0 snap-center px-4 py-4 ${isActive
-            ? "border-[rgba(58,175,169,0.35)] bg-white/[0.04] shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
-            : "border-white/8 bg-white/[0.018] hover:border-white/14 hover:bg-white/[0.028]"
+            ? "border-[rgba(58,175,169,0.35)] bg-[#121A22]/95 shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
+            : "border-white/8 bg-[#111820]/92 hover:border-white/14 hover:bg-[#121A22]/95"
           }`
-          : `h-full min-h-[220px] px-4 py-5 md:px-5 ${isActive
-            ? "border-[rgba(58,175,169,0.35)] bg-white/[0.028] shadow-[0_14px_30px_rgba(0,0,0,0.14)]"
-            : "border-white/8 bg-white/[0.015] hover:border-white/14 hover:bg-white/[0.025]"
+          : `h-full min-h-[176px] px-4 py-4 ${isActive
+            ? "border-[rgba(58,175,169,0.34)] bg-[#121A22]/95 shadow-[0_10px_24px_rgba(0,0,0,0.12)]"
+            : "border-white/8 bg-[#111820]/92 hover:border-white/14 hover:bg-[#121A22]/95"
           }`
           }`}
       >
         <div className={`flex ${mobile ? "items-start gap-4" : "h-full flex-col"}`}>
           <div className={`flex ${mobile ? "min-w-0 flex-1 flex-col" : "h-full flex-col justify-between"}`}>
-  <div>
-    <div className="flex items-start justify-end gap-4">
-      <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
-        {project.year}
-      </div>
-    </div>
+            <div>
+              <div className="flex items-start justify-end gap-4">
+                <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
+                  {project.year}
+                </div>
+              </div>
 
-    <div className={`type-label ${mobile ? "mt-3 text-white/48" : "mt-5 text-white/54"}`}>
-      {info.category}
-    </div>
-    <div className={`font-medium tracking-[-0.04em] text-white ${mobile ? "mt-2 text-[1.2rem] leading-[1.02]" : "mt-3 text-[1.45rem] text-white/96"}`}>
-      {project.title}
-    </div>
-  </div>
+              <div className={`type-label ${mobile ? "mt-3 text-white/48" : "mt-4 text-white/50"}`}>
+                {info.category}
+              </div>
+              <div className={`font-medium tracking-[-0.04em] text-white ${mobile ? "mt-2 text-[1.2rem] leading-[1.02]" : "mt-3 text-[1.22rem] leading-[1.05] text-white/96"}`}>
+                {project.title}
+              </div>
+            </div>
 
-  {mobile ? null : (
-    <p className="mt-6 line-clamp-3 text-sm leading-7 text-white/68">
-      {info.summary}
-    </p>
-  )}
-</div>
+            {mobile ? null : (
+              <p className="mt-5 line-clamp-2 text-sm leading-7 text-white/64">
+                {info.summary}
+              </p>
+            )}
+          </div>
 
           {mobile ? (
             <div
@@ -407,10 +410,13 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
           <div className="grid gap-8 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-14">
             <div className="max-w-none xl:max-w-[60ch]" data-fw-intro>
               <SectionEyebrow>{copy.eyebrow}</SectionEyebrow>
-              <AnimatedHeadline as="h2" className="section-title max-w-[34ch] xl:max-w-[30ch]">
+              <AnimatedHeadline
+                as="h2"
+                className="subsection-title max-w-[31ch] text-white"
+              >
                 {copy.heading}
               </AnimatedHeadline>
-              <p className="body-safe body-safe--wide mt-6 text-base leading-[1.85] text-white/60 md:text-lg">
+              <p className="body-safe body-safe--wide mt-5 text-base leading-[1.8] text-white/60">
                 {copy.body}
               </p>
 
@@ -458,7 +464,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
             <div
               ref={previewRef}
-              className="rounded-[2rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(255,255,255,0.012))] p-4 shadow-[0_24px_72px_rgba(0,0,0,0.16)] md:p-5 xl:p-6"
+              className="rounded-[1.75rem] border border-white/8 bg-[#111820]/96 p-4 shadow-[0_18px_52px_rgba(0,0,0,0.14)] md:p-5"
             >
               <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
                 <div className="min-w-0">
@@ -473,17 +479,17 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                 <button
                   onClick={() => onOpenCaseStudy(currentProject.id)}
                   type="button"
-                  className="button-pill button-pill--secondary group shrink-0 self-start sm:self-auto"
+                  className="button-pill button-pill--primary cursor-contrast-dark group shrink-0 self-start font-medium sm:self-auto"
                 >
                   View case study
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />
                 </button>
               </div>
 
-              <div className="mt-6 grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-stretch">
+              <div className="mt-5 grid gap-6 xl:grid-cols-[1fr_0.78fr] xl:items-stretch">
                 <div
                   data-fw-preview-media
-                  className="relative overflow-hidden rounded-[1.7rem]"
+                  className="relative aspect-[16/11] overflow-hidden rounded-[1.45rem] md:aspect-[16/10] xl:aspect-auto xl:min-h-[24rem]"
                 >
                   <img
                     src={projectImages[currentProject.id]?.src}
@@ -491,39 +497,31 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                     loading="lazy"
                     decoding="async"
                     style={{ objectPosition: projectImages[currentProject.id]?.position ?? "50% 50%" }}
-                    className="editorial-image h-[21rem] w-full object-cover md:h-[28rem] xl:h-full xl:min-h-[31rem]"
+                    className="editorial-image absolute inset-0 h-full w-full object-cover"
                   />
                 </div>
 
                 <div
                   data-fw-preview-details
-                  className="flex flex-col justify-between p-1 md:p-2"
+                  className="flex flex-col justify-between gap-8 p-1 md:p-2"
                 >
                   <div>
-                    <div className="type-label text-white/38">{copy.switcher}</div>
+                    <div className="text-sm leading-6 text-white/42">{copy.switcher}</div>
                     <h3 className="subsection-title mt-4 max-w-[11ch] font-[600] leading-[0.95] text-white">
                       {currentProject.title}
                     </h3>
                     <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
                       {currentProjectCopy.summary}
                     </p>
-                    <button
-                      onClick={() => onOpenCaseStudy(currentProject.id)}
-                      type="button"
-                      className="button-pill button-pill--secondary group mt-6 self-start md:hidden"
-                    >
-                      View case study
-                      <ArrowRight size={16} className="transition group-hover:translate-x-1" />
-                    </button>
                   </div>
 
-                  <div className="mt-8 grid gap-3">
+                  <div className="mt-2 grid gap-3">
                     <div className="grid grid-cols-2 gap-3">
-                      {featuredPreviewImages.slice(0, 2).map((image) => (
+                      {currentPreviewImages.map((image) => (
                         <div
                           key={image.src}
                           data-fw-preview-thumb
-                          className="relative overflow-hidden rounded-[1.15rem] border border-white/10 bg-white/[0.02]"
+                          className="relative aspect-[5/4] overflow-hidden rounded-[1rem] border border-white/10 bg-[#121A22]"
                         >
                           <img
                             src={image.src}
@@ -531,7 +529,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                             loading="lazy"
                             decoding="async"
                             style={{ objectPosition: image.position ?? "50% 50%" }}
-                            className="editorial-image aspect-[5/4] h-full w-full object-cover"
+                            className="editorial-image absolute inset-0 h-full w-full object-cover"
                           />
                         </div>
                       ))}

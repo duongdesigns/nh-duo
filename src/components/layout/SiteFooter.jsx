@@ -2,14 +2,17 @@ import { useRef } from "react";
 
 import useEditorialReveal from "../../hooks/useEditorialReveal";
 
-function SiteFooter({
-  caseStudyProjects,
-  navigate,
-  onOpenCaseStudy,
-  page,
-}) {
+function SiteFooter({ navigate, page }) {
   const root = useRef(null);
   const year = new Date().getFullYear();
+  const footerLinkClass =
+    "group relative w-fit text-sm leading-6 text-white/62 transition-colors duration-200 hover:text-white focus-visible:text-white";
+  const footerUnderline = (
+    <span
+      aria-hidden="true"
+      className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-[rgba(111,211,216,0.86)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+    />
+  );
 
   useEditorialReveal(root, {
     once: true,
@@ -27,73 +30,91 @@ function SiteFooter({
   });
 
   return (
-    <footer ref={root} className="home-shell pb-10 pt-10 md:pb-14 md:pt-12">
-      <div className="content-shell rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-6 shadow-[0_20px_56px_rgba(0,0,0,0.12)] md:p-8">
-        <div className="grid gap-10 xl:grid-cols-[1.1fr_0.7fr_0.85fr_0.85fr] xl:gap-12">
+    <footer
+      ref={root}
+      className="home-shell relative z-10 bg-[#0B1117] py-20 shadow-[0_0_0_100vmax_#0B1117] [clip-path:inset(0_-100vmax)] md:py-24"
+    >
+      <div className="content-shell">
+        <div className="grid gap-10">
           <div data-footer-group>
-            <div className="type-eyebrow text-white/48">NH / DUO</div>
-            <p className="body-safe mt-5 text-base leading-[1.82] text-white/62">
-              Brand-led digital work shaped through editorial pacing, restrained motion, and systems that stay clear as the portfolio grows.
+            <div className="text-[clamp(2rem,5vw,4.2rem)] font-semibold leading-none tracking-[0.02em] text-white">
+              NH <span className="text-white/38">/</span> DUO
+            </div>
+          </div>
+
+          <div
+            data-footer-group
+            className="grid gap-8 pt-2 md:grid-cols-[minmax(0,1.25fr)_minmax(11rem,0.5fr)_minmax(8rem,0.32fr)] md:items-start md:gap-10 xl:gap-14"
+          >
+            <p className="body-safe body-safe--wide max-w-[48ch] text-base leading-[1.8] text-white/58">
+              Brand-led digital presentation shaped through editorial pacing,
+              restrained motion, and clear frontend systems.
             </p>
-          </div>
 
-          <div data-footer-group>
-            <div className="type-label text-white/36">Navigation</div>
-            <div className="mt-5 flex flex-col items-start gap-3">
-              {[
-                ["Home", "home"],
-                ["Work", "work"],
-                ["About", "about"],
-                ["Contact", "contact"],
-              ].map(([label, value]) => (
-                <button
-                  key={value}
-                  aria-current={page === value ? "page" : undefined}
-                  className="text-sm text-white/68 transition hover:text-white"
-                  onClick={() => navigate(value)}
-                  type="button"
-                >
-                  {label}
-                </button>
-              ))}
+            <div>
+              <div className="text-sm font-medium leading-6 text-white/46">Kontakt</div>
+              <div className="mt-4 grid gap-2 text-sm leading-6 text-white/62">
+                <a className={footerLinkClass} href="mailto:hello@nhduo.studio">
+                  hello@nhduo.studio
+                  {footerUnderline}
+                </a>
+                <span>
+                  Musterstrasse 12
+                  <br />
+                  12345 Musterstadt
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div data-footer-group>
-            <div className="type-label text-white/36">Case Studies</div>
-            <div className="mt-5 flex flex-col items-start gap-3">
-              {caseStudyProjects.map((project) => (
-                <button
-                  key={project.id}
-                  className="text-sm text-white/68 transition hover:text-white"
-                  onClick={() => onOpenCaseStudy(project.id)}
-                  type="button"
-                >
-                  {project.title}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div data-footer-group>
-            <div className="type-label text-white/36">Contact</div>
-            <div className="mt-5 flex flex-col gap-3 text-sm text-white/68">
-              <a className="transition hover:text-white" href="mailto:hello@nhduo.studio">
-                hello@nhduo.studio
-              </a>
-              <p className="leading-7 text-white/54">
-                Open to identity systems, portfolio direction, and digital experiences shaped with clarity.
-              </p>
+            <div>
+              <div className="text-sm font-medium leading-6 text-white/46">Navigation</div>
+              <nav className="mt-4" aria-label="Footer navigation">
+                <div className="grid gap-2">
+                  {[
+                    ["Work", "work"],
+                    ["About", "about"],
+                    ["Contact", "contact"],
+                  ].map(([label, value]) => (
+                    <button
+                      key={value}
+                      aria-current={page === value ? "page" : undefined}
+                      className={footerLinkClass}
+                      onClick={() => navigate(value)}
+                      type="button"
+                    >
+                      {label}
+                      {footerUnderline}
+                    </button>
+                  ))}
+                </div>
+              </nav>
             </div>
           </div>
         </div>
 
         <div
           data-footer-meta
-          className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-5 text-sm text-white/40 md:flex-row md:items-center md:justify-between"
+          className="mt-12 flex flex-col gap-4 text-sm text-white/36 md:mt-16 md:flex-row md:items-center md:justify-between"
         >
-          <div>{year} NH / DUO</div>
-          <div>Editorial layouts. Restrained motion. Brand-led web presentation.</div>
+          <div>© {year} NH / DUO · Alle Rechte vorbehalten.</div>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <button
+              className={footerLinkClass}
+              onClick={() => navigate("impressum")}
+              type="button"
+            >
+              Impressum
+              {footerUnderline}
+            </button>
+            <button
+              className={footerLinkClass}
+              onClick={() => navigate("datenschutz")}
+              type="button"
+            >
+              Datenschutz
+              {footerUnderline}
+            </button>
+          </div>
         </div>
       </div>
     </footer>

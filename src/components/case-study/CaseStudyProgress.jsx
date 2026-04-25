@@ -89,7 +89,7 @@ function CaseStudyProgress({
   return (
     <aside className="self-start lg:sticky lg:top-28 lg:h-fit">
       <div className="lg:hidden">
-        <div ref={mobilePanelRef} className="w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-white/5 backdrop-blur-xl">
+        <div ref={mobilePanelRef} className="w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121A22]/95 backdrop-blur-xl">
           <div className="p-3">
             <div className="px-3 pb-3 pt-2 text-xs uppercase tracking-[0.24em] text-white/42">
               {title}
@@ -167,7 +167,7 @@ function CaseStudyProgress({
 
       <nav
         aria-label="Case study section progress"
-        className="hidden rounded-[1.75rem] border border-white/10 bg-white/5 p-3 lg:block"
+        className="hidden rounded-[1.75rem] border border-white/10 bg-[#121A22]/95 p-3 lg:block"
       >
         <div className="px-3 pb-3 pt-2 text-xs uppercase tracking-[0.24em] text-white/42">
           {title}

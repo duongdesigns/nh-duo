@@ -7,7 +7,7 @@ import SimpleContactForm from "./SimpleContactForm";
 function ContactSection() {
   const root = useRef(null);
   return (
-    <section ref={root} className="home-shell pb-24 pt-12 md:pb-32 md:pt-16">
+    <section ref={root} className="home-shell py-28 md:py-36">
       <div className="content-shell w-full">
         <div className="grid gap-16 xl:gap-24">
           <div className="grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-16">
@@ -15,11 +15,11 @@ function ContactSection() {
               <SectionEyebrow>Contact</SectionEyebrow>
               <AnimatedHeadline
                 as="h2"
-                className="section-title heading-safe max-w-[18ch]"
+                className="subsection-title heading-safe max-w-[20ch] text-white"
               >
                 Shape a portfolio, identity, or layout that feels built — not templated.
               </AnimatedHeadline>
-              <p className="body-safe body-safe--wide mt-6 text-base leading-[1.85] text-white/60 md:text-lg">
+              <p className="body-safe body-safe--wide mt-5 text-base leading-[1.8] text-white/60">
                 Keep the form direct and low-friction. Ask only for what matters. Use motion with restraint.
               </p>
             </div>

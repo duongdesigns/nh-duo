@@ -152,7 +152,7 @@ export default function CredibilityStrip() {
   );
 
   return (
-    <section ref={root} className="home-shell pb-14 pt-10 md:pb-18 md:pt-14">
+    <section ref={root} className="home-shell py-28 md:py-36">
       <div className="content-shell px-1">
         <p className="subsection-title text-white/88">
           More work across identity, print, and digital systems.

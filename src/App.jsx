@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-import { caseStudyProjects } from "./data/caseStudies";
+import { caseStudyProjects } from "./data/caseStudyProjects";
 import { caseStudySections } from "./data/caseStudySections";
 import ContactSection from "./components/home/ContactSection";
 import CredibilityStrip from "./components/home/CredibilityStrip";
 import FeaturedWork from "./components/home/FeaturedWork";
 import Hero from "./components/home/Hero";
 import Principles from "./components/home/Principles";
+import BackgroundMotion from "./components/layout/BackgroundMotion";
 import Navbar from "./components/layout/Navbar";
 import SiteFooter from "./components/layout/SiteFooter";
 
@@ -16,6 +17,8 @@ const routeLoaders = {
   work: () => import("./pages/WorkPage"),
   "case-study": () => import("./pages/CaseStudyPage"),
   contact: () => import("./pages/ContactPage"),
+  datenschutz: () => import("./pages/LegalPage"),
+  impressum: () => import("./pages/LegalPage"),
 };
 
 const defaultCaseStudyId = caseStudyProjects[0]?.id ?? "";
@@ -92,6 +95,8 @@ const getPageTitle = (page, caseStudyId) => {
     work: "NH / DUO - Work",
     about: "NH / DUO - About",
     contact: "NH / DUO - Contact",
+    datenschutz: "NH / DUO - Datenschutz",
+    impressum: "NH / DUO - Impressum",
   };
 
   return titles[page] ?? titles.home;
@@ -118,6 +123,8 @@ function App() {
     work: null,
     "case-study": null,
     contact: null,
+    datenschutz: null,
+    impressum: null,
   });
 
   const introDelayChildren = 0.18;
@@ -209,11 +216,30 @@ function App() {
   }, [showIntro]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    let frameId = 0;
+
+    const updateScrolled = () => {
+      frameId = 0;
+      const nextScrolled = window.scrollY > 48;
+      setScrolled((current) => (
+        current === nextScrolled ? current : nextScrolled
+      ));
+    };
+
+    const onScroll = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(updateScrolled);
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+      window.removeEventListener("scroll", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -356,6 +382,8 @@ function App() {
       preloadPage("work");
       preloadPage("case-study");
       preloadPage("contact");
+      preloadPage("datenschutz");
+      preloadPage("impressum");
     };
 
     if ("requestIdleCallback" in window) {
@@ -501,9 +529,22 @@ function App() {
   const WorkPage = routeComponents.work;
   const CaseStudyPage = routeComponents["case-study"];
   const ContactPage = routeComponents.contact;
+  const DatenschutzPage = routeComponents.datenschutz;
+  const ImpressumPage = routeComponents.impressum;
 
   return (
-    <div className="min-h-screen bg-[#0E141B] text-[#F0F0F0] selection:bg-white/20">
+    <div className="relative min-h-screen bg-[#0E141B] text-[#F0F0F0] selection:bg-white/20">
+      {!showIntro && introExitComplete && (
+        <BackgroundMotion
+          colors={{
+            line: "240 240 240",
+            accent: "58 175 169",
+            signal: "245 180 38",
+          }}
+          intensity={0.78}
+        />
+      )}
+
       {!showIntro && (
         <Navbar
           activeCaseStudyId={activeCaseStudyId}
@@ -579,14 +620,18 @@ function App() {
                 )}
 
                 {page === "work" && (
-                  WorkPage ? <WorkPage onOpenCaseStudy={openCaseStudy} /> : null
+                  WorkPage ? (
+                    <WorkPage
+                      navigate={openPage}
+                      onOpenCaseStudy={openCaseStudy}
+                    />
+                  ) : null
                 )}
 
                 {page === "about" && (
                   AboutPage ? (
                     <AboutPage
                       navigate={openPage}
-                      onOpenCaseStudy={openCaseStudy}
                     />
                   ) : null
                 )}
@@ -597,14 +642,19 @@ function App() {
                       activeSection={activeSection}
                       caseStudyId={activeCaseStudyId}
                       caseStudyRefs={caseStudyRefs}
+                      navigate={openPage}
                       onJump={scrollToCaseStudySection}
-                      onSelectProject={openCaseStudy}
-                      projects={caseStudyProjects}
                     />
                   ) : null
                 )}
 
                 {page === "contact" && (ContactPage ? <ContactPage /> : null)}
+                {page === "impressum" && (
+                  ImpressumPage ? <ImpressumPage type="impressum" /> : null
+                )}
+                {page === "datenschutz" && (
+                  DatenschutzPage ? <DatenschutzPage type="datenschutz" /> : null
+                )}
               </motion.div>
             </AnimatePresence>
           </main>

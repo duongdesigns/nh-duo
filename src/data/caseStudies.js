@@ -1,96 +1,102 @@
 import { caseStudyImages, featuredPreviewImages, projectImages } from "./imagery";
+import {
+  caseStudyMenuSummaries,
+  caseStudyProjects,
+  getCaseStudyProjectById,
+} from "./caseStudyProjects";
 import { featuredProjects } from "./projects";
 
 const caseStudiesById = {
-  "nord-form": {
-    menuSummary:
-      "A brand-led studio website shaped around atmosphere, hierarchy, and deliberate pacing.",
+  tsuki: {
+    menuSummary: caseStudyMenuSummaries.tsuki,
     sections: {
       Hero: {
         kicker: "Case Study Hero",
-        heading: "Nord Form builds its presence through narrative pacing, restrained motion, and a system-first interface.",
+        heading: "TSUKI translates a premium sushi restaurant into a calm identity system built from moon symbolism, gold detail, and quiet digital pacing.",
         text:
-          "The page introduces the studio through one dominant frame and a concise premise. Every transition is there to support orientation rather than spectacle.",
+          "The brand needed to feel elevated without becoming decorative. The direction pairs a restrained dark-green base with a warm gold mark, editorial menu systems, and a website that gives the food and atmosphere enough room to lead.",
         layout: "hero",
-        image: projectImages["nord-form"],
+        image: projectImages.tsuki,
       },
       Overview: {
         kicker: "Project Overview",
-        heading: "Create a digital presence that feels cinematic without losing speed, clarity, or editorial control.",
+        heading: "Create a premium restaurant identity that feels Japanese-inspired, modern, and usable across print, signage, web, and social touchpoints.",
         text:
-          "The brief centered on translating a design-led practice into a site system: sharper narrative structure, clearer service positioning, and motion that feels premium but never decorative.",
+          "The concept grew from a clear positioning problem: sushi restaurants often lean either traditional and familiar or trendy and loud. TSUKI needed a quieter space between both, with enough elegance for a premium audience and enough clarity for daily restaurant use.",
         layout: "overview",
         details: [
-          ["Role", "Creative Developer / Brand Designer"],
-          ["Timeline", "8 weeks"],
-          ["Scope", "Brand-led website, content rhythm, case-study system"],
-          ["Tools", "React, GSAP, Motion, Figma"],
+          ["Role", "Brand Designer / Creative Developer"],
+          ["Timeline", "Concept project, 2025"],
+          ["Scope", "Identity, logo system, menu design, website, social media"],
+          ["Tools", "Figma, Adobe CC, AI image process visuals"],
         ],
       },
       Discovery: {
         kicker: "Exploration / Discovery",
-        heading: "The exploration phase focused on editorial reference, pacing, and how much motion the brand could carry without feeling overworked.",
+        heading: "Research defined the audience, the premium positioning, and the visual tension between calm tradition and contemporary dining.",
         text:
-          "Early studies tested contrast, cropping, and line length. The direction that held up best paired dense dark surfaces with calmer spacing and fewer, more deliberate accents.",
+          "The styleguide frames TSUKI around business dining, events, and design-aware guests who value quality, atmosphere, and restraint. Competitive review showed a gap for a brand that feels refined and distinctive without relying on visual excess.",
         layout: "media",
         media: [
-          featuredPreviewImages[0],
+          caseStudyImages.process[0],
           caseStudyImages.media[0],
           caseStudyImages.grid[1],
         ],
       },
       Process: {
         kicker: "Design Process",
-        heading: "System decisions came first: spacing, image treatment, headline rhythm, and a clearer path between overview and proof.",
+        heading: "The core system came from reducing the brand to a few repeatable rules: moon mark, generous spacing, dark surfaces, and warm gold hierarchy.",
         text:
-          "Rather than adding more modules, the process refined the transitions between them. The final structure uses fewer shifts in tone and more consistent visual pressure from section to section.",
+          "Logo studies explored the moon as a symbol of calm, purity, and continuity. The final direction uses a circular mark with a bridge-like division, wide-set lettering, and a limited color system so menus, web sections, and applications feel connected.",
         layout: "media",
         media: [
+          caseStudyImages.process[1],
+          caseStudyImages.mockups[0],
           caseStudyImages.grid[0],
-          caseStudyImages.gallery[1],
-          caseStudyImages.media[2],
         ],
       },
       "Final Design": {
         kicker: "Final Design",
-        heading: "The final design presents the studio as composed and exacting, with image-first sections supported by measured interaction states.",
+        heading: "The final identity presents TSUKI as elegant but approachable, with print and digital materials sharing the same calm visual grammar.",
         text:
-          "Large media, tighter copy edits, and shared motion timings create a consistent reading rhythm. The result feels premium without drifting into noise.",
+          "The menu system uses black surfaces, warm gold framing, and clear product grouping. The website extends that mood through large atmospheric imagery, restrained navigation, and a booking path that stays direct.",
         layout: "gallery",
         gallery: [
           caseStudyImages.hero[0],
-          caseStudyImages.media[0],
+          projectImages.tsuki,
+          caseStudyImages.mockups[0],
           caseStudyImages.grid[0],
+          caseStudyImages.media[0],
+          caseStudyImages.gallery[2],
         ],
       },
       Impact: {
         kicker: "Impact",
-        heading: "The outcome is a more legible and reusable web system for presenting brand work with stronger narrative control.",
+        heading: "The outcome is a cohesive restaurant brand that can move from table menu to website to tote bag without losing its premium tone.",
         text:
-          "The structure now supports both a studio homepage and future case studies without redesigning the whole experience each time a new project is added.",
+          "Because the concept is built from a small set of rules, every touchpoint can be extended without inventing a new visual language. The system gives the restaurant a recognizable identity while keeping practical assets readable.",
         layout: "impact",
         items: [
-          "Clearer project orientation from the opening screen",
-          "Reusable section rhythm for future launches and case studies",
-          "More premium tone without increasing visual clutter",
+          "Sharper premium positioning for business guests and design-aware diners",
+          "Consistent logo, color, menu, website, and merchandise applications",
+          "Clearer path from brand atmosphere to reservation and menu exploration",
         ],
       },
       Learnings: {
         kicker: "Learnings",
-        heading: "Restraint became the main design tool: every addition had to earn its place in the reading flow.",
+        heading: "The strongest branding decisions were the quietest ones: fewer colors, slower pacing, and enough negative space for the materials to feel intentional.",
         text:
-          "The project reinforced that premium digital work depends less on volume and more on how consistently typography, motion, and spacing agree with one another.",
+          "TSUKI reinforced that restaurant branding has to be both atmospheric and operational. A mark can be symbolic, but menus, booking flows, and social assets still need simple rules that work under real conditions.",
         layout: "text",
         notes: [
-          "Motion works best when it clarifies sequence rather than drawing attention to itself.",
-          "Image pacing matters as much as image quality when the layout is editorial.",
+          "A brand case study reads stronger when strategy, audience, process, and applications are shown as one connected chain.",
+          "Premium restaurant design benefits from restraint when the food, menu structure, and booking path still need to stay clear.",
         ],
       },
     },
   },
   "atlas-case": {
-    menuSummary:
-      "A case-study template built to make process, craft, and outcomes feel equally intentional.",
+    menuSummary: caseStudyMenuSummaries["atlas-case"],
     sections: {
       Hero: {
         kicker: "Case Study Hero",
@@ -175,8 +181,7 @@ const caseStudiesById = {
     },
   },
   "signal-duo": {
-    menuSummary:
-      "A modular identity and portfolio system focused on dark surfaces, brand presence, and controlled interaction.",
+    menuSummary: caseStudyMenuSummaries["signal-duo"],
     sections: {
       Hero: {
         kicker: "Case Study Hero",
@@ -262,15 +267,8 @@ const caseStudiesById = {
   },
 };
 
-export const caseStudyProjects = featuredProjects.map((project) => ({
-  ...project,
-  menuSummary: caseStudiesById[project.id]?.menuSummary ?? project.summary,
-}));
+export { caseStudyProjects, getCaseStudyProjectById };
 
 export const getCaseStudyById = (projectId) => (
   caseStudiesById[projectId] ?? caseStudiesById[featuredProjects[0].id]
-);
-
-export const getCaseStudyProjectById = (projectId) => (
-  caseStudyProjects.find((project) => project.id === projectId) ?? caseStudyProjects[0]
 );

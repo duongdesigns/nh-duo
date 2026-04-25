@@ -237,7 +237,7 @@ function Hero({ onExplore, onCaseStudy }) {
             </h1>
             <p
               data-hero-copy
-              className="body-safe mt-8 text-[clamp(1rem,2vw,1.45rem)] leading-[1.7] text-white/68"
+              className="body-safe body-safe--wide mt-8 max-w-[42rem] text-base leading-[1.8] text-white/64 md:text-lg"
             >
               {copy.body}
             </p>
@@ -265,7 +265,7 @@ function Hero({ onExplore, onCaseStudy }) {
 
           <div
             data-hero-meta
-            className="mt-16 max-w-[68ch] border-t border-white/8 pt-8 text-center xl:mt-20"
+            className="mt-16 max-w-[68ch] pt-2 xl:mt-20"
           >
             <div
               ref={mobileStatsViewportRef}
@@ -279,9 +279,9 @@ function Hero({ onExplore, onCaseStudy }) {
                   <div
                     key={`${item.label}-${index}`}
                     aria-hidden={index >= copy.stats.length ? "true" : undefined}
-                    className="w-[16rem] flex-shrink-0 text-center"
+                    className="w-[16rem] flex-shrink-0"
                   >
-                    <div className="font-mono-accent text-[10px] uppercase tracking-[0.24em] text-white/38">
+                    <div className="text-sm font-medium leading-6 text-white/42">
                       {item.label}
                     </div>
                     <div className="mt-3 text-sm leading-7 text-white/66">
@@ -296,11 +296,11 @@ function Hero({ onExplore, onCaseStudy }) {
               <HorizontalScrollRow
                 className="sm:overflow-visible"
                 rowClassName="sm:grid sm:grid-cols-3 sm:gap-8 xl:gap-10 2xl:gap-12"
-                itemClassName="w-[17rem] sm:w-auto sm:flex-shrink text-center"
+                itemClassName="w-[17rem] sm:w-auto sm:flex-shrink"
               >
                 {copy.stats.map((item) => (
                   <div key={item.label}>
-                    <div className="font-mono-accent text-[10px] uppercase tracking-[0.24em] text-white/38">{item.label}</div>
+                    <div className="text-sm font-medium leading-6 text-white/42">{item.label}</div>
                     <div className="mt-3 text-sm leading-7 text-white/66">{item.text}</div>
                   </div>
                 ))}

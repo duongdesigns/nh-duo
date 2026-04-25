@@ -13,7 +13,7 @@ import { featuredProjects } from "../data/projects";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-function WorkPage({ onOpenCaseStudy }) {
+function WorkPage({ navigate, onOpenCaseStudy }) {
   const root = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const copy = {
@@ -22,18 +22,18 @@ function WorkPage({ onOpenCaseStudy }) {
     cta: "View case study",
   };
   const projectCopy = {
-    "nord-form": {
-      category: "Brand System / Digital Experience",
+    tsuki: {
+      category: "Brand Identity / Restaurant System",
       summary:
-        "A cinematic brand-led website for a design-led product studio with restrained motion and strong narrative pacing.",
+        "A premium sushi restaurant identity built around moon symbolism, warm gold, menu systems, and a restrained web presence.",
       metrics: [
         {
           icon: "down",
-          label: "TIME TO ORIENT",
+          label: "BRAND NOISE",
         },
         {
-          value: 82,
-          label: "CLARITY ACROSS SYSTEMS",
+          value: 91,
+          label: "SYSTEM CONSISTENCY",
         },
       ],
     },
@@ -195,7 +195,7 @@ function WorkPage({ onOpenCaseStudy }) {
   return (
     <section
       ref={root}
-      className="page-shell xl:pt-30 xl:pb-12"
+      className="page-shell"
       style={{ "--work-accent": "#3AAFA9" }}
     >
       <div
@@ -214,12 +214,22 @@ function WorkPage({ onOpenCaseStudy }) {
           >
             <span data-work-title>Projects Built with System and Story</span>
           </AnimatedHeadline>
-          <p data-work-copy data-reveal-group className="body-safe body-safe--wide mb-16 text-base leading-[1.8] text-white/60 md:text-lg xl:mb-18">
+          <p data-work-copy data-reveal-group className="body-safe body-safe--wide text-base leading-[1.8] text-white/60 md:text-lg">
             {copy.intro}
           </p>
+          <button
+            data-work-copy
+            data-reveal-group
+            className="button-pill button-pill--primary cursor-contrast-dark group mt-8 font-medium"
+            onClick={() => navigate?.("contact")}
+            type="button"
+          >
+            Start a Conversation
+            <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
+          </button>
         </div>
 
-        <div className="space-y-8">
+        <div className="mt-16 space-y-8 xl:mt-18">
           {featuredProjects.map((project) => {
             const image = projectImages[project.id];
             const titleId = `work-card-title-${project.id}`;
@@ -229,7 +239,7 @@ function WorkPage({ onOpenCaseStudy }) {
               <article
                 key={project.id}
                 data-work-row
-                className="rounded-[1.9rem] border border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01))] p-0 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.16)] transition-colors duration-300 hover:border-white/14 hover:bg-white/[0.025]"
+                className="rounded-[1.9rem] border border-white/8 bg-[#111820]/96 p-0 overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.16)] transition-colors duration-300 hover:border-white/14 hover:bg-[#121A22]"
               >
                 <button
                   aria-describedby={summaryId}
@@ -247,14 +257,14 @@ function WorkPage({ onOpenCaseStudy }) {
                         <h2
                           data-work-row-copy
                           id={titleId}
-                          className="subsection-title mt-5 max-w-[11ch] font-[600] leading-[0.96] text-white transition-colors duration-300 group-hover:text-[var(--work-accent)]"
+                          className="subsection-title mt-5 min-h-[2.2em] max-w-[11ch] font-[600] leading-[0.96] text-white transition-colors duration-300 group-hover:text-[var(--work-accent)]"
                         >
                           {project.title}
                         </h2>
                         <p
                           data-work-row-copy
                           id={summaryId}
-                          className="body-safe mt-6 max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56"
+                          className="body-safe mt-6 min-h-[7rem] max-w-[32ch] text-[1.02rem] leading-[1.75] text-white/56"
                         >
                           {projectCopy[project.id]?.summary ?? project.summary}
                         </p>
@@ -318,7 +328,7 @@ function WorkPage({ onOpenCaseStudy }) {
 
                     <div
                       data-work-row-media
-                      className="relative h-[22rem] overflow-hidden bg-[#d7d3d0] md:h-[26rem] lg:h-auto lg:min-h-[35rem]"
+                      className="relative aspect-[16/11] overflow-hidden bg-[#d7d3d0] md:aspect-[16/10] lg:aspect-auto lg:h-auto lg:min-h-[35rem]"
                     >
                       <img
                         src={image?.src}
@@ -326,7 +336,7 @@ function WorkPage({ onOpenCaseStudy }) {
                         loading="lazy"
                         decoding="async"
                         style={{ objectPosition: image?.position ?? "50% 50%" }}
-                        className="editorial-image h-full w-full object-cover"
+                        className="editorial-image absolute inset-0 h-full w-full object-cover"
                       />
                     </div>
                   </div>

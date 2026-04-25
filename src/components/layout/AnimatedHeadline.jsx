@@ -5,6 +5,7 @@ function AnimatedHeadline({
   as: Component = "h2",
   children,
   className = "",
+  ...props
 }) {
   const prefersReducedMotion = useReducedMotion();
   const containerRef = useRef(null);
@@ -112,19 +113,19 @@ function AnimatedHeadline({
   }, [parts, shouldRenderStatic, textContent]);
 
   if (shouldRenderStatic) {
-    return <Component className={className}>{children}</Component>;
+    return <Component className={className} {...props}>{children}</Component>;
   }
 
   if (hasCheckedInitialVisibility && isInitiallyVisible) {
     return (
-      <Component ref={containerRef} className={className}>
+      <Component ref={containerRef} className={className} {...props}>
         {children}
       </Component>
     );
   }
 
   return (
-    <Component ref={containerRef} className={className}>
+    <Component ref={containerRef} className={className} {...props}>
       <span
         ref={measureRef}
         aria-hidden="true"
