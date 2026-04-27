@@ -10,7 +10,7 @@ function ImagePreview({ image, onClose }) {
 
   return createPortal(
     <div
-      aria-label={`Image preview: ${image.alt}`}
+      aria-label={`Bildvorschau: ${image.alt}`}
       aria-modal="true"
       className="fixed inset-0 z-[140] flex h-dvh w-dvw items-center justify-center bg-[#05080B]/88 p-4 backdrop-blur-md md:p-8"
       role="dialog"
@@ -21,7 +21,7 @@ function ImagePreview({ image, onClose }) {
         onClick={onClose}
         type="button"
       >
-        Close
+        Schließen
       </button>
       <figure
         className="grid max-h-[86dvh] w-full max-w-6xl gap-4"
@@ -81,7 +81,7 @@ function CaseStudyBlock({ content, index, setRef, title }) {
       className={`case-study-image-frame rounded-[1.5rem] border border-white/10 ${className}`}
       onClick={() => setPreviewImage(image)}
       type="button"
-      aria-label={`Preview image: ${image.alt}`}
+      aria-label={`Bild ansehen: ${image.alt}`}
     >
       <img
         src={image.src}
