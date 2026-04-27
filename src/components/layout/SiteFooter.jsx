@@ -10,7 +10,7 @@ function SiteFooter({ navigate, page }) {
   const footerUnderline = (
     <span
       aria-hidden="true"
-      className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-[rgba(111,211,216,0.86)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
+      className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-[rgba(214,161,31,0.86)] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-x-100 group-focus-visible:scale-x-100"
     />
   );
 
@@ -32,7 +32,7 @@ function SiteFooter({ navigate, page }) {
   return (
     <footer
       ref={root}
-      className="home-shell relative z-10 bg-[#0B1117] py-20 shadow-[0_0_0_100vmax_#0B1117] [clip-path:inset(0_-100vmax)] md:py-24"
+      className="home-shell relative z-10 bg-[#050506] py-20 shadow-[0_0_0_100vmax_#050506] [clip-path:inset(0_-100vmax)] md:py-24"
     >
       <div className="content-shell">
         <div className="grid gap-10">
@@ -47,8 +47,8 @@ function SiteFooter({ navigate, page }) {
             className="grid gap-8 pt-2 md:grid-cols-[minmax(0,1.25fr)_minmax(11rem,0.5fr)_minmax(8rem,0.32fr)] md:items-start md:gap-10 xl:gap-14"
           >
             <p className="body-safe body-safe--wide max-w-[48ch] text-base leading-[1.8] text-white/58">
-              Brand-led digital presentation shaped through editorial pacing,
-              restrained motion, and clear frontend systems.
+              Platzhalter für einen markengeführten digitalen Auftritt mit editorialem
+              Pacing, zurückhaltender Bewegung und klarer Frontend-Struktur.
             </p>
 
             <div>
@@ -68,12 +68,12 @@ function SiteFooter({ navigate, page }) {
 
             <div>
               <div className="text-sm font-medium leading-6 text-white/46">Navigation</div>
-              <nav className="mt-4" aria-label="Footer navigation">
+              <nav className="mt-4" aria-label="Footer-Navigation">
                 <div className="grid gap-2">
                   {[
-                    ["Work", "work"],
-                    ["About", "about"],
-                    ["Contact", "contact"],
+                    ["Arbeiten", "work"],
+                    ["Über mich", "about"],
+                    ["Kontakt", "contact"],
                   ].map(([label, value]) => (
                     <button
                       key={value}

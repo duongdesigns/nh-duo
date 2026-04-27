@@ -1,7 +1,7 @@
 const defaultColors = {
   line: "240 240 240",
-  accent: "58 175 169",
-  signal: "245 180 38",
+  accent: "214 161 31",
+  signal: "242 193 78",
 };
 
 const primaryPaths = [

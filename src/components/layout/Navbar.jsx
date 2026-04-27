@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, Moon, Sun, X } from "lucide-react";
 
 export default function Navbar({
   activeCaseStudyId,
@@ -13,6 +13,8 @@ export default function Navbar({
   preloadPage,
   scrolled,
   setMenuOpen,
+  themeMode,
+  onToggleTheme,
 }) {
   const [caseStudyMenuOpen, setCaseStudyMenuOpen] = useState(false);
   const [mobileCaseStudyMenuOpen, setMobileCaseStudyMenuOpen] = useState(false);
@@ -23,6 +25,28 @@ export default function Navbar({
   const hoveredCaseStudy = caseStudyProjects.find(
     (project) => project.id === hoveredCaseStudyId
   ) ?? caseStudyProjects[0];
+  const lightThemeActive = themeMode === "light";
+  const renderThemeToggle = (compact = false) => (
+    <button
+      aria-label={lightThemeActive ? "Aktuelle Farbwahl aktivieren" : "Helle Farbpalette aktivieren"}
+      aria-pressed={lightThemeActive}
+      className={`theme-toggle inline-flex items-center rounded-full border transition ${
+        compact ? "h-[52px] w-[52px] justify-center" : "h-10 w-10 justify-center"
+      } ${
+        scrolled
+          ? "cursor-contrast-navbar border-black/10 bg-black/[0.04] text-black/72 hover:bg-black/[0.07]"
+          : "border-white/10 bg-white/[0.05] text-white/72 hover:bg-white/[0.08] hover:text-white"
+      }`}
+      onClick={onToggleTheme}
+      type="button"
+    >
+      {lightThemeActive ? (
+        <Sun size={compact ? 18 : 16} aria-hidden="true" />
+      ) : (
+        <Moon size={compact ? 18 : 16} aria-hidden="true" />
+      )}
+    </button>
+  );
 
   const renderDesktopNavItem = (item) => {
     if (item.value !== "case-study") {
@@ -33,10 +57,10 @@ export default function Navbar({
           className={`rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "cursor-contrast-navbar bg-[#0E141B] text-white"
+                ? "cursor-contrast-navbar bg-[#070708] text-white"
                 : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-[#070708]/8 hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate(item.value)}
@@ -72,10 +96,10 @@ export default function Navbar({
           className={`inline-flex items-center gap-2 rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
               ? scrolled
-                ? "cursor-contrast-navbar bg-[#0E141B] text-white"
+                ? "cursor-contrast-navbar bg-[#070708] text-white"
                 : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-[#0E141B]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-[#070708]/8 hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate("case-study")}
@@ -106,7 +130,7 @@ export default function Navbar({
               <div
                 className={`w-[23rem] overflow-hidden rounded-[1.65rem] border p-3 shadow-[0_22px_56px_rgba(0,0,0,0.2)] ${
                   scrolled
-                    ? "border-black/10 bg-[#F0F0F0]/96 text-[#0E141B] backdrop-blur-xl"
+                    ? "border-black/10 bg-[#F0F0F0]/96 text-[#070708] backdrop-blur-xl"
                     : "border-white/10 bg-[#20262D]/96 text-white backdrop-blur-xl"
                 }`}
               >
@@ -123,10 +147,10 @@ export default function Navbar({
                         className={`group block w-full rounded-[1.25rem] px-4 py-4 text-left transition-[background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           active
                             ? scrolled
-                              ? "bg-[#0E141B] text-white shadow-[0_12px_24px_rgba(14,20,27,0.16)]"
+                              ? "bg-[#070708] text-white shadow-[0_12px_24px_rgba(7,7,8,0.16)]"
                               : "bg-white/10 text-white shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
                             : scrolled
-                              ? "text-black/74 hover:bg-[#0E141B]/8 hover:text-black hover:translate-x-1"
+                              ? "text-black/74 hover:bg-[#070708]/8 hover:text-black hover:translate-x-1"
                               : "text-white/74 hover:bg-white/6 hover:text-white hover:translate-x-1"
                         }`}
                         onClick={() => {
@@ -167,8 +191,8 @@ export default function Navbar({
                         : "border-white/10 bg-white/[0.03]"
                     }`}
                   >
-                    <div className="type-label text-[rgba(58,175,169,0.78)]">
-                      Hover Preview
+                    <div className="type-label text-[rgba(214,161,31,0.78)]">
+                      Vorschau
                     </div>
                     <div className="mt-3 text-sm font-medium text-current">
                       {hoveredCaseStudy.title}
@@ -196,7 +220,7 @@ export default function Navbar({
           aria-current={page === item.value ? "page" : undefined}
           className={`block w-full rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-navbar text-black/82 hover:bg-[#0E141B]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-[#070708]/8"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -218,7 +242,7 @@ export default function Navbar({
           aria-expanded={mobileCaseStudyMenuOpen}
           className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-navbar text-black/82 hover:bg-[#0E141B]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-[#070708]/8"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -246,10 +270,10 @@ export default function Navbar({
                   className={`block w-full rounded-[1.15rem] px-3 py-3 text-left transition ${
                     active
                       ? scrolled
-                        ? "bg-[#0E141B] text-white"
+                        ? "bg-[#070708] text-white"
                         : "bg-white/10 text-white"
                       : scrolled
-                        ? "text-black/72 hover:bg-[#0E141B]/8 hover:text-black"
+                        ? "text-black/72 hover:bg-[#070708]/8 hover:text-black"
                         : "text-white/72 hover:bg-white/6 hover:text-white"
                   }`}
                   onClick={() => {
@@ -287,29 +311,33 @@ export default function Navbar({
         }`}
       >
         <button
-          aria-label="Go to the home page"
+          aria-label="Zur Startseite"
           className={`group flex items-center text-left ${scrolled ? "cursor-contrast-navbar" : ""}`}
           onClick={() => navigate("home")}
           type="button"
         >
           <div className="hidden sm:block">
             <div className={`type-eyebrow ${scrolled ? "text-black/55" : "text-white/55"}`}>NH / DUO</div>
-            <div className={`text-sm ${scrolled ? "text-black/82" : "text-white/88"}`}>Brand designer portfolio</div>
+            <div className={`text-sm ${scrolled ? "text-black/82" : "text-white/88"}`}>Brand-Design-Portfolio</div>
           </div>
         </button>
 
-        <nav aria-label="Primary" className="ml-auto hidden items-center justify-end gap-4 lg:gap-5 md:flex">
+        <nav aria-label="Hauptnavigation" className="ml-auto hidden items-center justify-end gap-4 lg:gap-5 md:flex">
           {navItems.map(renderDesktopNavItem)}
         </nav>
+        <div className="ml-4 hidden md:block">
+          {renderThemeToggle()}
+        </div>
 
       </div>
 
       <div className="flex justify-end md:hidden">
         <div className="flex items-center gap-3">
+          {renderThemeToggle(true)}
           <button
           aria-controls={mobileMenuId}
           aria-expanded={menuOpen}
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-label={menuOpen ? "Navigationsmenü schließen" : "Navigationsmenü öffnen"}
           onClick={() => setMenuOpen((value) => {
             const nextValue = !value;
             if (!nextValue) {
@@ -339,7 +367,7 @@ export default function Navbar({
       {menuOpen && (
         <nav
           id={mobileMenuId}
-          aria-label="Mobile"
+          aria-label="Mobile Navigation"
           className={`mx-auto mt-3 max-w-5xl rounded-3xl border p-3 md:hidden ${
             scrolled ? "backdrop-blur-xl" : ""
           } ${
