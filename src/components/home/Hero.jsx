@@ -13,23 +13,23 @@ function Hero({ onExplore, onCaseStudy }) {
   const mobileStatsTrackRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
   const copy = {
-    eyebrow: "Branding / Digital / Case Studies",
+    eyebrow: "Branding / Digital / Fallstudien",
     body:
-      "A dark, cinematic portfolio for a branding-focused designer — built around sharp visual rhythm, fluid transitions, and case studies that feel as considered as the work itself.",
-    caseStudy: "Explore case study",
-    selectedWork: "View selected work",
+      "Platzhaltertext für ein dunkles, cineastisches Portfolio mit klarer Markenwirkung, ruhiger Bewegung und Fallstudien, die später echte Projekte erzählen.",
+    caseStudy: "Fallstudie ansehen",
+    selectedWork: "Arbeiten ansehen",
     stats: [
       {
-        label: "Approach",
-        text: "Brand-first digital narratives with measured motion and cleaner pacing.",
+        label: "Ansatz",
+        text: "Platzhalter für markengeführte digitale Erzählungen mit ruhigem Pacing.",
       },
       {
-        label: "Focus",
-        text: "Case studies that feel editorial, spacious, and intentionally art-directed.",
+        label: "Fokus",
+        text: "Platzhalter für Fallstudien mit editorialer Struktur und viel Raum.",
       },
       {
-        label: "Tone",
-        text: "Dark, premium surfaces softened by misted cyan highlights instead of sharp color hits.",
+        label: "Ton",
+        text: "Platzhalter für dunkle Flächen, gedämpfte Akzente und reduzierte Bewegung.",
       },
     ],
   };
@@ -210,8 +210,8 @@ function Hero({ onExplore, onCaseStudy }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(111,211,216,0.1),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(14,20,27,0))]" />
-        <div className="absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,rgba(14,20,27,0),rgba(14,20,27,0.34)_38%,rgba(14,20,27,0.7))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(214,161,31,0.1),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(7,7,8,0))]" />
+        <div className="hero-bottom-vignette absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,rgba(14,20,27,0),rgba(14,20,27,0.34)_38%,rgba(14,20,27,0.7))]" />
       </div>
       <div className="grid w-full gap-16 md:grid-cols-[0.94fr_1.06fr] md:gap-14 xl:grid-cols-[0.88fr_1.12fr] xl:gap-20 2xl:gap-24">
         <div className="relative z-10 max-w-none md:pl-[2vw] xl:pl-[3.5vw] 2xl:pl-[4vw]">
@@ -313,7 +313,7 @@ function Hero({ onExplore, onCaseStudy }) {
 
       <motion.button
         onClick={scrollPastHero}
-        aria-label="Scroll to the next section"
+        aria-label="Zum nächsten Abschnitt scrollen"
         animate={prefersReducedMotion ? undefined : { y: [0, 6, 0] }}
         transition={
           prefersReducedMotion
@@ -325,7 +325,7 @@ function Hero({ onExplore, onCaseStudy }) {
       >
         <span className="relative flex h-12 w-8 items-start justify-center rounded-full border border-white/14 bg-white/[0.03] pt-2 backdrop-blur-sm">
           <Mouse size={16} className="opacity-80" />
-          <span className="absolute top-2 h-1.5 w-1.5 rounded-full bg-[#3AAFA9]/80" />
+          <span className="absolute top-2 h-1.5 w-1.5 rounded-full bg-[#d6a11f]/80" />
         </span>
       </motion.button>
     </section>

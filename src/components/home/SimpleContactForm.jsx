@@ -4,13 +4,13 @@ import { ArrowRight } from "lucide-react";
 const recipientEmail = "hello@nhduo.studio";
 
 const buildMailtoHref = ({ name, email, brief }) => {
-  const subject = encodeURIComponent(`Project inquiry from ${name}`);
+  const subject = encodeURIComponent(`Projektanfrage von ${name}`);
   const body = encodeURIComponent(
     [
       `Name: ${name}`,
-      `Email: ${email}`,
+      `E-Mail: ${email}`,
       "",
-      "Project brief:",
+      "Projektbeschreibung:",
       brief,
     ].join("\n")
   );
@@ -29,17 +29,17 @@ export default function SimpleContactForm() {
 
   const copy = {
     name: "Name",
-    email: "Email",
-    brief: "Project brief",
-    namePlaceholder: "Your name",
-    briefPlaceholder: "A short note about scope, timeline, or what you want to build.",
-    cta: "Start the project",
-    submitSuccess: "Opening your email client with the project brief.",
+    email: "E-Mail",
+    brief: "Nachricht",
+    namePlaceholder: "Dein Name",
+    briefPlaceholder: "Kurzer Platzhalter für Umfang, Timing oder Ziel der Anfrage.",
+    cta: "Projekt anfragen",
+    submitSuccess: "Dein E-Mail-Programm wird mit der Anfrage geöffnet.",
     errors: {
-      name: "Please enter your name.",
-      emailRequired: "Please enter your email.",
-      emailInvalid: "Please enter a valid email address.",
-      brief: "Please share a short project brief.",
+      name: "Bitte gib deinen Namen ein.",
+      emailRequired: "Bitte gib deine E-Mail-Adresse ein.",
+      emailInvalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
+      brief: "Bitte schreibe eine kurze Nachricht.",
     },
   };
 
@@ -152,7 +152,7 @@ export default function SimpleContactForm() {
             name="email"
             onBlur={handleBlur}
             onChange={handleChange}
-            placeholder="you@example.com"
+            placeholder="du@example.com"
             required
             type="email"
             value={values.email}
