@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import CareerTimeline from "../components/about/CareerTimeline";
 import SkillsSection from "../components/about/SkillsSection";
 import AnimatedHeadline from "../components/layout/AnimatedHeadline";
+import MotionButton from "../components/layout/MotionButton";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
 import useEditorialReveal from "../hooks/useEditorialReveal";
 import { aboutContent } from "../data/aboutContent";
@@ -83,14 +84,14 @@ function AboutPage({ navigate }) {
             <p className="body-safe body-safe--wide mt-5 text-base leading-[1.8] text-white/56">
               {aboutContent.hero.summary}
             </p>
-            <button
+            <MotionButton
               className="button-pill button-pill--primary cursor-contrast-cta group mt-8 font-medium"
               onClick={() => navigate?.("contact")}
               type="button"
             >
               Gespräch starten
               <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
-            </button>
+            </MotionButton>
 
           </header>
         </section>

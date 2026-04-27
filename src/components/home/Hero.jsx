@@ -5,6 +5,7 @@ import { useGSAP } from "@gsap/react";
 import { ArrowRight, Mouse } from "lucide-react";
 
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
+import MotionButton from "../layout/MotionButton";
 import SectionEyebrow from "../layout/SectionEyebrow";
 
 function Hero({ onExplore, onCaseStudy }) {
@@ -211,7 +212,7 @@ function Hero({ onExplore, onCaseStudy }) {
         className="pointer-events-none absolute inset-0"
       >
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(214,161,31,0.1),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.02),rgba(7,7,8,0))]" />
-        <div className="hero-bottom-vignette absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,rgba(14,20,27,0),rgba(14,20,27,0.34)_38%,rgba(14,20,27,0.7))]" />
+        <div className="hero-bottom-vignette absolute inset-x-0 bottom-0 h-[46%] bg-[linear-gradient(180deg,rgba(7,7,8,0),rgba(7,7,8,0.34)_38%,rgba(7,7,8,0.7))]" />
       </div>
       <div className="grid w-full gap-16 md:grid-cols-[0.94fr_1.06fr] md:gap-14 xl:grid-cols-[0.88fr_1.12fr] xl:gap-20 2xl:gap-24">
         <div className="relative z-10 max-w-none md:pl-[2vw] xl:pl-[3.5vw] 2xl:pl-[4vw]">
@@ -244,7 +245,7 @@ function Hero({ onExplore, onCaseStudy }) {
           </div>
 
           <div className="mt-14 flex flex-wrap items-center gap-4">
-            <button
+            <MotionButton
               onClick={onCaseStudy}
               type="button"
               className="button-pill button-pill--primary cursor-contrast-cta group font-medium"
@@ -252,7 +253,7 @@ function Hero({ onExplore, onCaseStudy }) {
             >
               {copy.caseStudy}
               <ArrowRight size={18} className="transition group-hover:translate-x-1" />
-            </button>
+            </MotionButton>
             <button
               onClick={onExplore}
               type="button"

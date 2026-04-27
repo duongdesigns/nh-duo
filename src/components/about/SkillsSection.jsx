@@ -21,7 +21,7 @@ function SkillsSection({ intro, skillGroups }) {
           </p>
         </div>
 
-        <div className="grid gap-4 xl:grid-cols-3">
+        <div className="grid gap-4 md:grid-cols-2">
           {skillGroups.map((group) => (
             <article
               key={group.title}
@@ -43,6 +43,23 @@ function SkillsSection({ intro, skillGroups }) {
                   />
                 ))}
               </ul>
+
+              {group.sections?.map((section) => (
+                <div key={section.title} className="mt-7">
+                  <div className="text-sm font-medium leading-6 text-[rgba(214,161,31,0.76)]">
+                    {section.title}
+                  </div>
+                  <ul className="mt-4 grid gap-4" aria-label={`${section.title} Skills`}>
+                    {section.skills.map((skill) => (
+                      <SkillBar
+                        key={skill.name}
+                        label={skill.name}
+                        value={skill.value}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              ))}
             </article>
           ))}
         </div>

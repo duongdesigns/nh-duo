@@ -51,30 +51,25 @@ export const aboutContent = {
           { name: "InDesign", value: 88 },
           { name: "Premiere Pro", value: 74 },
           { name: "After Effects", value: 76 },
-          { name: "Lightroom", value: 72 },
           { name: "Figma", value: 92 },
         ],
       },
       {
         title: "Coding",
         summary:
-          "Platzhalter für Frontend-Arbeit mit Fokus auf responsive Layouts und wartbare Komponenten.",
+          "Platzhalter für Frontend-Arbeit, editierbare Website-Strukturen und kontrollierte Übergabeprozesse.",
         skills: [
           { name: "HTML", value: 96 },
           { name: "CSS", value: 94 },
           { name: "JavaScript", value: 86 },
-          { name: "TypeScript", value: 74 },
-          { name: "React / Next.js", value: 82 },
         ],
-      },
-      {
-        title: "CMS",
-        summary:
-          "Platzhalter für editierbare Website-Strukturen und kontrollierte Übergabeprozesse.",
-        skills: [
-          { name: "WordPress", value: 85 },
-          { name: "Webflow", value: 83 },
-          { name: "Shopify", value: 72 },
+        sections: [
+          {
+            title: "CMS",
+            skills: [
+              { name: "WordPress", value: 85 },
+            ],
+          },
         ],
       },
     ],

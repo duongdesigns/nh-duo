@@ -60,7 +60,7 @@ export default function Navbar({
                 ? "cursor-contrast-navbar bg-[#070708] text-white"
                 : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-[#070708]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-black/[0.08] hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate(item.value)}
@@ -99,7 +99,7 @@ export default function Navbar({
                 ? "cursor-contrast-navbar bg-[#070708] text-white"
                 : "cursor-contrast-navbar bg-white text-[#333333]"
               : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-[#070708]/8 hover:text-black"
+                ? "cursor-contrast-navbar text-black/68 hover:bg-black/[0.08] hover:text-black"
                 : "text-white/72 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate("case-study")}
@@ -150,7 +150,7 @@ export default function Navbar({
                               ? "bg-[#070708] text-white shadow-[0_12px_24px_rgba(7,7,8,0.16)]"
                               : "bg-white/10 text-white shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
                             : scrolled
-                              ? "text-black/74 hover:bg-[#070708]/8 hover:text-black hover:translate-x-1"
+                              ? "text-black/74 hover:bg-black/[0.08] hover:text-black hover:translate-x-1"
                               : "text-white/74 hover:bg-white/6 hover:text-white hover:translate-x-1"
                         }`}
                         onClick={() => {
@@ -220,7 +220,7 @@ export default function Navbar({
           aria-current={page === item.value ? "page" : undefined}
           className={`block w-full rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-navbar text-black/82 hover:bg-[#070708]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-black/[0.08]"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -242,7 +242,7 @@ export default function Navbar({
           aria-expanded={mobileCaseStudyMenuOpen}
           className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left ${
             scrolled
-              ? "cursor-contrast-navbar text-black/82 hover:bg-[#070708]/8"
+              ? "cursor-contrast-navbar text-black/82 hover:bg-black/[0.08]"
               : "text-white/82 hover:bg-white/6"
           }`}
           onClick={() => {
@@ -273,7 +273,7 @@ export default function Navbar({
                         ? "bg-[#070708] text-white"
                         : "bg-white/10 text-white"
                       : scrolled
-                        ? "text-black/72 hover:bg-[#070708]/8 hover:text-black"
+                        ? "text-black/72 hover:bg-black/[0.08] hover:text-black"
                         : "text-white/72 hover:bg-white/6 hover:text-white"
                   }`}
                   onClick={() => {

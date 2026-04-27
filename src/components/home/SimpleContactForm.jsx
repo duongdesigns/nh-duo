@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 
+import MotionButton from "../layout/MotionButton";
+
 const recipientEmail = "hello@nhduo.studio";
 
 const buildMailtoHref = ({ name, email, brief }) => {
@@ -182,10 +184,10 @@ export default function SimpleContactForm() {
         </label>
       </div>
 
-      <button className="button-pill button-pill--primary cursor-contrast-cta group mt-6" type="submit">
+      <MotionButton className="button-pill button-pill--primary cursor-contrast-cta group mt-6" type="submit">
         {copy.cta}
         <ArrowRight size={18} className="transition group-hover:translate-x-1" />
-      </button>
+      </MotionButton>
 
       <p
         aria-live="polite"

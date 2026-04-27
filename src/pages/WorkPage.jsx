@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useReducedMotion } from "framer-motion";
 
 import AnimatedHeadline from "../components/layout/AnimatedHeadline";
+import MotionButton from "../components/layout/MotionButton";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
 import { projectImages } from "../data/imagery";
 import { featuredProjects } from "../data/projects";
@@ -174,7 +175,7 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
         tl.to(state, {
           value: target,
           duration: 1.1,
-          ease: "power2.out",
+          ease: "power1.inOut",
           snap: { value: 1 },
           onUpdate: () => {
             node.textContent = `${Math.round(state.value)}%`;
@@ -213,7 +214,7 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
           <p data-work-copy data-reveal-group className="body-safe body-safe--wide text-base leading-[1.8] text-white/60 md:text-lg">
             {copy.intro}
           </p>
-          <button
+          <MotionButton
             data-work-copy
             data-reveal-group
             className="button-pill button-pill--primary cursor-contrast-cta group mt-8 font-medium"
@@ -222,7 +223,7 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
           >
             Gespräch starten
             <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
+          </MotionButton>
         </div>
 
         <div className="mt-16 space-y-8 xl:mt-18">

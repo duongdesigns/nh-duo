@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 import CaseStudyBlock from "../components/case-study/CaseStudyBlock";
 import CaseStudyProgress from "../components/case-study/CaseStudyProgress";
 import AnimatedHeadline from "../components/layout/AnimatedHeadline";
+import MotionButton from "../components/layout/MotionButton";
 import SectionEyebrow from "../components/layout/SectionEyebrow";
 import { getCaseStudyById, getCaseStudyProjectById } from "../data/caseStudies";
 import { caseStudySections } from "../data/caseStudySections";
@@ -135,7 +136,7 @@ function CaseStudyPage({
           >
             {currentProject.menuSummary}
           </p>
-          <button
+          <MotionButton
             data-case-copy
             className="button-pill button-pill--primary cursor-contrast-cta group mt-8 font-medium"
             onClick={() => navigate?.("contact")}
@@ -143,7 +144,7 @@ function CaseStudyPage({
           >
             Gespräch starten
             <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
-          </button>
+          </MotionButton>
         </header>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">

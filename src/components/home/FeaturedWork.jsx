@@ -7,6 +7,7 @@ import { useReducedMotion } from "framer-motion";
 import useEditorialReveal from "../../hooks/useEditorialReveal";
 import HorizontalScrollRow from "../layout/HorizontalScrollRow";
 import AnimatedHeadline from "../layout/AnimatedHeadline";
+import MotionButton from "../layout/MotionButton";
 import SectionEyebrow from "../layout/SectionEyebrow";
 import { caseStudyImages, featuredPreviewImages, projectImages } from "../../data/imagery";
 import { featuredProjects } from "../../data/projects";
@@ -23,6 +24,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const [displayedProjectId, setDisplayedProjectId] = useState(
     hoveredProject ?? featuredProjects[0]?.id
   );
+  const [activePreviewIndex, setActivePreviewIndex] = useState(0);
 
   const copy = {
     eyebrow: "Ausgewählte Arbeiten",
@@ -52,8 +54,18 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     featuredProjects.find((project) => project.id === displayedProjectId) ?? featuredProjects[0];
   const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
   const currentPreviewImages = currentProject.id === "tsuki"
-    ? [caseStudyImages.grid[1], caseStudyImages.gallery[2]]
-    : featuredPreviewImages.slice(0, 2);
+    ? [
+      projectImages.tsuki,
+      caseStudyImages.grid[1],
+      caseStudyImages.gallery[2],
+      featuredPreviewImages[4],
+    ]
+    : [
+      projectImages[currentProject.id],
+      ...featuredPreviewImages.slice(0, 3),
+    ].filter(Boolean);
+  const activePreviewImage = currentPreviewImages[activePreviewIndex] ?? currentPreviewImages[0];
+  const previewThumbImages = currentPreviewImages.slice(1, 4);
   const currentProjectIndex = Math.max(
     featuredProjects.findIndex((project) => project.id === currentProject.id),
     0
@@ -254,6 +266,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     let syncFrameId = 0;
     const syncDisplayedProject = () => {
       syncFrameId = window.requestAnimationFrame(() => {
+        setActivePreviewIndex(0);
         setDisplayedProjectId(hoveredProject);
       });
     };
@@ -286,6 +299,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
         overwrite: "auto",
       },
       onComplete: () => {
+        setActivePreviewIndex(0);
         setDisplayedProjectId(hoveredProject);
       },
     });
@@ -476,34 +490,71 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                   </div>
                 </div>
 
-                <button
+                <MotionButton
                   onClick={() => onOpenCaseStudy(currentProject.id)}
                   type="button"
                   className="button-pill button-pill--primary cursor-contrast-cta group shrink-0 self-start font-medium sm:self-auto"
                 >
                   Fallstudie ansehen
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />
-                </button>
+                </MotionButton>
               </div>
 
-              <div className="mt-5 grid gap-6 xl:grid-cols-[1fr_0.78fr] xl:items-stretch">
-                <div
-                  data-fw-preview-media
-                  className="relative aspect-[16/11] overflow-hidden rounded-[1.45rem] md:aspect-[16/10] xl:aspect-auto xl:min-h-[24rem]"
-                >
-                  <img
-                    src={projectImages[currentProject.id]?.src}
-                    alt={projectImages[currentProject.id]?.alt ?? ""}
-                    loading="lazy"
-                    decoding="async"
-                    style={{ objectPosition: projectImages[currentProject.id]?.position ?? "50% 50%" }}
-                    className="editorial-image absolute inset-0 h-full w-full scale-[1.07] object-cover"
-                  />
+              <div className="mt-5 grid gap-6 xl:grid-cols-[1.12fr_0.78fr] xl:items-stretch">
+                <div className="grid gap-5">
+                  <div
+                    data-fw-preview-media
+                    className="relative aspect-[16/11] overflow-hidden rounded-[1.45rem] bg-white/[0.04] p-5 md:aspect-[16/10] md:p-7 xl:min-h-[19rem]"
+                  >
+                    <img
+                      key={activePreviewImage?.src}
+                      src={activePreviewImage?.src}
+                      alt={activePreviewImage?.alt ?? ""}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: activePreviewImage?.position ?? "50% 50%" }}
+                      className="editorial-image h-full w-full object-contain"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3">
+                    {previewThumbImages.map((image, index) => {
+                      const previewIndex = index + 1;
+                      const isActive = activePreviewIndex === previewIndex;
+
+                      return (
+                        <button
+                          key={image.src}
+                          type="button"
+                          aria-label={`${image.alt} als großes Vorschaubild anzeigen`}
+                          aria-pressed={isActive}
+                          data-fw-preview-thumb
+                          onClick={() => setActivePreviewIndex(previewIndex)}
+                          onFocus={() => setActivePreviewIndex(previewIndex)}
+                          onMouseEnter={() => setActivePreviewIndex(previewIndex)}
+                          className={`relative aspect-[5/3.35] overflow-hidden rounded-[1rem] border bg-[#121A22] transition ${
+                            isActive
+                              ? "border-[rgba(214,161,31,0.58)]"
+                              : "border-white/10 hover:border-white/22"
+                          }`}
+                        >
+                          <img
+                            src={image.src}
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                            style={{ objectPosition: image.position ?? "50% 50%" }}
+                            className="editorial-image absolute inset-0 h-full w-full object-cover"
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <div
                   data-fw-preview-details
-                  className="flex flex-col justify-between gap-8 p-1 md:p-2"
+                  className="flex flex-col justify-center gap-8 p-1 md:p-2"
                 >
                   <div>
                     <div className="text-sm leading-6 text-white/42">{copy.switcher}</div>
@@ -513,28 +564,6 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                     <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
                       {currentProjectCopy.summary}
                     </p>
-                  </div>
-
-                  <div className="mt-2 grid gap-3">
-                    <div className="grid grid-cols-2 gap-3">
-                      {currentPreviewImages.map((image) => (
-                        <div
-                          key={image.src}
-                          data-fw-preview-thumb
-                          className="relative aspect-[5/4] overflow-hidden rounded-[1rem] border border-white/10 bg-[#121A22]"
-                        >
-                          <img
-                            src={image.src}
-                            alt={image.alt}
-                            loading="lazy"
-                            decoding="async"
-                            style={{ objectPosition: image.position ?? "50% 50%" }}
-                            className="editorial-image absolute inset-0 h-full w-full scale-[1.12] object-cover"
-                          />
-                        </div>
-                      ))}
-                    </div>
-
                   </div>
                 </div>
               </div>
