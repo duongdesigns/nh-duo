@@ -1,50 +1,50 @@
 export const aboutContent = {
   hero: {
-    headline: "Creative developer building brand-led digital presentation.",
+    headline: "Kreative Entwicklung für markengeführte digitale Auftritte.",
     tagline:
-      "I design and build portfolio websites, case-study systems, and responsive interfaces that feel calm, precise, and intentionally paced.",
+      "Platzhaltertext für eine kurze Positionierung: Portfolio-Websites, Case-Study-Systeme und responsive Oberflächen mit ruhiger, präziser Wirkung.",
     summary:
-      "The work sits between brand thinking, editorial layout, and frontend implementation, with structure and readability leading every decision.",
+      "Hier steht später eine persönliche Zusammenfassung zwischen Gestaltung, redaktionellem Layout und Frontend-Umsetzung.",
   },
   introduction: {
     summary:
-      "I help turn strong visual thinking into digital experiences that are easier to read, easier to trust, and easier to extend. What makes the work distinct is the mix of editorial sensitivity, system thinking, and frontend execution in the same process.",
+      "Dieser Bereich ist als Platzhalter für die persönliche Geschichte gedacht. Er beschreibt später, wie visuelles Denken, Systematik und technische Umsetzung zusammenkommen.",
     highlights: [
-      "Brand-aware layout decisions",
-      "Readable case-study structures",
-      "Design and implementation in one flow",
+      "Platzhalter für gestalterische Schwerpunkte",
+      "Platzhalter für klare Projektstrukturen",
+      "Platzhalter für Design und Umsetzung",
     ],
   },
   journey: {
     careerPath: [
       {
-        period: "Step 01",
-        title: "Visual Foundations",
+        period: "Schritt 01",
+        title: "Visuelle Grundlagen",
         text:
-          "Placeholder for the early stage of the path: visual thinking, layout, typography, and image-led communication.",
+          "Platzhalter für die frühe Phase: visuelles Denken, Layout, Typografie und bildgeführte Kommunikation.",
       },
       {
-        period: "Step 02",
-        title: "Digital Expansion",
+        period: "Schritt 02",
+        title: "Digitale Erweiterung",
         text:
-          "Placeholder for the transition into responsive interfaces, web systems, and brand-led digital presentation.",
+          "Platzhalter für den Übergang zu responsiven Interfaces, Websystemen und digitalen Markenauftritten.",
       },
       {
-        period: "Step 03",
-        title: "Current Practice",
+        period: "Schritt 03",
+        title: "Aktuelle Praxis",
         text:
-          "Placeholder for the current direction: clearer case studies, stronger narrative pacing, and implementation craft.",
+          "Platzhalter für die aktuelle Richtung: klare Fallstudien, bewusstes Storytelling und saubere Umsetzung.",
       },
     ],
   },
   skills: {
     intro:
-      "The skill set is grouped around the tools and systems that shape the work most often: design craft, frontend implementation, and CMS delivery.",
+      "Platzhaltertext für die Werkzeug- und Kompetenzbereiche, die später genauer beschrieben werden.",
     groups: [
       {
         title: "Adobe",
         summary:
-          "Used for layout, image treatment, presentation, motion studies, and production assets.",
+          "Platzhalter für Layout, Bildbearbeitung, Präsentation, Motion-Studien und Produktionsdaten.",
         skills: [
           { name: "Photoshop", value: 94 },
           { name: "Illustrator", value: 91 },
@@ -58,7 +58,7 @@ export const aboutContent = {
       {
         title: "Coding",
         summary:
-          "Frontend craft focused on responsive layout, UI polish, and maintainable component systems.",
+          "Platzhalter für Frontend-Arbeit mit Fokus auf responsive Layouts und wartbare Komponenten.",
         skills: [
           { name: "HTML", value: 96 },
           { name: "CSS", value: 94 },
@@ -70,7 +70,7 @@ export const aboutContent = {
       {
         title: "CMS",
         summary:
-          "Delivery platforms used when projects need editable structure without losing visual control.",
+          "Platzhalter für editierbare Website-Strukturen und kontrollierte Übergabeprozesse.",
         skills: [
           { name: "WordPress", value: 85 },
           { name: "Webflow", value: 83 },

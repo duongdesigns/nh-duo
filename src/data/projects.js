@@ -2,25 +2,25 @@ export const featuredProjects = [
   {
     id: "tsuki",
     title: "TSUKI",
-    category: "Brand Identity / Restaurant System",
+    category: "Markenidentität / Restaurant-System",
     year: "2026",
     summary:
-      "A premium sushi restaurant identity built around moon symbolism, warm gold, and restrained digital presentation.",
+      "Eine Premium-Identität für ein Sushi-Restaurant, aufgebaut aus Mondsymbolik, warmem Gold und einer ruhigen digitalen Präsentation.",
   },
   {
     id: "atlas-case",
-    title: "Atlas Case",
-    category: "Case Study / Art Direction",
+    title: "Projekt Platzhalter A",
+    category: "Platzhalter / Editorial Design",
     year: "2025",
     summary:
-      "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+      "Ein Platzhalterprojekt für eine spätere Fallstudie mit Raum für Kontext, Prozessbilder und ein prägnantes Ergebnis.",
   },
   {
     id: "signal-duo",
-    title: "Signal Duo",
-    category: "Identity / Portfolio",
+    title: "Projekt Platzhalter B",
+    category: "Platzhalter / Digitales System",
     year: "2025",
     summary:
-      "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+      "Ein zweites Platzhalterprojekt für ein digitales System, das später mit echten Inhalten und Bildmaterial gefüllt wird.",
   },
 ]

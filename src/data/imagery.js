@@ -15,6 +15,7 @@ import zpFlyer from "../assets/project-images/medium/zp-flyer-medium.webp";
 import tsukiScribbleBoard from "../assets/project-images/tsuki-scribble-board.svg";
 import tsukiSignageMockup from "../assets/project-images/tsuki-signage-editorial.webp";
 import tsukiWireframes from "../assets/project-images/tsuki-wireframes.webp";
+import tsukiLogoGuide from "../assets/project-images/tsuki-logo-guide.webp";
 import homannWebsiteThumb from "../assets/project-images/thumbs/homann-website-thumb.webp";
 import bookMockupThumb from "../assets/project-images/thumbs/book-mockup-thumb.webp";
 import busStopCitilightThumb from "../assets/project-images/thumbs/bus-stop-citilight-thumb.webp";
@@ -30,7 +31,7 @@ import menuSmallThumb from "../assets/project-images/thumbs/menu-small-thumb.web
 import shoppingbagThumb from "../assets/project-images/thumbs/shoppingbag-thumb.webp";
 import zpFlyerThumb from "../assets/project-images/thumbs/zp-flyer-thumb.webp";
 
-const localSource = 'Local portfolio asset provided by the project owner.';
+const localSource = "Lokales Portfolio-Asset des Projektinhabers.";
 
 const sliderThumbBySrc = {
   [homannWebsite]: homannWebsiteThumb,
@@ -52,19 +53,19 @@ const sliderThumbBySrc = {
 export const projectImages = {
   tsuki: {
     src: macbookMockup,
-    alt: "MacBook mockup showing the TSUKI sushi restaurant website with dark ambience and warm gold typography.",
+    alt: "MacBook-Mockup der TSUKI Website mit dunkler Atmosphäre und warmer goldener Typografie.",
     source: localSource,
     position: "50% 58%",
   },
   "atlas-case": {
     src: bookMockup,
-    alt: "Book mockup featuring an illustrated cover with contrasting black and white creatures.",
+    alt: "Platzhalterbild eines Buch-Mockups mit illustrativer Covergestaltung.",
     source: localSource,
     position: "50% 30%",
   },
   "signal-duo": {
     src: busStopCitilight,
-    alt: "Bus stop advertising mockup showing a dark sushi brand poster in an urban setting.",
+    alt: "Platzhalterbild eines Citylight-Mockups im urbanen Raum.",
     source: localSource,
     position: "63% 44%",
   },
@@ -73,31 +74,31 @@ export const projectImages = {
 export const featuredPreviewImages = [
   {
     src: homannWebsite,
-    alt: "Website landing page mockup with a light interface and blue accent branding.",
+    alt: "Platzhalterbild eines Website-Mockups mit hellem Interface und blauem Akzent.",
     source: localSource,
     position: "50% 10%",
   },
   {
     src: designmagazinCover,
-    alt: "Editorial design poster with bold typography and layered geometric gradients on a dark background.",
+    alt: "Platzhalterbild einer Editorial-Gestaltung mit Typografie und grafischen Formen.",
     source: localSource,
     position: "52% 28%",
   },
   {
     src: flyer3Mockup,
-    alt: "Foldout flyer presentation for a book project arranged across a neutral studio background.",
+    alt: "Platzhalterbild eines gefalteten Flyers auf neutralem Studiohintergrund.",
     source: localSource,
     position: "50% 38%",
   },
   {
     src: shoppingbag,
-    alt: "Canvas tote bag mockup featuring a minimal sushi brand mark.",
+    alt: "Stofftaschen-Mockup mit minimalem TSUKI Markenzeichnen.",
     source: localSource,
     position: "50% 34%",
   },
   {
     src: menuSmall,
-    alt: "Compact folded menu mockup with a dark layout and refined gold linework.",
+    alt: "Kompaktes gefaltetes TSUKI Menü mit dunklem Layout und feinen goldenen Linien.",
     source: localSource,
     position: "50% 46%",
   },
@@ -107,7 +108,7 @@ export const caseStudyImages = {
   hero: [
     {
       src: menuBig,
-      alt: "Large open menu mockup with dark pages, food photography, and gold typography.",
+      alt: "Großes geöffnetes TSUKI Menü mit dunklen Seiten, Food-Fotografie und goldener Typografie.",
       source: localSource,
       position: "50% 58%",
     },
@@ -115,19 +116,19 @@ export const caseStudyImages = {
   media: [
     {
       src: drinksBig,
-      alt: "Open drinks menu mockup laid out on a clean studio background.",
+      alt: "Geöffnetes TSUKI Getränkemenü auf einem klaren Studiohintergrund.",
       source: localSource,
       position: "50% 44%",
     },
     {
       src: zpFlyer,
-      alt: "Planetarium event flyer mockup with deep-space imagery and bold white typography.",
+      alt: "Platzhalterbild eines Event-Flyers mit dunkler Bildwelt und heller Typografie.",
       source: localSource,
       position: "50% 44%",
     },
     {
       src: faltblattflyer,
-      alt: "Folded brochure mockup showing a dark editorial print layout with fine gold details.",
+      alt: "Platzhalterbild einer gefalteten Broschüre mit dunklem Editorial-Layout.",
       source: localSource,
       position: "50% 50%",
     },
@@ -135,19 +136,19 @@ export const caseStudyImages = {
   grid: [
     {
       src: menuMockup2,
-      alt: "Angled menu mockup showing plated dishes within a dark premium restaurant layout.",
+      alt: "Schräg liegendes TSUKI Menü-Mockup mit Gerichten in einem dunklen Premium-Layout.",
       source: localSource,
       position: "50% 56%",
     },
     {
       src: menuKleinOffenMockup,
-      alt: "Small open menu mockup with detailed menu sections on black pages.",
+      alt: "Kleines geöffnetes TSUKI Menü mit detaillierten Menübereichen auf schwarzen Seiten.",
       source: localSource,
       position: "50% 50%",
     },
     {
       src: designmagazinCover,
-      alt: "Graphic design cover composition using bold type and geometric forms.",
+      alt: "Platzhalterbild einer grafischen Cover-Komposition mit Typografie und Formen.",
       source: localSource,
       position: "52% 28%",
     },
@@ -155,19 +156,19 @@ export const caseStudyImages = {
   gallery: [
     {
       src: flyer3Mockup,
-      alt: "Book marketing flyer series displayed in a flatlay arrangement.",
+      alt: "Platzhalterbild einer Flyer-Serie in einer Flatlay-Anordnung.",
       source: localSource,
       position: "50% 38%",
     },
     {
       src: homannWebsite,
-      alt: "Homepage design screenshot for a branding agency website.",
+      alt: "Platzhalterbild eines Homepage-Screens für einen digitalen Markenauftritt.",
       source: localSource,
       position: "50% 10%",
     },
     {
       src: shoppingbag,
-      alt: "Merchandise mockup with a minimal logo applied to a fabric tote bag.",
+      alt: "TSUKI Merchandise-Mockup mit minimalem Logo auf einer Stofftasche.",
       source: localSource,
       position: "50% 34%",
     },
@@ -175,22 +176,28 @@ export const caseStudyImages = {
   process: [
     {
       src: tsukiScribbleBoard,
-      alt: "TSUKI hand-drawn exploration board with moon mark sketches, wordmark spacing tests, and menu layout thumbnails.",
+      alt: "Handgezeichnetes TSUKI Explorationsboard mit Mondzeichen-Skizzen, Wortmarken-Tests und Menü-Layouts.",
       source: localSource,
       position: "50% 50%",
     },
     {
       src: tsukiWireframes,
-      alt: "TSUKI layout prototype board with website wireframes, booking flow sketches, and grid annotations.",
-      source: "Generated process visual based on the TSUKI styleguide and project assets.",
+      alt: "TSUKI Layout-Prototyp mit Website-Wireframes, Buchungsflow-Skizzen und Raster-Anmerkungen.",
+      source: "Generierte Prozessvisualisierung auf Basis des TSUKI Styleguides und der Projektassets.",
+      position: "50% 50%",
+    },
+    {
+      src: tsukiLogoGuide,
+      alt: "TSUKI Logo-Guide mit Mondzeichen, Wortmarke und Abstandsregeln.",
+      source: localSource,
       position: "50% 50%",
     },
   ],
   mockups: [
     {
       src: tsukiSignageMockup,
-      alt: "TSUKI restaurant signage mockup with a dark plaque, gold moon mark, and warm interior ambience.",
-      source: "Generated TSUKI signage mockup based on the styleguide and project assets.",
+      alt: "TSUKI Restaurant-Signage mit dunkler Plakette, goldenem Mondzeichen und warmer Innenraumstimmung.",
+      source: "Generiertes TSUKI Signage-Mockup auf Basis des Styleguides und der Projektassets.",
       position: "42% 50%",
     },
   ],

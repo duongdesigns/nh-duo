@@ -2,11 +2,11 @@ import { featuredProjects } from "./projects";
 
 export const caseStudyMenuSummaries = {
   tsuki:
-    "A premium sushi restaurant identity shaped around moon symbolism, warm gold, and calm digital flow.",
+    "Eine Premium-Identität für ein Sushi-Restaurant, geprägt von Mondsymbolik, warmem Gold und einem ruhigen digitalen Ablauf.",
   "atlas-case":
-    "A case-study template built to make process, craft, and outcomes feel equally intentional.",
+    "Platzhaltertext für eine spätere Fallstudie mit kurzer Einordnung, Projektziel und visueller Richtung.",
   "signal-duo":
-    "A modular identity and portfolio system focused on dark surfaces, brand presence, and controlled interaction.",
+    "Platzhaltertext für ein späteres Portfolio-Projekt mit Fokus auf Struktur, Bildsprache und Ergebnis.",
 };
 
 export const caseStudyProjects = featuredProjects.map((project) => ({

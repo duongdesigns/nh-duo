@@ -1,9 +1,9 @@
 export const caseStudySections = [
   "Hero",
-  "Overview",
-  "Discovery",
-  "Process",
-  "Final Design",
-  "Impact",
-  "Learnings",
+  "Überblick",
+  "Exploration",
+  "Prozess",
+  "Finales Design",
+  "Wirkung",
+  "Erkenntnisse",
 ]

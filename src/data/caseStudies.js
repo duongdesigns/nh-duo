@@ -11,55 +11,55 @@ const caseStudiesById = {
     menuSummary: caseStudyMenuSummaries.tsuki,
     sections: {
       Hero: {
-        kicker: "Case Study Hero",
-        heading: "TSUKI translates a premium sushi restaurant into a calm identity system built from moon symbolism, gold detail, and quiet digital pacing.",
+        kicker: "Case-Study Hero",
+        heading: "TSUKI übersetzt ein Premium-Sushi-Restaurant in ein ruhiges Identity-System aus Mondsymbolik, goldenen Details und leiser digitaler Dramaturgie.",
         text:
-          "The brand needed to feel elevated without becoming decorative. The direction pairs a restrained dark-green base with a warm gold mark, editorial menu systems, and a website that gives the food and atmosphere enough room to lead.",
+          "Die Marke sollte hochwertig wirken, ohne dekorativ zu werden. Die Richtung verbindet eine zurückhaltende dunkelgrüne Basis mit einem warmen goldenen Zeichen, redaktionellen Menüsystemen und einer Website, die Food und Atmosphäre genügend Raum gibt.",
         layout: "hero",
         image: projectImages.tsuki,
       },
-      Overview: {
-        kicker: "Project Overview",
-        heading: "Create a premium restaurant identity that feels Japanese-inspired, modern, and usable across print, signage, web, and social touchpoints.",
+      Überblick: {
+        kicker: "Projektüberblick",
+        heading: "Eine Premium-Restaurant-Identität entwickeln, die japanisch inspiriert, modern und über Print, Signage, Web und Social Touchpoints nutzbar ist.",
         text:
-          "The concept grew from a clear positioning problem: sushi restaurants often lean either traditional and familiar or trendy and loud. TSUKI needed a quieter space between both, with enough elegance for a premium audience and enough clarity for daily restaurant use.",
+          "Das Konzept entstand aus einem klaren Positionierungsproblem: Sushi-Restaurants wirken oft entweder traditionell und vertraut oder trendig und laut. TSUKI sollte einen ruhigeren Raum dazwischen besetzen, mit genug Eleganz für ein Premium-Publikum und genug Klarheit für den täglichen Restaurantbetrieb.",
         layout: "overview",
         details: [
-          ["Role", "Brand Designer / Creative Developer"],
-          ["Timeline", "Concept project, 2025"],
-          ["Scope", "Identity, logo system, menu design, website, social media"],
-          ["Tools", "Figma, Adobe CC, AI image process visuals"],
+          ["Rolle", "Brand Designer / Creative Developer"],
+          ["Zeitraum", "Konzeptprojekt, 2025"],
+          ["Umfang", "Identität, Logo-System, Menüdesign, Website, Social Media"],
+          ["Tools", "Figma, Adobe CC, KI-Prozessvisualisierungen"],
         ],
       },
-      Discovery: {
-        kicker: "Exploration / Discovery",
-        heading: "Research defined the audience, the premium positioning, and the visual tension between calm tradition and contemporary dining.",
+      Exploration: {
+        kicker: "Exploration / Recherche",
+        heading: "Die Recherche definierte Zielgruppe, Premium-Positionierung und die visuelle Spannung zwischen ruhiger Tradition und zeitgemäßem Dining.",
         text:
-          "The styleguide frames TSUKI around business dining, events, and design-aware guests who value quality, atmosphere, and restraint. Competitive review showed a gap for a brand that feels refined and distinctive without relying on visual excess.",
+          "Der Styleguide verortet TSUKI im Kontext von Business-Dining, Events und designbewussten Gästen, die Qualität, Atmosphäre und Zurückhaltung schätzen. Die Wettbewerbsanalyse zeigte eine Lücke für eine Marke, die raffiniert und eigenständig wirkt, ohne auf visuelle Überladung zu setzen.",
         layout: "media",
         media: [
           caseStudyImages.process[0],
-          caseStudyImages.media[0],
+          caseStudyImages.process[2],
           caseStudyImages.grid[1],
         ],
       },
-      Process: {
-        kicker: "Design Process",
-        heading: "The core system came from reducing the brand to a few repeatable rules: moon mark, generous spacing, dark surfaces, and warm gold hierarchy.",
+      Prozess: {
+        kicker: "Designprozess",
+        heading: "Das Kernsystem entstand durch Reduktion auf wenige wiederholbare Regeln: Mondzeichen, großzügige Abstände, dunkle Flächen und warme goldene Hierarchie.",
         text:
-          "Logo studies explored the moon as a symbol of calm, purity, and continuity. The final direction uses a circular mark with a bridge-like division, wide-set lettering, and a limited color system so menus, web sections, and applications feel connected.",
+          "Logo-Studien untersuchten den Mond als Symbol für Ruhe, Reinheit und Kontinuität. Die finale Richtung nutzt ein kreisförmiges Zeichen mit brückenartiger Teilung, weit gesetzte Typografie und ein begrenztes Farbsystem, damit Menüs, Webbereiche und Anwendungen verbunden wirken.",
         layout: "media",
         media: [
           caseStudyImages.process[1],
           caseStudyImages.mockups[0],
-          caseStudyImages.grid[0],
+          caseStudyImages.media[0],
         ],
       },
-      "Final Design": {
-        kicker: "Final Design",
-        heading: "The final identity presents TSUKI as elegant but approachable, with print and digital materials sharing the same calm visual grammar.",
+      "Finales Design": {
+        kicker: "Finales Design",
+        heading: "Die finale Identität zeigt TSUKI elegant, aber zugänglich, mit Print- und Digitalmaterialien, die dieselbe ruhige visuelle Grammatik teilen.",
         text:
-          "The menu system uses black surfaces, warm gold framing, and clear product grouping. The website extends that mood through large atmospheric imagery, restrained navigation, and a booking path that stays direct.",
+          "Das Menüsystem arbeitet mit schwarzen Flächen, warmen goldenen Rahmungen und klarer Produktgruppierung. Die Website erweitert diese Stimmung durch große atmosphärische Bilder, zurückhaltende Navigation und einen direkten Buchungspfad.",
         layout: "gallery",
         gallery: [
           caseStudyImages.hero[0],
@@ -70,27 +70,27 @@ const caseStudiesById = {
           caseStudyImages.gallery[2],
         ],
       },
-      Impact: {
-        kicker: "Impact",
-        heading: "The outcome is a cohesive restaurant brand that can move from table menu to website to tote bag without losing its premium tone.",
+      Wirkung: {
+        kicker: "Wirkung",
+        heading: "Das Ergebnis ist eine kohärente Restaurantmarke, die vom Tischmenü über die Website bis zur Tasche ihren Premium-Ton hält.",
         text:
-          "Because the concept is built from a small set of rules, every touchpoint can be extended without inventing a new visual language. The system gives the restaurant a recognizable identity while keeping practical assets readable.",
+          "Weil das Konzept auf wenigen klaren Regeln basiert, kann jeder Touchpoint erweitert werden, ohne eine neue visuelle Sprache zu erfinden. Das System gibt dem Restaurant Wiedererkennbarkeit und hält praktische Materialien lesbar.",
         layout: "impact",
         items: [
-          "Sharper premium positioning for business guests and design-aware diners",
-          "Consistent logo, color, menu, website, and merchandise applications",
-          "Clearer path from brand atmosphere to reservation and menu exploration",
+          "Schärfere Premium-Positionierung für Business-Gäste und designbewusste Besucher",
+          "Konsistente Anwendungen für Logo, Farbe, Menü, Website und Merchandise",
+          "Klarerer Weg von Markenatmosphäre zu Reservierung und Menü-Exploration",
         ],
       },
-      Learnings: {
-        kicker: "Learnings",
-        heading: "The strongest branding decisions were the quietest ones: fewer colors, slower pacing, and enough negative space for the materials to feel intentional.",
+      Erkenntnisse: {
+        kicker: "Erkenntnisse",
+        heading: "Die stärksten Branding-Entscheidungen waren die ruhigsten: weniger Farben, langsameres Pacing und genug Weißraum, damit die Materialien bewusst wirken.",
         text:
-          "TSUKI reinforced that restaurant branding has to be both atmospheric and operational. A mark can be symbolic, but menus, booking flows, and social assets still need simple rules that work under real conditions.",
+          "TSUKI hat bestätigt, dass Restaurant-Branding atmosphärisch und zugleich operativ funktionieren muss. Ein Zeichen darf symbolisch sein, aber Menüs, Buchungsflows und Social Assets brauchen einfache Regeln, die unter realen Bedingungen tragen.",
         layout: "text",
         notes: [
-          "A brand case study reads stronger when strategy, audience, process, and applications are shown as one connected chain.",
-          "Premium restaurant design benefits from restraint when the food, menu structure, and booking path still need to stay clear.",
+          "Eine Marken-Fallstudie wirkt stärker, wenn Strategie, Zielgruppe, Prozess und Anwendungen als zusammenhängende Kette gezeigt werden.",
+          "Premium-Restaurantdesign profitiert von Zurückhaltung, solange Food, Menüstruktur und Buchungspfad klar bleiben.",
         ],
       },
     },
@@ -99,31 +99,31 @@ const caseStudiesById = {
     menuSummary: caseStudyMenuSummaries["atlas-case"],
     sections: {
       Hero: {
-        kicker: "Case Study Hero",
-        heading: "Atlas Case turns process documentation into a visual product instead of a secondary archive.",
+        kicker: "Case-Study Hero",
+        heading: "Platzhalter für eine spätere Fallstudie, die Projektkontext, Prozess und Ergebnis in einer ruhigen Dramaturgie bündelt.",
         text:
-          "The page is structured to let early thinking, intermediate decisions, and final outcomes share the same level of care. It reads like a designed narrative, not a dump of artifacts.",
+          "Dieser Text wird später durch eine echte Projektbeschreibung ersetzt. Bis dahin markiert er die Tonalität, Länge und Position des Inhalts.",
         layout: "hero",
         image: projectImages["atlas-case"],
       },
-      Overview: {
-        kicker: "Project Overview",
-        heading: "Develop a flexible editorial case-study format that could present visual work with more authorship and less friction.",
+      Überblick: {
+        kicker: "Projektüberblick",
+        heading: "Platzhalter für Ziel, Rolle und Umfang des Projekts.",
         text:
-          "The goal was a reusable storytelling format: scannable enough for quick review, but rich enough to communicate craft, references, and decision-making.",
+          "Hier steht später eine kurze Einordnung des Projekts. Der Abschnitt bleibt bewusst knapp und übersichtlich.",
         layout: "overview",
         details: [
-          ["Role", "Art Direction / Case-Study Design"],
-          ["Timeline", "6 weeks"],
-          ["Scope", "Template system, visual hierarchy, editorial pacing"],
-          ["Tools", "Figma, Adobe CC, Motion studies"],
+          ["Rolle", "Platzhalter"],
+          ["Zeitraum", "Platzhalter"],
+          ["Umfang", "Platzhalter"],
+          ["Tools", "Platzhalter"],
         ],
       },
-      Discovery: {
-        kicker: "Exploration / Discovery",
-        heading: "Reference gathering centered on editorial spreads, design books, and presentation systems that let process feel curated rather than overexplained.",
+      Exploration: {
+        kicker: "Exploration",
+        heading: "Platzhalter für Recherche, Referenzen und frühe visuelle Richtung.",
         text:
-          "The strongest references gave equal weight to artifacts and narration. That balance shaped how captions, images, and sectional transitions were composed.",
+          "Dieser Abschnitt beschreibt später, welche Beobachtungen und Entscheidungen die visuelle Richtung geprägt haben.",
         layout: "media",
         media: [
           featuredPreviewImages[2],
@@ -131,11 +131,11 @@ const caseStudiesById = {
           caseStudyImages.media[1],
         ],
       },
-      Process: {
-        kicker: "Design Process",
-        heading: "Layouts were iterated around sequence: what the viewer sees first, when detail expands, and how the structure resets for the next section.",
+      Prozess: {
+        kicker: "Prozess",
+        heading: "Platzhalter für Iterationen, Zwischenstände und gestalterische Entscheidungen.",
         text:
-          "Instead of relying on card patterns, the system uses broad surfaces, shifting image ratios, and restrained labels to keep attention moving forward.",
+          "Hier kann später erklärt werden, welche Varianten getestet wurden und warum die finale Richtung funktioniert.",
         layout: "media",
         media: [
           caseStudyImages.gallery[0],
@@ -143,11 +143,11 @@ const caseStudiesById = {
           featuredPreviewImages[0],
         ],
       },
-      "Final Design": {
-        kicker: "Final Design",
-        heading: "The final system frames each project as a crafted sequence, with stronger openings, cleaner metadata, and galleries that breathe.",
+      "Finales Design": {
+        kicker: "Finales Design",
+        heading: "Platzhalter für das finale Ergebnis und seine wichtigsten Anwendungen.",
         text:
-          "Each case study can now scale from a compact overview to a deeper walkthrough without changing the underlying structure or diluting the tone.",
+          "Der spätere Text beschreibt die finale Lösung, die Bildauswahl und die wichtigsten Details.",
         layout: "gallery",
         gallery: [
           projectImages["atlas-case"],
@@ -155,27 +155,27 @@ const caseStudiesById = {
           caseStudyImages.grid[2],
         ],
       },
-      Impact: {
-        kicker: "Impact",
-        heading: "The template improved how work is presented, making process visible without flattening the final result.",
+      Wirkung: {
+        kicker: "Wirkung",
+        heading: "Platzhalter für Wirkung, Ergebnis oder messbare Verbesserung.",
         text:
-          "The biggest gain was consistency. New projects can now slot into the same structure while still feeling tailored and considered.",
+          "Dieser Bereich hält später fest, was sich durch das Projekt verbessert hat.",
         layout: "impact",
         items: [
-          "Stronger connection between rough thinking and polished output",
-          "Lower friction when documenting new projects",
-          "More editorial, less utilitarian presentation language",
+          "Platzhalter für Ergebnis eins",
+          "Platzhalter für Ergebnis zwei",
+          "Platzhalter für Ergebnis drei",
         ],
       },
-      Learnings: {
-        kicker: "Learnings",
-        heading: "Good case studies depend on cadence: too much proof at once makes even strong work feel heavier than it is.",
+      Erkenntnisse: {
+        kicker: "Erkenntnisse",
+        heading: "Platzhalter für Erkenntnisse aus dem Projekt.",
         text:
-          "By tightening sequence and hierarchy, the template proves that documentation can reinforce brand tone rather than sit outside it.",
+          "Hier stehen später kurze Erkenntnisse, die den Prozess reflektieren und auf künftige Projekte übertragbar sind.",
         layout: "text",
         notes: [
-          "Captions become more useful when they clarify intent instead of repeating what the image already shows.",
-          "Reusable templates only stay premium when they preserve enough room for asymmetry.",
+          "Platzhalter für eine konkrete Erkenntnis.",
+          "Platzhalter für eine zweite konkrete Erkenntnis.",
         ],
       },
     },
@@ -184,31 +184,31 @@ const caseStudiesById = {
     menuSummary: caseStudyMenuSummaries["signal-duo"],
     sections: {
       Hero: {
-        kicker: "Case Study Hero",
-        heading: "Signal Duo is built as a modular portfolio identity, where typography, surfaces, and interaction states carry equal weight.",
+        kicker: "Case-Study Hero",
+        heading: "Platzhalter für ein digitales Projekt mit klarer Oberfläche, ruhiger Struktur und später ergänzbaren Inhalten.",
         text:
-          "The system had to feel bold and brand-forward without becoming louder than the work itself. That meant balancing graphic presence with consistent restraint.",
+          "Dieser Bereich dient als Platzhalter für die spätere Projektgeschichte und hält aktuell nur Rhythmus und Textlänge der Seite.",
         layout: "hero",
         image: projectImages["signal-duo"],
       },
-      Overview: {
-        kicker: "Project Overview",
-        heading: "Design an identity-led portfolio system that could span digital, print, and environmental applications with the same visual logic.",
+      Überblick: {
+        kicker: "Projektüberblick",
+        heading: "Platzhalter für Aufgabe, Rolle und Rahmenbedingungen.",
         text:
-          "The project focused on continuity: one tone, one set of visual rules, and one flexible structure that could support different formats without losing character.",
+          "Hier wird später beschrieben, warum das Projekt entstanden ist und welche Anforderungen wichtig waren.",
         layout: "overview",
         details: [
-          ["Role", "Identity Designer / Frontend Builder"],
-          ["Timeline", "7 weeks"],
-          ["Scope", "Identity, portfolio system, print and digital applications"],
-          ["Tools", "React, Figma, Adobe CC"],
+          ["Rolle", "Platzhalter"],
+          ["Zeitraum", "Platzhalter"],
+          ["Umfang", "Platzhalter"],
+          ["Tools", "Platzhalter"],
         ],
       },
-      Discovery: {
-        kicker: "Exploration / Discovery",
-        heading: "Discovery concentrated on how far the dark palette, cropped imagery, and mono accents could go before readability started to drop.",
+      Exploration: {
+        kicker: "Exploration",
+        heading: "Platzhalter für Recherche, Mood und erste Systemansätze.",
         text:
-          "Early studies tested the balance between atmosphere and legibility. The final direction reduced visual noise while keeping a distinct, high-contrast brand feel.",
+          "Der spätere Inhalt kann hier Referenzen, Skizzen, Tests und die daraus entstandenen Entscheidungen erklären.",
         layout: "media",
         media: [
           featuredPreviewImages[3],
@@ -216,11 +216,11 @@ const caseStudiesById = {
           caseStudyImages.media[2],
         ],
       },
-      Process: {
-        kicker: "Design Process",
-        heading: "The process moved from identity building blocks into applications: posters, merchandise, portfolio frames, and interface surfaces.",
+      Prozess: {
+        kicker: "Prozess",
+        heading: "Platzhalter für Layouttests, Komponenten und visuelle Regeln.",
         text:
-          "Consistency came from repeating a few strong rules across every application instead of introducing separate visual languages for each touchpoint.",
+          "Dieser Abschnitt beschreibt später die Entwicklung vom ersten Ansatz bis zur finalen Ausarbeitung.",
         layout: "media",
         media: [
           caseStudyImages.gallery[2],
@@ -228,11 +228,11 @@ const caseStudiesById = {
           projectImages["signal-duo"],
         ],
       },
-      "Final Design": {
-        kicker: "Final Design",
-        heading: "The final system feels unified across brand, portfolio, and promotional contexts while keeping the interface spare and deliberate.",
+      "Finales Design": {
+        kicker: "Finales Design",
+        heading: "Platzhalter für finale Screens, Anwendungen und Ergebnisbilder.",
         text:
-          "The design relies on fewer components, larger type moments, and steadier interaction states to give the identity more authority.",
+          "Hier folgt später eine knappe Beschreibung der finalen Lösung und ihrer wichtigsten Eigenschaften.",
         layout: "gallery",
         gallery: [
           projectImages["signal-duo"],
@@ -240,27 +240,27 @@ const caseStudiesById = {
           featuredPreviewImages[4],
         ],
       },
-      Impact: {
-        kicker: "Impact",
-        heading: "The resulting identity system is easier to extend and stronger at holding attention across both digital and physical outputs.",
+      Wirkung: {
+        kicker: "Wirkung",
+        heading: "Platzhalter für Nutzen, Ergebnis und Ausblick.",
         text:
-          "Instead of a one-off portfolio aesthetic, the work now operates as a consistent brand system that can scale to future formats and campaigns.",
+          "Dieser Bereich fasst später zusammen, was das Projekt geleistet hat.",
         layout: "impact",
         items: [
-          "More cohesive brand presence across every application",
-          "Cleaner translation from identity rules into UI components",
-          "A stronger visual signature without extra ornament",
+          "Platzhalter für Nutzen eins",
+          "Platzhalter für Nutzen zwei",
+          "Platzhalter für Nutzen drei",
         ],
       },
-      Learnings: {
-        kicker: "Learnings",
-        heading: "The project confirmed that strong systems often come from limiting the palette of decisions, not expanding it.",
+      Erkenntnisse: {
+        kicker: "Erkenntnisse",
+        heading: "Platzhalter für Erkenntnisse und nächste Schritte.",
         text:
-          "Once the core rules were clear, the design became easier to extend and easier to keep consistent across very different output types.",
+          "Hier können später Erkenntnisse ergänzt werden, die aus Prozess, Feedback und Umsetzung entstanden sind.",
         layout: "text",
         notes: [
-          "Dark systems need disciplined spacing and hierarchy more than additional effects.",
-          "A portfolio feels more authored when identity rules show up in subtle, repeated ways.",
+          "Platzhalter für eine Erkenntnis aus dem Prozess.",
+          "Platzhalter für eine Erkenntnis aus der Umsetzung.",
         ],
       },
     },
