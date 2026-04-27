@@ -24,12 +24,12 @@ function CaseStudyPage({
   const currentCaseStudy = getCaseStudyById(caseStudyId);
   const sectionLabels = {
     Hero: "Hero",
-    Overview: "Overview",
-    Discovery: "Discovery",
-    Process: "Process",
-    "Final Design": "Final Design",
-    Impact: "Impact",
-    Learnings: "Learnings",
+    Überblick: "Überblick",
+    Exploration: "Exploration",
+    Prozess: "Prozess",
+    "Finales Design": "Finales Design",
+    Wirkung: "Wirkung",
+    Erkenntnisse: "Erkenntnisse",
   };
 
   useGSAP(
@@ -121,13 +121,13 @@ function CaseStudyPage({
       <div className="content-shell grid gap-8">
         <header className="mb-10 md:mb-14">
           <div data-case-eyebrow>
-            <SectionEyebrow>Case Study</SectionEyebrow>
+            <SectionEyebrow>Fallstudie</SectionEyebrow>
           </div>
           <AnimatedHeadline
             as="h1"
             className="page-title mb-8 max-w-[24ch] xl:mb-7 xl:max-w-[22ch]"
           >
-            <span data-case-title>{currentProject.title} in Context and Detail</span>
+            <span data-case-title>{currentProject.title} im Kontext</span>
           </AnimatedHeadline>
           <p
             data-case-copy
@@ -141,13 +141,13 @@ function CaseStudyPage({
             onClick={() => navigate?.("contact")}
             type="button"
           >
-            Start a Conversation
+            Gespräch starten
             <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
           </button>
         </header>
 
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div data-case-progress className="w-full self-start lg:w-[220px] lg:flex-none">
+          <div data-case-progress className="w-full self-start lg:sticky lg:top-28 lg:h-fit lg:w-[220px] lg:flex-none">
             <CaseStudyProgress
               sections={caseStudySections}
               activeSection={activeSection}

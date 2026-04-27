@@ -44,15 +44,15 @@ function ContactPage() {
       />
       <div className="content-shell grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-10">
         <div className="rounded-[2rem] border border-white/10 bg-[#121A22]/95 p-6 md:p-8">
-          <SectionEyebrow>Direct Contact</SectionEyebrow>
+          <SectionEyebrow>Direkter Kontakt</SectionEyebrow>
           <AnimatedHeadline as="h1" className="page-title max-w-[18ch]">
-            Start with the essentials.
+            Platzhalter für eine klare Anfrage.
           </AnimatedHeadline>
           <p className="body-safe mt-4 text-base leading-[1.8] text-white/62 md:text-lg">
-            A simple form, clear intent, and one prominent action. This is the conversion point, so it should feel calm, fast, and deliberate.
+            Ein einfaches Formular, klare Felder und eine direkte Aktion. Der Text kann später projektbezogen ersetzt werden.
           </p>
           <a
-            aria-label="Send an email to hello@nhduo.studio"
+            aria-label="E-Mail an hello@nhduo.studio senden"
             className="body-safe mt-8 flex items-center gap-3 rounded-[1.5rem] border border-white/10 bg-[#3B3B3B] p-4 text-white/72"
             href="mailto:hello@nhduo.studio"
           >

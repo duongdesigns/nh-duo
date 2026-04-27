@@ -18,52 +18,52 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
   const prefersReducedMotion = useReducedMotion();
   const copy = {
     intro:
-      "Selected case studies presented as a clear, scannable index. Each project is reduced to context, relevance, and a direct path into the case study.",
-    cta: "View case study",
+      "Platzhalter für einen klaren, schnell erfassbaren Projektindex. Jeder Eintrag führt später in Kontext, Relevanz und die passende Fallstudie.",
+    cta: "Fallstudie ansehen",
   };
   const projectCopy = {
     tsuki: {
-      category: "Brand Identity / Restaurant System",
+      category: "Markenidentität / Restaurant-System",
       summary:
-        "A premium sushi restaurant identity built around moon symbolism, warm gold, menu systems, and a restrained web presence.",
+        "Eine Premium-Identität für ein Sushi-Restaurant, aufgebaut aus Mondsymbolik, warmem Gold, Menüsystemen und einem zurückhaltenden Webauftritt.",
       metrics: [
         {
           icon: "down",
-          label: "BRAND NOISE",
+          label: "MARKENRAUSCHEN",
         },
         {
           value: 91,
-          label: "SYSTEM CONSISTENCY",
+          label: "SYSTEMKONSISTENZ",
         },
       ],
     },
     "atlas-case": {
-      category: "Case Study / Art Direction",
+      category: "Platzhalter / Editorial",
       summary:
-        "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+        "Platzhaltertext für ein späteres Projekt mit kurzem Kontext, visueller Richtung und Ergebnis.",
       metrics: [
         {
           value: 64,
-          label: "READING FRICTION",
+          label: "LESEHÜRDE",
         },
         {
           value: 88,
-          label: "PROCESS VISIBILITY",
+          label: "PROZESSSICHTBARKEIT",
         },
       ],
     },
     "signal-duo": {
-      category: "Identity / Portfolio",
+      category: "Platzhalter / Digital",
       summary:
-        "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+        "Platzhaltertext für ein zweites Projekt mit später ergänzbaren Inhalten, Bildern und Kennzahlen.",
       metrics: [
         {
           value: 71,
-          label: "VISUAL NOISE",
+          label: "VISUELLE DICHTE",
         },
         {
           value: 93,
-          label: "BRAND PRESENCE",
+          label: "MARKENPRÄSENZ",
         },
       ],
     },
@@ -160,7 +160,8 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
         const state = { value: 0 };
 
         node.textContent = "0%";
-        gsap.set(node, { color: "#F0F0F0" });
+        node.dataset.metricComplete = "false";
+        gsap.set(node, { clearProps: "color" });
 
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -178,15 +179,10 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
           onUpdate: () => {
             node.textContent = `${Math.round(state.value)}%`;
           },
-        }).to(
-          node,
-          {
-            color: "#3AAFA9",
-            duration: 0.26,
-            ease: "power2.out",
+          onComplete: () => {
+            node.dataset.metricComplete = "true";
           },
-          0.84
-        );
+        });
       });
     },
     { scope: root, dependencies: [prefersReducedMotion] }
@@ -196,7 +192,7 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
     <section
       ref={root}
       className="page-shell"
-      style={{ "--work-accent": "#3AAFA9" }}
+      style={{ "--work-accent": "#d6a11f" }}
     >
       <div
         aria-hidden="true"
@@ -206,13 +202,13 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
       <div className="content-shell">
         <div>
           <div data-work-eyebrow data-reveal-group>
-            <SectionEyebrow>Work Index</SectionEyebrow>
+            <SectionEyebrow>Projektindex</SectionEyebrow>
           </div>
           <AnimatedHeadline
             as="h1"
             className="page-title mb-8 max-w-[24ch] xl:mb-7 xl:max-w-[22ch]"
           >
-            <span data-work-title>Projects Built with System and Story</span>
+            <span data-work-title>Platzhalterprojekte mit System und Erzählung</span>
           </AnimatedHeadline>
           <p data-work-copy data-reveal-group className="body-safe body-safe--wide text-base leading-[1.8] text-white/60 md:text-lg">
             {copy.intro}
@@ -224,7 +220,7 @@ function WorkPage({ navigate, onOpenCaseStudy }) {
             onClick={() => navigate?.("contact")}
             type="button"
           >
-            Start a Conversation
+            Gespräch starten
             <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
           </button>
         </div>

@@ -69,7 +69,7 @@ function AboutPage({ navigate }) {
           className="pb-28 md:pb-36"
         >
           <header data-about-intro>
-            <SectionEyebrow>About Me</SectionEyebrow>
+            <SectionEyebrow>Über mich</SectionEyebrow>
             <AnimatedHeadline
               as="h1"
               id="about-hero-title"
@@ -88,7 +88,7 @@ function AboutPage({ navigate }) {
               onClick={() => navigate?.("contact")}
               type="button"
             >
-              Start a Conversation
+              Gespräch starten
               <ArrowRight size={18} className="transition-transform duration-200 group-hover:translate-x-1" />
             </button>
 
@@ -102,12 +102,12 @@ function AboutPage({ navigate }) {
         >
           <div className="grid gap-7">
             <div>
-              <div className="text-sm leading-6 text-white/42">Introduction / Story</div>
+              <div className="text-sm leading-6 text-white/42">Einführung / Story</div>
               <h2
                 id="about-story-title"
                 className="subsection-title mt-4 max-w-[19ch] text-white md:max-w-[75%]"
               >
-                Who I am, what I do, and how the direction developed.
+                Platzhalter für Person, Arbeitsweise und gestalterische Richtung.
               </h2>
             </div>
 
@@ -115,7 +115,7 @@ function AboutPage({ navigate }) {
               {aboutContent.introduction.summary}
             </p>
 
-            <ul className="grid gap-3 pt-2 md:grid-cols-3 md:gap-6" aria-label="Introduction highlights">
+            <ul className="grid gap-3 pt-2 md:grid-cols-3 md:gap-6" aria-label="Einführungs-Highlights">
               {aboutContent.introduction.highlights.map((item, index) => (
                 <li
                   key={item}

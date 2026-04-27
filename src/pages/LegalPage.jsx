@@ -8,7 +8,7 @@ import SectionEyebrow from "../components/layout/SectionEyebrow";
 
 const legalContent = {
   impressum: {
-    eyebrow: "Legal Notice",
+    eyebrow: "Rechtliches",
     title: "Impressum",
     intro:
       "Angaben gemaess § 5 DDG. Dies ist ein generischer Platzhalter und keine Rechtsberatung. Bitte ersetzen Sie alle Platzhalter vor einer Veroeffentlichung durch die tatsaechlichen Betreiberangaben.",
@@ -69,7 +69,7 @@ const legalContent = {
     ],
   },
   datenschutz: {
-    eyebrow: "Privacy",
+    eyebrow: "Datenschutz",
     title: "Datenschutzerklaerung",
     intro:
       "Diese generische Datenschutzerklaerung dient als Platzhalter fuer eine einfache Portfolio-Website und ist keine Rechtsberatung. Bitte passen Sie sie an die tatsaechlich eingesetzten Dienste, Hosting-Anbieter, Formulare, Analyse-Tools und Cookies an.",
