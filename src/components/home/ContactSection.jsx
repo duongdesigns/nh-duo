@@ -12,15 +12,15 @@ function ContactSection() {
         <div className="grid gap-16 xl:gap-24">
           <div className="grid gap-10 xl:grid-cols-[0.72fr_1.28fr] xl:items-start xl:gap-16">
             <div className="max-w-none xl:max-w-[60ch]">
-              <SectionEyebrow>Contact</SectionEyebrow>
+              <SectionEyebrow>Kontakt</SectionEyebrow>
               <AnimatedHeadline
                 as="h2"
                 className="subsection-title heading-safe max-w-[20ch] text-white"
               >
-                Shape a portfolio, identity, or layout that feels built — not templated.
+                Platzhalter für eine Anfrage zu Portfolio, Identity oder digitalem Layout.
               </AnimatedHeadline>
               <p className="body-safe body-safe--wide mt-5 text-base leading-[1.8] text-white/60">
-                Keep the form direct and low-friction. Ask only for what matters. Use motion with restraint.
+                Dieser Bereich führt später direkt zur Kontaktaufnahme und hält die Anfrage bewusst kurz.
               </p>
             </div>
 
