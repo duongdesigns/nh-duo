@@ -25,26 +25,26 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   );
 
   const copy = {
-    eyebrow: "Selected Work",
-    heading: "Work that brings direction, narrative, and execution into one calmer system.",
-    body: "Instead of splitting attention between a list and a preview, this version leads with one clear feature surface and a compact project switcher. The result stays editorial, but reads faster.",
-    switcher: "Projects",
-    swipeHint: "Swipe to browse",
-    previewHint: "Preview selected",
+    eyebrow: "Ausgewählte Arbeiten",
+    heading: "Platzhalter für Projekte, die Richtung, Erzählung und Umsetzung ruhig verbinden.",
+    body: "Dieser Bereich zeigt später eine kuratierte Auswahl. Der Text bleibt aktuell bewusst generisch und dient nur als Platzhalter für Ton, Länge und Lesefluss.",
+    switcher: "Projekte",
+    swipeHint: "Wischen zum Wechseln",
+    previewHint: "Vorschau ausgewählt",
   };
 
   const projectCopy = {
     tsuki: {
-      category: "Brand Identity",
-      summary: "A premium sushi restaurant identity shaped through moon symbolism, warm gold, and calm digital pacing.",
+      category: "Markenidentität",
+      summary: "Eine Premium-Identität für ein Sushi-Restaurant, geprägt von Mondsymbolik, warmem Gold und ruhigem digitalem Pacing.",
     },
     "atlas-case": {
-      category: "Case Study / Art Direction",
-      summary: "A visual-first case study template designed to make process, craft, and outcomes feel equally premium.",
+      category: "Platzhalter / Editorial",
+      summary: "Platzhaltertext für ein späteres Projekt mit kurzem Kontext, visueller Richtung und Ergebnis.",
     },
     "signal-duo": {
-      category: "Identity / Portfolio",
-      summary: "A modular portfolio system using dark surfaces, oversized type, and controlled interaction states.",
+      category: "Platzhalter / Digital",
+      summary: "Platzhaltertext für ein zweites Projekt, das später mit echten Inhalten ergänzt wird.",
     },
   };
 
@@ -192,11 +192,11 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
         data-fw-selector-mobile={mobile ? "true" : undefined}
         className={`group rounded-[1.45rem] border text-left transition ${mobile
           ? `w-[calc(100vw-8.5rem)] min-[520px]:w-[calc(100vw-9.5rem)] min-[680px]:w-full max-w-none flex-shrink-0 snap-center px-4 py-4 ${isActive
-            ? "border-[rgba(58,175,169,0.35)] bg-[#121A22]/95 shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
+            ? "border-[rgba(214,161,31,0.35)] bg-[#121A22]/95 shadow-[0_16px_34px_rgba(0,0,0,0.16)]"
             : "border-white/8 bg-[#111820]/92 hover:border-white/14 hover:bg-[#121A22]/95"
           }`
           : `h-full min-h-[176px] px-4 py-4 ${isActive
-            ? "border-[rgba(58,175,169,0.34)] bg-[#121A22]/95 shadow-[0_10px_24px_rgba(0,0,0,0.12)]"
+            ? "border-[rgba(214,161,31,0.34)] bg-[#121A22]/95 shadow-[0_10px_24px_rgba(0,0,0,0.12)]"
             : "border-white/8 bg-[#111820]/92 hover:border-white/14 hover:bg-[#121A22]/95"
           }`
           }`}
@@ -205,7 +205,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
           <div className={`flex ${mobile ? "min-w-0 flex-1 flex-col" : "h-full flex-col justify-between"}`}>
             <div>
               <div className="flex items-start justify-end gap-4">
-                <div className={isActive ? "type-label text-[rgba(58,175,169,0.82)]" : "type-label text-white/42"}>
+                <div className={isActive ? "type-label text-[rgba(214,161,31,0.82)]" : "type-label text-white/42"}>
                   {project.year}
                 </div>
               </div>
@@ -228,7 +228,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
           {mobile ? (
             <div
               aria-hidden="true"
-              className={`mt-1 h-2.5 w-2.5 flex-none rounded-full transition ${isActive ? "bg-[#3AAFA9]" : "bg-white/20"
+              className={`mt-1 h-2.5 w-2.5 flex-none rounded-full transition ${isActive ? "bg-[#d6a11f]" : "bg-white/20"
                 }`}
             />
           ) : null}
@@ -424,7 +424,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                 <div
                   ref={mobileHintRef}
                   aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-[2.25rem] bottom-full z-20 mb-[0.25rem] text-center text-[0.72rem] uppercase tracking-[0.18em] text-[rgba(58,175,169,0.82)] opacity-0"
+                  className="pointer-events-none absolute inset-x-[2.25rem] bottom-full z-20 mb-[0.25rem] text-center text-[0.72rem] uppercase tracking-[0.18em] text-[rgba(214,161,31,0.82)] opacity-0"
                 >
                   {mobileHintText}
                 </div>
@@ -469,7 +469,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
               <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-3 sm:min-h-[2.75rem]">
-                    <span className="type-label text-[rgba(58,175,169,0.82)]">
+                    <span className="type-label text-[rgba(214,161,31,0.82)]">
                       {currentProjectCopy.category}
                     </span>
                     <span className="type-label text-white/36">{currentProject.year}</span>
@@ -481,7 +481,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                   type="button"
                   className="button-pill button-pill--primary cursor-contrast-cta group shrink-0 self-start font-medium sm:self-auto"
                 >
-                  View case study
+                  Fallstudie ansehen
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />
                 </button>
               </div>
@@ -497,7 +497,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                     loading="lazy"
                     decoding="async"
                     style={{ objectPosition: projectImages[currentProject.id]?.position ?? "50% 50%" }}
-                    className="editorial-image absolute inset-0 h-full w-full object-cover"
+                    className="editorial-image absolute inset-0 h-full w-full scale-[1.07] object-cover"
                   />
                 </div>
 
@@ -529,7 +529,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                             loading="lazy"
                             decoding="async"
                             style={{ objectPosition: image.position ?? "50% 50%" }}
-                            className="editorial-image absolute inset-0 h-full w-full object-cover"
+                            className="editorial-image absolute inset-0 h-full w-full scale-[1.12] object-cover"
                           />
                         </div>
                       ))}
