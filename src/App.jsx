@@ -87,14 +87,14 @@ const getPageTitle = (page, caseStudyId) => {
     const activeProject = caseStudyProjects.find((project) => project.id === caseStudyId);
     return activeProject
       ? `NH / DUO - ${activeProject.title}`
-      : "NH / DUO - Case Study";
+      : "NH / DUO - Fallstudie";
   }
 
   const titles = {
     home: "NH / DUO",
-    work: "NH / DUO - Work",
-    about: "NH / DUO - About",
-    contact: "NH / DUO - Contact",
+    work: "NH / DUO - Arbeiten",
+    about: "NH / DUO - Über mich",
+    contact: "NH / DUO - Kontakt",
     datenschutz: "NH / DUO - Datenschutz",
     impressum: "NH / DUO - Impressum",
   };
@@ -106,9 +106,13 @@ function App() {
   const initialRoute = typeof window === "undefined"
     ? { page: "home", caseStudyId: defaultCaseStudyId }
     : getRouteStateFromHash(window.location.hash);
+  const initialThemeMode = typeof window === "undefined"
+    ? "current"
+    : window.localStorage.getItem("nh-duo-theme") ?? "current";
 
   const [showIntro, setShowIntro] = useState(true);
   const [introExitComplete, setIntroExitComplete] = useState(false);
+  const [themeMode, setThemeMode] = useState(initialThemeMode);
   const [page, setPage] = useState(initialRoute.page);
   const [activeCaseStudyId, setActiveCaseStudyId] = useState(initialRoute.caseStudyId);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -196,6 +200,16 @@ function App() {
   const openCaseStudy = useCallback((projectId) => {
     openPage("case-study", { caseStudyId: projectId });
   }, [openPage]);
+
+  const toggleThemeMode = useCallback(() => {
+    setThemeMode((current) => (
+      current === "light" ? "current" : "light"
+    ));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("nh-duo-theme", themeMode);
+  }, [themeMode]);
 
   useEffect(() => {
     if (showIntro) {
@@ -403,10 +417,10 @@ function App() {
 
   const navItems = [
     { label: "Home", value: "home" },
-    { label: "Work", value: "work" },
-    { label: "About", value: "about" },
-    { label: "Case Study", value: "case-study" },
-    { label: "Contact", value: "contact" },
+    { label: "Arbeiten", value: "work" },
+    { label: "Über mich", value: "about" },
+    { label: "Fallstudien", value: "case-study" },
+    { label: "Kontakt", value: "contact" },
   ];
 
   const scrollToCaseStudySection = (name) => {
@@ -532,16 +546,21 @@ function App() {
   const DatenschutzPage = routeComponents.datenschutz;
   const ImpressumPage = routeComponents.impressum;
 
+  const isLightTheme = themeMode === "light";
+
   return (
-    <div className="relative min-h-screen bg-[#0E141B] text-[#F0F0F0] selection:bg-white/20">
+    <div
+      data-theme={themeMode}
+      className="theme-root relative min-h-screen bg-[#070708] text-[#F0F0F0] selection:bg-white/20"
+    >
       {!showIntro && introExitComplete && (
         <BackgroundMotion
           colors={{
-            line: "240 240 240",
-            accent: "58 175 169",
-            signal: "245 180 38",
+            line: isLightTheme ? "51 51 51" : "240 240 240",
+            accent: "214 161 31",
+            signal: isLightTheme ? "214 161 31" : "242 193 78",
           }}
-          intensity={0.78}
+          intensity={isLightTheme ? 0.58 : 0.78}
         />
       )}
 
@@ -557,6 +576,8 @@ function App() {
           preloadPage={preloadPage}
           scrolled={scrolled}
           setMenuOpen={setMenuOpen}
+          themeMode={themeMode}
+          onToggleTheme={toggleThemeMode}
         />
       )}
 
