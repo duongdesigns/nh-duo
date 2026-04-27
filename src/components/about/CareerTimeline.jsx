@@ -15,16 +15,16 @@ function CareerTimeline({ items }) {
       ref={root}
       data-about-block
       aria-labelledby="about-career-title"
-      className="bg-[#0B1117] py-28 shadow-[0_0_0_100vmax_#0B1117] [clip-path:inset(0_-100vmax)] md:py-36"
+      className="bg-[#050506] py-28 shadow-[0_0_0_100vmax_#050506] [clip-path:inset(0_-100vmax)] md:py-36"
     >
       <div className="grid gap-8">
         <div>
-          <div className="text-sm leading-6 text-white/42">Career Path</div>
+          <div className="text-sm leading-6 text-white/42">Werdegang</div>
           <h2
             id="about-career-title"
             className="subsection-title mt-4 max-w-[18ch] text-white md:max-w-[62%]"
           >
-            Three stages shaping the current practice.
+            Drei Platzhalter-Stationen für die aktuelle Praxis.
           </h2>
         </div>
 
@@ -35,7 +35,7 @@ function CareerTimeline({ items }) {
           />
           <motion.div
             aria-hidden="true"
-            className="absolute bottom-auto left-[0.42rem] top-0 h-full w-px origin-top bg-[rgba(111,211,216,0.95)] md:hidden"
+            className="absolute bottom-auto left-[0.42rem] top-0 h-full w-px origin-top bg-[rgba(214,161,31,0.78)] md:hidden"
             initial={prefersReducedMotion ? false : { scaleY: 0 }}
             animate={
               shouldAnimate || prefersReducedMotion
@@ -46,7 +46,7 @@ function CareerTimeline({ items }) {
           />
           <motion.div
             aria-hidden="true"
-            className="absolute left-0 right-0 top-[1.06rem] hidden h-px origin-left bg-[rgba(111,211,216,0.95)] md:block"
+            className="absolute left-0 right-0 top-[1.06rem] hidden h-px origin-left bg-[rgba(214,161,31,0.78)] md:block"
             initial={prefersReducedMotion ? false : { scaleX: 0 }}
             animate={
               shouldAnimate || prefersReducedMotion
@@ -75,7 +75,7 @@ function CareerTimeline({ items }) {
               >
                 <span
                   aria-hidden="true"
-                  className="absolute left-0 top-1.5 h-3 w-3 rounded-full border border-[rgba(111,211,216,0.95)] bg-[#0E141B] shadow-[0_0_0_5px_rgba(111,211,216,0.12)] md:top-[0.68rem]"
+                  className="absolute left-0 top-1.5 h-3 w-3 rounded-full border border-[rgba(214,161,31,0.78)] bg-[#070708] shadow-[0_0_0_5px_rgba(214,161,31,0.12)] md:top-[0.68rem]"
                 />
                 <div className="text-sm leading-6 text-white/34">{item.period}</div>
                 <h3 className="mt-3 text-[1.08rem] font-medium leading-tight tracking-[-0.035em] text-white">
