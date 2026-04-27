@@ -6,7 +6,7 @@ function CaseStudyProgress({
   sections,
   activeSection,
   onJump,
-  title = "Progress",
+  title = "Fortschritt",
   sectionLabels = {},
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -74,7 +74,7 @@ function CaseStudyProgress({
           <motion.span
             initial={false}
             layoutId="case-study-progress-active"
-            className="absolute inset-0 rounded-2xl bg-[#3AAFA9]"
+            className="absolute inset-0 rounded-2xl bg-[#d6a11f]"
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           />
         )}
@@ -87,14 +87,14 @@ function CaseStudyProgress({
   };
 
   return (
-    <aside className="self-start lg:sticky lg:top-28 lg:h-fit">
+    <aside className="self-start lg:h-fit">
       <div className="lg:hidden">
         <div ref={mobilePanelRef} className="w-full overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121A22]/95 backdrop-blur-xl">
           <div className="p-3">
             <div className="px-3 pb-3 pt-2 text-xs uppercase tracking-[0.24em] text-white/42">
               {title}
             </div>
-            <nav aria-label="Case study section progress">
+            <nav aria-label="Case-Study Abschnittsfortschritt">
               <LayoutGroup id="case-study-progress-mobile-full">
                 <div className="space-y-1">
                   {sections.map(renderProgressButton)}
@@ -123,8 +123,8 @@ function CaseStudyProgress({
                   className="relative flex h-[52px] w-full items-center justify-center px-6 text-left"
                 >
                   <div className="flex min-w-0 flex-col items-center justify-center text-center">
-                    <div className="type-eyebrow px-2 text-[#3AAFA9]/72">{title}</div>
-                    <div className="mt-0.5 max-w-full truncate px-2 text-sm font-medium text-[#3AAFA9]">
+                    <div className="type-eyebrow px-2 text-[#d6a11f]/72">{title}</div>
+                    <div className="mt-0.5 max-w-full truncate px-2 text-sm font-medium text-[#d6a11f]">
                       {activeNumber}. {activeLabel}
                     </div>
                   </div>
@@ -148,7 +148,7 @@ function CaseStudyProgress({
                       className="overflow-hidden border-t border-white/10"
                     >
                       <div className="p-3">
-                        <nav aria-label="Case study section progress">
+                        <nav aria-label="Case-Study Abschnittsfortschritt">
                           <LayoutGroup id="case-study-progress-mobile-list">
                             <div className="space-y-1">
                               {sections.map(renderProgressButton)}
@@ -166,7 +166,7 @@ function CaseStudyProgress({
       </div>
 
       <nav
-        aria-label="Case study section progress"
+        aria-label="Case-Study Abschnittsfortschritt"
         className="hidden rounded-[1.75rem] border border-white/10 bg-[#121A22]/95 p-3 lg:block"
       >
         <div className="px-3 pb-3 pt-2 text-xs uppercase tracking-[0.24em] text-white/42">
