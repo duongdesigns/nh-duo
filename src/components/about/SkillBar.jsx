@@ -33,7 +33,7 @@ function SkillBar({ label, value }) {
         className="relative h-2.5 overflow-hidden rounded-full bg-white/[0.07]"
       >
         <motion.div
-          className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(58,175,169,0.9),rgba(111,211,216,0.76))] shadow-[0_0_18px_rgba(58,175,169,0.16)]"
+          className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(214,161,31,0.9),rgba(242,193,78,0.76))] shadow-[0_0_18px_rgba(214,161,31,0.16)]"
           initial={prefersReducedMotion ? false : { scaleX: 0 }}
           animate={{ scaleX: progress }}
           transition={{
