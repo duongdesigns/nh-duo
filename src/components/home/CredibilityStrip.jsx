@@ -155,7 +155,7 @@ export default function CredibilityStrip() {
     <section ref={root} className="home-shell py-28 md:py-36">
       <div className="content-shell px-1">
         <p className="subsection-title text-white/88">
-          More work across identity, print, and digital systems.
+          Weitere Platzhalterbilder aus Identity, Print und digitalen Systemen.
         </p>
       </div>
       <div className="relative left-1/2 w-screen max-w-none -translate-x-1/2 px-3 pt-10 md:px-4 md:pt-12">
@@ -163,7 +163,7 @@ export default function CredibilityStrip() {
           {renderTrack({
             items: topTrackItems,
             metrics: trackMetrics.top,
-            rowLabel: "Portfolio preview strip",
+            rowLabel: "Portfolio-Vorschauleiste",
             viewportRef: topViewportRef,
             sequenceRef: topSequenceRef,
           })}
@@ -171,7 +171,7 @@ export default function CredibilityStrip() {
             items: bottomTrackItems,
             metrics: trackMetrics.bottom,
             reverse: true,
-            rowLabel: "Portfolio preview strip reverse",
+            rowLabel: "Portfolio-Vorschauleiste rückwärts",
             viewportRef: bottomViewportRef,
             sequenceRef: bottomSequenceRef,
           })}
