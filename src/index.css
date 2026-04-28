@@ -1045,8 +1045,12 @@ summary {
   box-shadow: var(--theme-shadow-elevation);
 }
 
+.theme-root[data-theme="light"] header nav button:not([aria-current="page"]):not([role="menuitem"]) {
+  background: transparent !important;
+}
+
 .theme-root[data-theme="light"] header nav button:not([aria-current="page"]):hover {
-  background: rgb(51 51 51 / 0.1) !important;
+  background: transparent !important;
   color: rgb(var(--theme-text) / 0.94) !important;
 }
 

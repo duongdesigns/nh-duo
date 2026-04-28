@@ -9,12 +9,25 @@ import HorizontalScrollRow from "../layout/HorizontalScrollRow";
 import AnimatedHeadline from "../layout/AnimatedHeadline";
 import MotionButton from "../layout/MotionButton";
 import SectionEyebrow from "../layout/SectionEyebrow";
-import { caseStudyImages, featuredPreviewImages, projectImages } from "../../data/imagery";
+import { projectImages } from "../../data/imagery";
 import { featuredProjects } from "../../data/projects";
+
+const initialProjectId = featuredProjects[0]?.id ?? "";
+const initialPreviewImage = projectImages[initialProjectId];
+
+const previewEase = "power2.inOut";
+const previewEnterVars = {
+  opacity: 1,
+  y: 0,
+  scale: 1,
+  duration: 0.46,
+  ease: previewEase,
+};
 
 function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const root = useRef(null);
   const previewRef = useRef(null);
+  const previewImageRef = useRef(null);
   const mobileCarouselRef = useRef(null);
   const mobileScrollFrame = useRef(null);
   const mobileScrollTimeout = useRef(null);
@@ -24,7 +37,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const [displayedProjectId, setDisplayedProjectId] = useState(
     hoveredProject ?? featuredProjects[0]?.id
   );
-  const [activePreviewIndex, setActivePreviewIndex] = useState(0);
+  const [displayedPreviewImage, setDisplayedPreviewImage] = useState(initialPreviewImage);
 
   const copy = {
     eyebrow: "Ausgewählte Arbeiten",
@@ -53,19 +66,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
   const currentProject =
     featuredProjects.find((project) => project.id === displayedProjectId) ?? featuredProjects[0];
   const currentProjectCopy = projectCopy[currentProject.id] ?? currentProject;
-  const currentPreviewImages = currentProject.id === "tsuki"
-    ? [
-      projectImages.tsuki,
-      caseStudyImages.grid[1],
-      caseStudyImages.gallery[2],
-      featuredPreviewImages[4],
-    ]
-    : [
-      projectImages[currentProject.id],
-      ...featuredPreviewImages.slice(0, 3),
-    ].filter(Boolean);
-  const activePreviewImage = currentPreviewImages[activePreviewIndex] ?? currentPreviewImages[0];
-  const previewThumbImages = currentPreviewImages.slice(1, 4);
+  const previewTitleId = `featured-work-preview-${currentProject.id}`;
   const currentProjectIndex = Math.max(
     featuredProjects.findIndex((project) => project.id === currentProject.id),
     0
@@ -266,7 +267,8 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
     let syncFrameId = 0;
     const syncDisplayedProject = () => {
       syncFrameId = window.requestAnimationFrame(() => {
-        setActivePreviewIndex(0);
+        const nextPreviewImage = projectImages[hoveredProject];
+        setDisplayedPreviewImage(nextPreviewImage);
         setDisplayedProjectId(hoveredProject);
       });
     };
@@ -281,8 +283,7 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
     const media = preview.querySelector("[data-fw-preview-media]");
     const details = preview.querySelector("[data-fw-preview-details]");
-    const thumbs = preview.querySelectorAll("[data-fw-preview-thumb]");
-    const targets = [media, details, ...thumbs].filter(Boolean);
+    const targets = [media, details].filter(Boolean);
 
     if (!targets.length) {
       syncDisplayedProject();
@@ -295,27 +296,28 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
     const tl = gsap.timeline({
       defaults: {
-        ease: "power2.out",
+        ease: "power2.inOut",
         overwrite: "auto",
       },
       onComplete: () => {
-        setActivePreviewIndex(0);
+        const nextPreviewImage = projectImages[hoveredProject];
+        setDisplayedPreviewImage(nextPreviewImage);
         setDisplayedProjectId(hoveredProject);
       },
     });
 
     tl.to(media, {
       opacity: 0,
-      y: 10,
-      scale: 0.992,
-      duration: 0.22,
+      y: 8,
+      scale: 0.995,
+      duration: 0.34,
     }).to(
-      [details, ...thumbs],
+      details,
       {
         opacity: 0,
-        y: 12,
-        duration: 0.18,
-        stagger: 0.03,
+        y: 8,
+        duration: 0.34,
+        stagger: 0.02,
       },
       0
     );
@@ -379,11 +381,10 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
 
       const media = preview.querySelector("[data-fw-preview-media]");
       const details = preview.querySelector("[data-fw-preview-details]");
-      const thumbs = preview.querySelectorAll("[data-fw-preview-thumb]");
 
       const tl = gsap.timeline({
         defaults: {
-          ease: "power3.out",
+          ease: previewEase,
           overwrite: "auto",
         },
       });
@@ -391,28 +392,20 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
       if (media) {
         tl.fromTo(
           media,
-          { opacity: 0.3, y: 18, scale: 0.985 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.65 }
+          { opacity: 0, y: 8, scale: 0.995 },
+          previewEnterVars
         );
       }
 
       if (details) {
         tl.fromTo(
           details,
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.58 },
-          media ? "-=0.44" : 0
+          { opacity: 0, y: 8 },
+          { opacity: 1, y: 0, duration: 0.46, ease: previewEase },
+          media ? "-=0.34" : 0
         );
       }
 
-      if (thumbs.length) {
-        tl.fromTo(
-          thumbs,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.42, stagger: 0.06 },
-          "-=0.34"
-        );
-      }
     },
     { scope: root, dependencies: [displayedProjectId] }
   );
@@ -476,13 +469,14 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
               </div>
             </div>
 
-            <div
+            <article
               ref={previewRef}
-              className="rounded-[1.75rem] border border-white/8 bg-[#111820]/96 p-4 shadow-[0_18px_52px_rgba(0,0,0,0.14)] md:p-5"
+              aria-labelledby={previewTitleId}
+              className="overflow-hidden rounded-[1.45rem] border border-white/8 bg-[#111820]/96 p-5 shadow-[0_18px_52px_rgba(0,0,0,0.14)] md:p-7 xl:p-8"
             >
-              <div className="hidden flex-col gap-4 sm:flex sm:flex-row sm:items-center sm:justify-between md:flex">
+              <header className="flex flex-col gap-5 border-b border-white/8 pb-5 sm:flex-row sm:items-center sm:justify-between md:pb-6">
                 <div className="min-w-0">
-                  <div className="flex flex-wrap items-center gap-3 sm:min-h-[2.75rem]">
+                  <div className="flex flex-wrap items-center gap-3">
                     <span className="type-label text-[rgba(214,161,31,0.82)]">
                       {currentProjectCopy.category}
                     </span>
@@ -498,76 +492,51 @@ function FeaturedWork({ hoveredProject, setHoveredProject, onOpenCaseStudy }) {
                   Fallstudie ansehen
                   <ArrowRight size={16} className="transition group-hover:translate-x-1" />
                 </MotionButton>
-              </div>
+              </header>
 
-              <div className="mt-5 grid gap-6 xl:grid-cols-[1.12fr_0.78fr] xl:items-stretch">
-                <div className="grid gap-5">
-                  <div
-                    data-fw-preview-media
-                    className="relative aspect-[16/11] overflow-hidden rounded-[1.45rem] bg-white/[0.04] p-5 md:aspect-[16/10] md:p-7 xl:min-h-[19rem]"
-                  >
+              <div className="mt-6 grid overflow-hidden rounded-[1.15rem] border border-white/8 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:items-stretch">
+                <div
+                  data-fw-preview-media
+                  className="relative aspect-[16/10] overflow-hidden bg-white/[0.04] md:aspect-[16/9] xl:min-h-[24rem]"
+                >
+                  <div className="relative h-full w-full overflow-hidden">
                     <img
-                      key={activePreviewImage?.src}
-                      src={activePreviewImage?.src}
-                      alt={activePreviewImage?.alt ?? ""}
-                      loading="lazy"
+                      ref={previewImageRef}
+                      src={displayedPreviewImage?.src}
+                      alt={displayedPreviewImage?.alt ?? ""}
+                      loading="eager"
                       decoding="async"
-                      style={{ objectPosition: activePreviewImage?.position ?? "50% 50%" }}
-                      className="editorial-image h-full w-full object-contain"
+                      style={{ objectPosition: displayedPreviewImage?.position ?? "32% 50%" }}
+                      className="editorial-image absolute inset-0 h-full w-full object-cover"
                     />
-                  </div>
-
-                  <div className="grid grid-cols-3 gap-3">
-                    {previewThumbImages.map((image, index) => {
-                      const previewIndex = index + 1;
-                      const isActive = activePreviewIndex === previewIndex;
-
-                      return (
-                        <button
-                          key={image.src}
-                          type="button"
-                          aria-label={`${image.alt} als großes Vorschaubild anzeigen`}
-                          aria-pressed={isActive}
-                          data-fw-preview-thumb
-                          onClick={() => setActivePreviewIndex(previewIndex)}
-                          onFocus={() => setActivePreviewIndex(previewIndex)}
-                          onMouseEnter={() => setActivePreviewIndex(previewIndex)}
-                          className={`relative aspect-[5/3.35] overflow-hidden rounded-[1rem] border bg-[#121A22] transition ${
-                            isActive
-                              ? "border-[rgba(214,161,31,0.58)]"
-                              : "border-white/10 hover:border-white/22"
-                          }`}
-                        >
-                          <img
-                            src={image.src}
-                            alt=""
-                            loading="lazy"
-                            decoding="async"
-                            style={{ objectPosition: image.position ?? "50% 50%" }}
-                            className="editorial-image absolute inset-0 h-full w-full object-cover"
-                          />
-                        </button>
-                      );
-                    })}
                   </div>
                 </div>
 
                 <div
                   data-fw-preview-details
-                  className="flex flex-col justify-center gap-8 p-1 md:p-2"
+                  className="relative z-10 flex flex-col justify-between gap-10 border-t border-white/8 bg-[#111820] p-6 md:p-7 xl:min-h-[24rem] xl:border-l xl:border-t-0 xl:py-6 xl:pl-7"
                 >
                   <div>
-                    <div className="text-sm leading-6 text-white/42">{copy.switcher}</div>
-                    <h3 className="subsection-title mt-4 max-w-[11ch] font-[600] leading-[0.95] text-white">
+                    <div className="flex items-center justify-between gap-4 text-sm leading-6 text-white/42">
+                      <span>{copy.switcher}</span>
+                      <span className="type-label text-white/30">
+                        {String(currentProjectIndex + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3
+                      id={previewTitleId}
+                      className="subsection-title mt-5 max-w-[11ch] font-[600] leading-[0.95] text-white"
+                    >
                       {currentProject.title}
                     </h3>
-                    <p className="body-safe mt-5 max-w-[34ch] text-[1rem] leading-[1.82] text-white/64 md:text-[1.02rem]">
+                    <p className="body-safe mt-6 max-w-[32ch] text-[1rem] leading-[1.85] text-white/64 md:text-[1.02rem]">
                       {currentProjectCopy.summary}
                     </p>
                   </div>
+                  <div aria-hidden="true" className="hidden h-px w-16 bg-[rgba(214,161,31,0.46)] xl:block" />
                 </div>
               </div>
-            </div>
+            </article>
           </div>
 
           <div className="hidden md:block">

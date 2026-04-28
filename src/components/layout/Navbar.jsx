@@ -11,6 +11,7 @@ export default function Navbar({
   onOpenCaseStudy,
   page,
   preloadPage,
+  navHidden,
   scrolled,
   setMenuOpen,
   themeMode,
@@ -26,6 +27,8 @@ export default function Navbar({
     (project) => project.id === hoveredCaseStudyId
   ) ?? caseStudyProjects[0];
   const lightThemeActive = themeMode === "light";
+  const onLightSurface = lightThemeActive;
+  const navHiddenResolved = navHidden && !menuOpen && !caseStudyMenuOpen;
   const renderThemeToggle = (compact = false) => (
     <button
       aria-label={lightThemeActive ? "Aktuelle Farbwahl aktivieren" : "Helle Farbpalette aktivieren"}
@@ -33,9 +36,9 @@ export default function Navbar({
       className={`theme-toggle inline-flex items-center rounded-full border transition ${
         compact ? "h-[52px] w-[52px] justify-center" : "h-10 w-10 justify-center"
       } ${
-        scrolled
+        onLightSurface
           ? "cursor-contrast-navbar border-black/10 bg-black/[0.04] text-black/72 hover:bg-black/[0.07]"
-          : "border-white/10 bg-white/[0.05] text-white/72 hover:bg-white/[0.08] hover:text-white"
+          : "border-white/12 bg-white/[0.07] text-white/78 hover:bg-white/[0.11] hover:text-white"
       }`}
       onClick={onToggleTheme}
       type="button"
@@ -56,12 +59,12 @@ export default function Navbar({
           aria-current={page === item.value ? "page" : undefined}
           className={`rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
-              ? scrolled
+              ? onLightSurface
                 ? "cursor-contrast-navbar bg-[#070708] text-white"
-                : "cursor-contrast-navbar bg-white text-[#333333]"
-              : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-black/[0.08] hover:text-black"
-                : "text-white/72 hover:bg-white/8 hover:text-white"
+                : "cursor-contrast-navbar bg-[#F0F0F0] text-[#333333]"
+              : onLightSurface
+                ? "cursor-contrast-navbar text-black/68 hover:text-black"
+                : "text-white/76 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate(item.value)}
           onFocus={() => preloadPage?.(item.value)}
@@ -95,12 +98,12 @@ export default function Navbar({
           aria-haspopup="menu"
           className={`inline-flex items-center gap-2 rounded-2xl px-5 py-2 text-sm transition ${
             page === item.value
-              ? scrolled
+              ? onLightSurface
                 ? "cursor-contrast-navbar bg-[#070708] text-white"
-                : "cursor-contrast-navbar bg-white text-[#333333]"
-              : scrolled
-                ? "cursor-contrast-navbar text-black/68 hover:bg-black/[0.08] hover:text-black"
-                : "text-white/72 hover:bg-white/8 hover:text-white"
+                : "cursor-contrast-navbar bg-[#F0F0F0] text-[#333333]"
+              : onLightSurface
+                ? "cursor-contrast-navbar text-black/68 hover:text-black"
+                : "text-white/76 hover:bg-white/8 hover:text-white"
           }`}
           onClick={() => navigate("case-study")}
           onFocus={() => {
@@ -129,9 +132,9 @@ export default function Navbar({
             >
               <div
                 className={`w-[23rem] overflow-hidden rounded-[1.65rem] border p-3 shadow-[0_22px_56px_rgba(0,0,0,0.2)] ${
-                  scrolled
+                  onLightSurface
                     ? "border-black/10 bg-[#F0F0F0]/96 text-[#070708] backdrop-blur-xl"
-                    : "border-white/10 bg-[#20262D]/96 text-white backdrop-blur-xl"
+                    : "border-white/12 bg-[#2B3035]/96 text-white backdrop-blur-xl"
                 }`}
               >
                 <div className="grid gap-2">
@@ -146,10 +149,10 @@ export default function Navbar({
                         aria-current={active ? "page" : undefined}
                         className={`group block w-full rounded-[1.25rem] px-4 py-4 text-left transition-[background-color,color,transform,box-shadow] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                           active
-                            ? scrolled
+                            ? onLightSurface
                               ? "bg-[#070708] text-white shadow-[0_12px_24px_rgba(7,7,8,0.16)]"
-                              : "bg-white/10 text-white shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
-                            : scrolled
+                              : "bg-[#F0F0F0] text-[#333333] shadow-[0_12px_24px_rgba(0,0,0,0.14)]"
+                            : onLightSurface
                               ? "text-black/74 hover:bg-black/[0.08] hover:text-black hover:translate-x-1"
                               : "text-white/74 hover:bg-white/6 hover:text-white hover:translate-x-1"
                         }`}
@@ -186,7 +189,7 @@ export default function Navbar({
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
                     className={`mt-3 rounded-[1.25rem] border px-5 py-5 ${
-                      scrolled
+                      onLightSurface
                         ? "border-black/10 bg-black/[0.03]"
                         : "border-white/10 bg-white/[0.03]"
                     }`}
@@ -198,7 +201,7 @@ export default function Navbar({
                       {hoveredCaseStudy.title}
                     </div>
                     <p className={`mt-3 text-sm leading-7 ${
-                      scrolled ? "text-black/62" : "text-white/58"
+                      onLightSurface ? "text-black/62" : "text-white/58"
                     }`}>
                       {hoveredCaseStudy.menuSummary}
                     </p>
@@ -219,7 +222,7 @@ export default function Navbar({
           key={item.value}
           aria-current={page === item.value ? "page" : undefined}
           className={`block w-full rounded-2xl px-4 py-3 text-left ${
-            scrolled
+            onLightSurface
               ? "cursor-contrast-navbar text-black/82 hover:bg-black/[0.08]"
               : "text-white/82 hover:bg-white/6"
           }`}
@@ -241,7 +244,7 @@ export default function Navbar({
         <button
           aria-expanded={mobileCaseStudyMenuOpen}
           className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left ${
-            scrolled
+            onLightSurface
               ? "cursor-contrast-navbar text-black/82 hover:bg-black/[0.08]"
               : "text-white/82 hover:bg-white/6"
           }`}
@@ -269,10 +272,10 @@ export default function Navbar({
                   aria-current={active ? "page" : undefined}
                   className={`block w-full rounded-[1.15rem] px-3 py-3 text-left transition ${
                     active
-                      ? scrolled
+                      ? onLightSurface
                         ? "bg-[#070708] text-white"
-                        : "bg-white/10 text-white"
-                      : scrolled
+                        : "bg-[#F0F0F0] text-[#333333]"
+                      : onLightSurface
                         ? "text-black/72 hover:bg-black/[0.08] hover:text-black"
                         : "text-white/72 hover:bg-white/6 hover:text-white"
                   }`}
@@ -294,31 +297,35 @@ export default function Navbar({
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 py-4 md:px-8">
+    <header
+      className="fixed inset-x-0 top-0 z-50 px-4 py-4 transition-transform duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:px-8"
+      style={{
+        transform: navHiddenResolved ? "translateY(calc(-100% - 1rem))" : "translateY(0)",
+      }}
+    >
       <div
         style={{
-          maxWidth: scrolled ? "980px" : "1280px",
-          transform: scrolled ? "translateY(0)" : "translateY(6px)",
+          maxWidth: "1280px",
         }}
         className={`mx-auto hidden items-center justify-between rounded-[2rem] border px-4 py-3 md:flex md:px-6 ${
-          "transition-[max-width,transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
+          "transition-[background-color,border-color,box-shadow] duration-[420ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
         } ${
-          scrolled
+          onLightSurface
             ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
-            : "border-white/10 bg-[#20262D]/96"
+            : "border-white/14 bg-[#2B3035]/96 shadow-[0_18px_46px_rgba(0,0,0,0.22)]"
         } ${
           "backdrop-blur-xl"
         }`}
       >
         <button
           aria-label="Zur Startseite"
-          className={`group flex items-center text-left ${scrolled ? "cursor-contrast-navbar" : ""}`}
+          className={`group flex items-center text-left ${onLightSurface ? "cursor-contrast-navbar" : ""}`}
           onClick={() => navigate("home")}
           type="button"
         >
           <div className="hidden sm:block">
-            <div className={`type-eyebrow ${scrolled ? "text-black/55" : "text-white/55"}`}>NH / DUO</div>
-            <div className={`text-sm ${scrolled ? "text-black/82" : "text-white/88"}`}>Brand-Design-Portfolio</div>
+            <div className={`type-eyebrow ${onLightSurface ? "text-black/55" : "text-white/56"}`}>NH / DUO</div>
+            <div className={`text-sm ${onLightSurface ? "text-black/82" : "text-white/90"}`}>Brand-Design-Portfolio</div>
           </div>
         </button>
 
@@ -346,17 +353,14 @@ export default function Navbar({
             return nextValue;
           })}
           type="button"
-            style={{
-              transform: scrolled ? "translateY(0)" : "translateY(6px)",
-            }}
             className={`flex h-[52px] w-[52px] items-center justify-center rounded-[1.4rem] border transition-[transform,background-color,border-color] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-              scrolled
+              onLightSurface
                 ? "border-[rgba(14,20,27,0.08)] bg-[rgba(240,240,240,0.96)]"
-                : "border-white/10 bg-[#20262D]/96"
+                : "border-white/14 bg-[#2B3035]/96"
             } ${
               "backdrop-blur-xl"
             } ${
-              scrolled ? "cursor-contrast-navbar text-black" : "text-white"
+              onLightSurface ? "cursor-contrast-navbar text-black" : "text-white"
             }`}
           >
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -371,9 +375,9 @@ export default function Navbar({
           className={`mx-auto mt-3 max-w-5xl rounded-3xl border p-3 md:hidden ${
             scrolled ? "backdrop-blur-xl" : ""
           } ${
-            scrolled
+            onLightSurface
               ? "border-black/10 bg-[#F0F0F0]/95"
-              : "border-white/10 bg-[#3B3B3B]/95"
+              : "border-white/12 bg-[#2B3035]/95"
           }`}
         >
           {navItems.map(renderMobileNavItem)}

@@ -117,6 +117,7 @@ function App() {
   const [activeCaseStudyId, setActiveCaseStudyId] = useState(initialRoute.caseStudyId);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [navHidden, setNavHidden] = useState(false);
   const [activeSection, setActiveSection] = useState(caseStudySections[0]);
   const [hoveredProject, setHoveredProject] = useState(caseStudyProjects[0]?.id ?? "");
   const caseStudyRefs = useRef({});
@@ -231,13 +232,28 @@ function App() {
 
   useEffect(() => {
     let frameId = 0;
+    let lastScrollY = window.scrollY;
 
     const updateScrolled = () => {
       frameId = 0;
-      const nextScrolled = window.scrollY > 48;
+      const currentScrollY = window.scrollY;
+      const nextScrolled = currentScrollY > 48;
+      const scrollingDown = currentScrollY > lastScrollY + 8;
+      const scrollingUp = currentScrollY < lastScrollY - 8;
+
       setScrolled((current) => (
         current === nextScrolled ? current : nextScrolled
       ));
+
+      if (currentScrollY < 80 || scrollingUp) {
+        setNavHidden(false);
+      } else if (scrollingDown) {
+        setNavHidden(true);
+      }
+
+      if (scrollingDown || scrollingUp) {
+        lastScrollY = currentScrollY;
+      }
     };
 
     const onScroll = () => {
@@ -574,6 +590,7 @@ function App() {
           navItems={navItems}
           menuOpen={menuOpen}
           preloadPage={preloadPage}
+          navHidden={navHidden}
           scrolled={scrolled}
           setMenuOpen={setMenuOpen}
           themeMode={themeMode}
